@@ -1,7 +1,7 @@
 {
   "name": "jlb-tools",
   "version": "0.0.11",
-  "description": "js工具库",
+  "description": "js工具库 工具类函数方法 深拷贝 时间转换等",
   "main": "dist/jtools.runtime.common.js",
   "module": "dist/jtools.runtime.esm.js",
   "license": "MIT",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Pasoul/jtools"
+    "url": "https://github.com/zhangdulin/common-utils"
   },
   "files": [
     "lib",
@@ -29,12 +29,19 @@
     "util",
     "common",
     "tool",
-    "py419569317",
     "py",
     "zqs",
-    "TiAmoYz"
+    "TiAmoYz",
+    "js",
+    "deepCopy",
+    "formatetime",
+    "arry",
+    "object",
+    "debounce",
+    "throttle",
+    "dulinyu"
   ],
-  "author": "py419569317",
+  "author": "dulinyu",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-transform-runtime": "^7.1.0",
