@@ -1,0 +1,92 @@
+{
+  "name": "jlb-tools",
+  "version": "0.0.11",
+  "description": "js工具库",
+  "main": "dist/jtools.runtime.common.js",
+  "module": "dist/jtools.runtime.esm.js",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime-corejs2": "^7.0.0",
+    "es6-promise": "^4.2.5"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test karma start",
+    "doc": "jsdoc -r --readme README.md -c conf.json",
+    "build:lib": "node script/rollup.build.js",
+    "build:doc": "gh-pages -d api-docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pasoul/jtools"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "keywords": [
+    "jlb",
+    "jtools",
+    "util",
+    "common",
+    "tool",
+    "py419569317",
+    "py",
+    "zqs",
+    "TiAmoYz"
+  ],
+  "author": "py419569317",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^9.0.0",
+    "babel-loader": "^8.0.2",
+    "babel-plugin-istanbul": "^5.0.1",
+    "chai": "^4.1.2",
+    "chalk": "^2.4.1",
+    "codecov": "^3.0.4",
+    "copy": "^0.3.2",
+    "coveralls": "^3.0.2",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.3.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "gh-pages": "^2.0.1",
+    "karma": "^2.0.5",
+    "karma-babel-preprocessor": "^7.0.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
+    "karma-mocha": "^1.3.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-phantomjs-shim": "^1.5.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^3.0.2",
+    "mocha": "^5.2.0",
+    "ora": "^3.0.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.65.2",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-buble": "^0.19.2",
+    "rollup-plugin-commonjs": "^9.1.6",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript": "^1.0.0",
+    "tslib": "^1.9.3",
+    "typescript": "^3.3.4000",
+    "uglify-js": "^3.4.9",
+    "webpack": "3.11.0",
+    "zlib": "^1.0.5"
+  },
+  "config": {
+    "packageName": "jtools",
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
