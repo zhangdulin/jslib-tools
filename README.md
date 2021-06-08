@@ -3,12 +3,10 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-08 11:39:14
+ * @LastEditTime: 2021-06-08 17:42:25
  * @Description:
 -->
 
-[![Build Status](https://travis-ci.org/jielibang/jtools.svg?branch=master)](https://travis-ci.org/jielibang/jtools)
-[![Coverage Status](https://coveralls.io/repos/github/jielibang/jtools/badge.svg?branch=master)](https://coveralls.io/github/jielibang/jtools?branch=master)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 [![Eclipse Marketplace](https://img.shields.io/eclipse-marketplace/dt/notepad4e.svg)](https://www.npmjs.com/package/jib-tools)
 ![NpmVersion](https://img.shields.io/npm/v/npm.svg)
