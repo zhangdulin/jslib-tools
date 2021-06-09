@@ -1,5 +1,5 @@
 /*!
- * jtools v0.0.8
+ * jtools v0.0.01
  * jlb web team
  */
 'use strict';
@@ -51,7 +51,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.5.7' };
+var core = module.exports = { version: '2.6.12' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 var _core_1 = _core.version;
@@ -296,7 +296,7 @@ var store = _global[SHARED] || (_global[SHARED] = {});
 })('versions', []).push({
   version: _core.version,
   mode: 'pure',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
 });
 });
 
@@ -1444,6 +1444,8 @@ var elDateFormat_1 = elDateFormat;
 /**
  * 获取浏览器类型和版本
  * @return {string}
+ * @example
+ * getBrowserModel() => "Chrome:70.0.3538.102"
  */
 function getBrowserModel() {
   var sys = {};
@@ -1451,18 +1453,19 @@ function getBrowserModel() {
   var s = null;
   /* eslint-disable */
 
-  (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? sys.ie = s[1] : (s = ua.match(/msie ([\d\.]+)/)) ? sys.ie = s[1] : (s = ua.match(/edge\/([\d\.]+)/)) ? sys.edge = s[1] : (s = ua.match(/firefox\/([\d\.]+)/)) ? sys.firefox = s[1] : (s = ua.match(/(?:opera|opr).([\d\.]+)/)) ? sys.opera = s[1] : (s = ua.match(/chrome\/([\d\.]+)/)) ? sys.chrome = s[1] : (s = ua.match(/version\/([\d\.]+).*safari/)) ? sys.safari = s[1] : (s = ua.match(/micromessenger\/([\d\.]+)/)) ? sys.micromessenger = s[1] : (s = u.match(/QQ\/([\d\.]+)/gi)) ? sys.qq = s[1] : 0; // 根据关系进行判断
+  (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? sys.ie = s[1] : (s = ua.match(/msie ([\d\.]+)/)) ? sys.ie = s[1] : (s = ua.match(/edge\/([\d\.]+)/)) ? sys.edge = s[1] : (s = ua.match(/firefox\/([\d\.]+)/)) ? sys.firefox = s[1] : (s = ua.match(/(?:opera|opr).([\d\.]+)/)) ? sys.opera = s[1] : (s = ua.match(/chrome\/([\d\.]+)/)) ? sys.chrome = s[1] : (s = ua.match(/version\/([\d\.]+).*safari/)) ? sys.safari = s[1] : (s = ua.match(/micromessenger\/([\d\.]+)/)) ? sys.micromessenger = s[1] : (s = ua.match(/QQ\/([\d\.]+)/gi)) ? sys.qq = s[1] : 0; // 根据关系进行判断
 
-  if (sys.ie) return 'IE:' + sys.ie;
-  if (sys.edge) return 'Edge:' + sys.edge;
-  if (sys.firefox) return 'Firefox:' + sys.firefox;
-  if (sys.chrome) return 'Chrome:' + sys.chrome;
-  if (sys.opera) return 'Opera:' + sys.opera;
-  if (sys.safari) return 'Safari:' + sys.safari;
-  if (sys.micromessenger) return 'Micromessenger:' + sys.micromessenger;
-  if (sys.qq) return 'QQ:' + sys.qq;
-  return 'Unknown';
+  if (sys.ie) return "IE:" + sys.ie;
+  if (sys.edge) return "Edge:" + sys.edge;
+  if (sys.firefox) return "Firefox:" + sys.firefox;
+  if (sys.chrome) return "Chrome:" + sys.chrome;
+  if (sys.opera) return "Opera:" + sys.opera;
+  if (sys.safari) return "Safari:" + sys.safari;
+  if (sys.micromessenger) return "Micromessenger:" + sys.micromessenger;
+  if (sys.qq) return "QQ:" + sys.qq;
+  return "Unknown";
 }
+
 var getBrowserModel_1 = getBrowserModel;
 
 /**
@@ -1612,9 +1615,14 @@ var getThumbnails_1 = getThumbnails;
  * 获取默认头像
  * @param {*} userId
  */
-function getDefaultHeader(_ref) {
-  var userId = _ref.userId,
+function getDefaultHeader() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    userId: 0,
+    imageDomain: ""
+  },
+      userId = _ref.userId,
       imageDomain = _ref.imageDomain;
+
   if (!imageDomain) return "";
   return imageDomain + "/photo/user_header" + (userId || 0) % 10 + ".png";
 }
@@ -1659,7 +1667,7 @@ function isSpecialChar(value) {
 var isSpecialChar_1 = isSpecialChar;
 
 /**
- * 检查是否为正确手机号 1开头11位
+ * 检查是否为正确手机号 1开头11位数字
  * @param {*} value 正则校验变量
  * @return {boolean} 正则校验结果
  */
@@ -1683,19 +1691,19 @@ function utf16toEntities(str) {
 
   var patt = /[\ud800-\udbff][\udc00-\udfff]/g; // 检测utf16字符正则
 
-  str = str.replace(patt, function (char) {
+  str = str.replace(patt, function (_char) {
     var H, L, code;
 
-    if (char.length === 2) {
-      H = char.charCodeAt(0); // 取出高位
+    if (_char.length === 2) {
+      H = _char.charCodeAt(0); // 取出高位
 
-      L = char.charCodeAt(1); // 取出低位
+      L = _char.charCodeAt(1); // 取出低位
 
       code = (H - 0xd800) * 0x400 + 0x10000 + L - 0xdc00; // 转换算法
 
       return "&#" + code + ";";
     } else {
-      return char;
+      return _char;
     }
   });
   return str;
@@ -1807,6 +1815,13 @@ function handleText() {
 
 var handleText_1 = handleText;
 
+var $JSON = _core.JSON || (_core.JSON = { stringify: JSON.stringify });
+var stringify = function stringify(it) { // eslint-disable-line no-unused-vars
+  return $JSON.stringify.apply($JSON, arguments);
+};
+
+var stringify$1 = stringify;
+
 // most Object methods by ES6 should accept primitives
 
 
@@ -1831,13 +1846,6 @@ _objectSap('keys', function () {
 var keys = _core.Object.keys;
 
 var keys$1 = keys;
-
-var $JSON = _core.JSON || (_core.JSON = { stringify: JSON.stringify });
-var stringify = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-
-var stringify$1 = stringify;
 
 /**
  * 删除对象里面value值为null的键值对

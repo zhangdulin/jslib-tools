@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-08 17:42:25
+ * @LastEditTime: 2021-06-09 09:45:26
  * @Description:
 -->
 
@@ -17,9 +17,9 @@
 
 ## Todo
 
-- [x] 引入代码校验工具 eslint
-- [x] jsdocs 自动化生成 api 文档
-- [x] 测试覆盖率统计 coverage
+- [√] 引入代码校验工具 eslint
+- [√] jsdocs 自动化生成 api 文档
+- [√] 测试覆盖率统计 coverage
 - [x] 按需加载
 - [x] 支持浏览器环境，node 环境、es6 环境
 
@@ -39,19 +39,19 @@
 
 #### npm:
 
-`npm i jlb-tools`
+`npm i jslib-tools`
 
 ##### 全部加载（webpack、RequireJS、SeaJS 等）：
 
 ```js
-var jtools = require("jlb-tools");
+var jtools = require("jslib-tools");
 var result = jtools.add(1, 2);
 ```
 
 #### es6
 
 ```js
-import jtools from "jlb-tools";
+import jtools from "jslib-tools";
 var result = jtools.add(1, 2);
 ```
 
@@ -60,7 +60,7 @@ var result = jtools.add(1, 2);
 结合[babel-plugin-import-load](https://github.com/Pasoul/babel-plugin-import-load)按需加载可以极大的减小依赖包的体积
 
 ```js
-import { add } from "jlb-tools";
+import { add } from "jslib-tools";
 var result = add(1, 2);
 ```
 
@@ -73,12 +73,3 @@ var result = add(1, 2);
 ### 扩展
 
 如果你想添加自己的工具库，在 `src` 目录创建文件，对应 `test` 目录添加测试用例，执行 `yarn test`
-
-### 贡献方法
-
-- fork 本仓库到自己账户。
-- 新建一个分支来开始您的工作，分支的名字为 `feature_功能名称` 或者 `buxfix_issueId`。
-- 完成功能后请在 test 目录添加完整测试。
-- 完成后，发送一个 pull request 到 Pasoul/jtools。
-- 等待核心开发者做 CodeReview。
-- 最后，恭喜你贡献成功。

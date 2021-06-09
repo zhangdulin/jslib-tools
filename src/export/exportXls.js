@@ -1,3 +1,11 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-09 10:53:39
+ * @Description:
+ */
 /**
  * 删除对象里面value值为null的键值对
  * @param {*} data 接口返回的blob数据
@@ -9,11 +17,11 @@ function exportXls(data, name = "jtools", callBack) {
     callBack && callBack({ type: "fail", msg: "数据为空" });
     return false;
   }
-  let reader = new FileReader();
+  const reader = new FileReader();
   reader.readAsText(data, "utf-8");
-  reader.onload = e => {
+  reader.onload = (e) => {
     try {
-      let { code, msg } = JSON.parse(reader.result);
+      const { code, msg } = JSON.parse(reader.result);
       if (code && code != 200) {
         callBack && callBack({ type: "fail", code, msg });
         return false;
@@ -28,7 +36,9 @@ function exportXls(data, name = "jtools", callBack) {
   };
 }
 function _downFile(data, fileName) {
-  let blob = new Blob([data], { type: "application/vnd.ms-excel,charset=UTF-8" });
+  const blob = new Blob([data], {
+    type: "application/vnd.ms-excel,charset=UTF-8"
+  });
   if (window.navigator.msSaveOrOpenBlob) {
     navigator.msSaveBlob(blob, fileName + ".xlsx");
   } else {

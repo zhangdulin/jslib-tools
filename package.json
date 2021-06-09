@@ -1,7 +1,7 @@
 {
-  "name": "jlb-tools",
-  "version": "0.0.11",
-  "description": "js工具库 工具类函数方法 深拷贝 时间转换等",
+  "name": "jslib-tools",
+  "version": "0.0.01",
+  "description": "js工具库 封装常用的工具函数 如深拷贝 时间转换日期格式化、浏览器判断等，提高开发效率",
   "main": "dist/jtools.runtime.common.js",
   "module": "dist/jtools.runtime.esm.js",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "es6-promise": "^4.2.5"
   },
   "scripts": {
-    "test": "NODE_ENV=test karma start",
+    "test": "cross-env NODE_ENV=test karma start",
     "doc": "jsdoc -r --readme README.md -c conf.json",
     "build:lib": "node script/rollup.build.js",
     "build:doc": "gh-pages -d api-docs"
@@ -55,6 +55,7 @@
     "codecov": "^3.0.4",
     "copy": "^0.3.2",
     "coveralls": "^3.0.2",
+    "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.3.0",
     "eslint-config-standard": "^11.0.0",
@@ -64,6 +65,7 @@
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
     "gh-pages": "^2.0.1",
+    "jsdoc": "^3.6.7",
     "karma": "^2.0.5",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chai": "^0.1.0",
