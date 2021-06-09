@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zhangdulin/common-utils"
+    "url": "https://github.com/zhangdulin/jslib-tools"
   },
   "files": [
     "lib",
