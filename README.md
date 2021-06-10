@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 14:56:57
+ * @LastEditTime: 2021-06-10 18:21:54
  * @Description:
 -->
 
@@ -19,7 +19,6 @@
 
 - [√] 引入代码校验工具 eslint
 - [√] jsdocs typedocs 自动化生成 api 文档
-- [√] 测试覆盖率统计 coverage
 - [√] 测试覆盖率统计 coverage
 - [√] 支持Typescript
 - [√] 支持浏览器环境，node 环境、es6 环境
