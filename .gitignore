@@ -2,7 +2,7 @@
 node_modules
 /coverage
 /api-docs
-
+/test copy
 # Log files
 npm-debug.log*
 yarn-debug.log*

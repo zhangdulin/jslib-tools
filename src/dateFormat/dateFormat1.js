@@ -1,3 +1,11 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 17:55:31
+ * @Description: 
+ */
 /**
  * 日期格式化
  * 时间规则：
@@ -9,17 +17,17 @@
  * @param {*} value 时间戳，单位s
  * @return {*} 格式化后的日期
  */
-function dateFormat1(value) {
+ export function dateFormat1(value) {
   if (!value) return "";
-  let time = value * 1000;
-  let now = new Date().getTime();
-  let year = new Date(time).getFullYear();
-  let month = new Date(time).getMonth() + 1;
-  let date = new Date(time).getDate();
+  const time = value * 1000;
+  const now = new Date().getTime();
+  const year = new Date(time).getFullYear();
+  const month = new Date(time).getMonth() + 1;
+  const date = new Date(time).getDate();
   let hour = new Date(time).getHours();
   let min = new Date(time).getMinutes();
-  let weekType = ["日", "一", "二", "三", "四", "五", "六"];
-  let week = "星期" + weekType[new Date(time).getDay()];
+  const weekType = ["日", "一", "二", "三", "四", "五", "六"];
+  const week = "星期" + weekType[new Date(time).getDay()];
   if (min < 10) {
     min = "0" + min;
   }
@@ -42,4 +50,3 @@ function dateFormat1(value) {
     return month + "月" + date + "日   " + hour + ":" + min;
   }
 }
-module.exports = dateFormat1;

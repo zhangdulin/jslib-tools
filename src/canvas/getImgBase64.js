@@ -3,7 +3,7 @@
  * @param {string} url 图片url
  * @returns {Promise} 图片base64信息
  */
-function getImgBase64(url) {
+ export function getImgBase64(url) {
   /* eslint-disable */
   var Img = new Image(),
     dataURL = "";
@@ -25,4 +25,3 @@ function getImgBase64(url) {
     };
   });
 }
-module.exports = getImgBase64;

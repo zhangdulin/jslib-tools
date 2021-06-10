@@ -1,0 +1,8 @@
+{
+    "entryPoints": ["src"],
+    "exclude": ["node_moudles", "src/modules/WebViewer/**/*.ts"],
+    "includeVersion": true,
+    "hideGenerator": true,
+    "disableSources": true,
+    "out": "docs"
+}

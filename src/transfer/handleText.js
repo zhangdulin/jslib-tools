@@ -1,3 +1,11 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 18:00:42
+ * @Description: 
+ */
 var utf16toEntities = require("../.internal/utf16toEntities");
 var entitiestoUtf16 = require("../.internal/entitiestoUtf16");
 
@@ -10,7 +18,7 @@ var entitiestoUtf16 = require("../.internal/entitiestoUtf16");
  * handleText("<br>&nbsp;&lt;&gt;", "encode") => "\n <>"
  * handleText("\n <>", "decode") => "<br>&nbsp;&lt;&gt;"
  */
-function handleText(str = "", type = "encode") {
+ export function handleText(str = "", type = "encode") {
   if (!str) return "";
   if (typeof str !== "string") {
     console.error("handleText数据类型需要是字符串类型");
@@ -35,4 +43,3 @@ function handleText(str = "", type = "encode") {
   }
   return newStr;
 }
-module.exports = handleText;

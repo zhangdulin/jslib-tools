@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-09 10:31:23
+ * @LastEditTime: 2021-06-09 16:28:44
  * @Description:
  */
 // 0 忽略 1 警告 2 错误
@@ -11,17 +11,30 @@
  * no-unneeded-ternary Unnecessary use of conditional expression for default assignment
  * val ? val : defaultVal可以用val || defaultVal代替三元表达式
  */
+const path = require('path');
 module.exports = {
     root: true,
     // 让eslint支持es6语法
-    parserOptions: {
-        parser: 'babel-eslint',
-        sourceType: 'module'
-    },
+    // parserOptions: {
+    //     parser: 'babel-eslint',
+    //     sourceType: 'module'
+    // },
     env: {
         browser: true,
         node: true,
         es6: true
+    },
+    parser: '@typescript-eslint/parser',
+    extends: [
+        'eslint:recommended', // eslint 推荐规则
+        'plugin:@typescript-eslint/recommended' // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    ],
+    parserOptions: {
+        parser: 'babel-eslint',
+        project: path.resolve(__dirname, './tsconfig.json'),
+        tsconfigRootDir: __dirname,
+        ecmaVersion: 2019, // Allows for the parsing of modern ECMAScript features
+        sourceType: 'module', // Allows for the use of imports
     },
     // extends: "standard",
     // add your custom rules here

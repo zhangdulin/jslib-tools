@@ -1,3 +1,11 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 18:00:16
+ * @Description: 
+ */
 var utf16toEntities = require("../.internal/utf16toEntities");
 var entitiestoUtf16 = require("../.internal/entitiestoUtf16");
 /**
@@ -9,7 +17,7 @@ var entitiestoUtf16 = require("../.internal/entitiestoUtf16");
  * handleEmoji("😃", "encode") => "&#128515;"
  * handleEmoji("&#128522;", "decode") => "😊"
  */
-function handleEmoji(str = "", type = "encode") {
+ export function handleEmoji(str = "", type = "encode") {
   if (!str) return "";
   if (typeof str !== "string") {
     console.error("handleEmoji数据类型需要是字符串类型");
@@ -23,4 +31,3 @@ function handleEmoji(str = "", type = "encode") {
     return str;
   }
 }
-module.exports = handleEmoji;

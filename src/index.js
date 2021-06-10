@@ -1,48 +1,63 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 18:14:31
+ * @Description: 
+ */
+
 // canvas
-const getImgBase64 = require("./canvas/getImgBase64");
+import { getImgBase64 } from "./canvas/getImgBase64";
 
 // dateFormat
-const dateFormat1 = require("./dateFormat/dateFormat1");
-const dateFormat2 = require("./dateFormat/dateFormat2");
-const elDateFormat = require("./dateFormat/elDateFormat");
+import { dateFormat1 } from "./dateFormat/dateFormat1";
+import { dateFormat2 } from "./dateFormat/dateFormat2";
+import { elDateFormat } from "./dateFormat/elDateFormat";
 
 // device
-const getBrowserModel = require("./device/getBrowserModel");
-const getDeviceModel = require("./device/getDeviceModel");
-
+import { getBrowserModel } from "./device/getBrowserModel";
+import { getDeviceModel } from "./device/getDeviceModel";
 // export
-const exportXls = require("./export/exportXls");
+import { exportXls } from "./export/exportXls";
 
 // oss
-const getThumbnails = require("./oss/getThumbnails");
-const getDefaultAvatar = require("./oss/getDefaultAvatar");
+import { getThumbnails } from "./oss/getThumbnails";
+import { getDefaultAvatar } from "./oss/getDefaultAvatar";
+
 
 // reg
-const isEmoji = require("./reg/isEmoji");
-const isIDCard = require("./reg/isIDCard");
-const isSpecialChar = require("./reg/isSpecialChar");
-const isMobile = require("./reg/isMobile");
+import { isEmoji } from "./reg/isEmoji";
+import { isIDCard } from "./reg/isIDCard";
+import { isSpecialChar } from "./reg/isSpecialChar";
+import { isMobile } from "./reg/isMobile";
 
 // transfer
-const handleEmoji = require("./transfer/handleEmoji");
-const handleText = require("./transfer/handleText");
-const handleParam = require("./transfer/handleParam");
+import { handleEmoji } from "./transfer/handleEmoji";
+import { handleText } from "./transfer/handleText";
+import { handleParam } from "./transfer/handleParam";
 
-module.exports = {
-  getImgBase64,
-  dateFormat1,
-  dateFormat2,
-  elDateFormat,
-  getBrowserModel,
-  getDeviceModel,
-  exportXls,
-  getThumbnails,
-  getDefaultAvatar,
-  isEmoji,
-  isIDCard,
-  isSpecialChar,
-  isMobile,
-  handleEmoji,
-  handleText,
-  handleParam
-};
+import { isColor } from './color/isColor'
+import { getParam, setParam} from './url/urlUtils'
+
+export default {
+    isColor,
+    getParam,
+    setParam,
+    getImgBase64,
+    dateFormat1,
+    dateFormat2,
+    elDateFormat,
+    getBrowserModel,
+    getDeviceModel,
+    exportXls,
+    getThumbnails,
+    getDefaultAvatar,
+    isEmoji,
+    isIDCard,
+    isSpecialChar,
+    isMobile,
+    handleEmoji,
+    handleText,
+    handleParam
+}

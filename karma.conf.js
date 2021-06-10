@@ -2,31 +2,37 @@
 // Generated on Mon Aug 13 2018 11:55:46 GMT+0800 (CST)
 var webpack = require("webpack");
 var path = require("path");
-var webpackConfig = {
-  resolve: {
-    extensions: [".js"],
-    alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
-  },
+
+var  webpackConfig = {
+  // mode: 'development',
+  // entry: './src/index.js',
+  // output: {
+    // filename: '[name].js'
+  // },
+  devtool: 'inline-source-map',
   module: {
     rules: [
+      // {
+      //   test: /\.ts$/,
+      //   loader: "@babel/preset-typescript",
+      //   exclude: /node_modules/
+      // },
       {
-        test: /\.js$/,
-        loader: "babel-loader",
-        exclude: /node_modules/
+        test: /\.tsx?$/,
+        use: {
+          loader: 'ts-loader',
+          // options: {
+          //   configFile: 'test/tsconfig.json'
+          // }
+        },
+        exclude: [path.join(__dirname, 'node_modules')]
       }
     ]
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: '"test"'
-      }
-    })
-  ],
-  devtool: "#inline-source-map"
-};
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.json']
+  }
+}
 module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -35,23 +41,35 @@ module.exports = function(config) {
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ["mocha", "chai"],
-
+    
     // 定义测试和被测代码文件
     // list of files / patterns to load in the browser
-    files: ["src/index.js", "test/*.test.js"],
+    // files: ["src/index.js", "test/*.test.js"],
+    
+    // files: ['test/index.ts'],
+    files: ["test/*.test.js","test/*.test.ts" ],
+
+    // 配置预处理器，哪些文件需要统计测试覆盖率
+    preprocessors: {
+      // "./src/index.js": ["webpack", "sourcemap"],
+      "./test/*.js": ["webpack"],
+      "./test/*.ts": ["webpack"]
+    },
+    
+    // 识别ts
+    mime: {
+      'text/x-typescript': ['ts', 'tsx']
+    },
+    
 
     // list of files / patterns to exclude
     exclude: [],
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    // 配置预处理器，哪些文件需要统计测试覆盖率
-    preprocessors: {
-      "./src/index.js": ["webpack", "sourcemap"],
-      "./test/*.js": ["webpack", "sourcemap"]
-    },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
+      // stats: 'errors-only'
     },
     plugins: [
       "karma-chrome-launcher",
@@ -96,7 +114,8 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     // , "Chrome"
-    browsers: ["PhantomJS"],
+    // browsers: ['Chrome', 'Firefox', 'PhantomJS'],
+    browsers: ['Chrome'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
@@ -104,6 +123,12 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
+
+    // reporters: ['nyan', 'coverage-istanbul'],
+    // 動畫
+    // nyanReporter: {
+    //   renderOnRunCompleteOnly: true
+    // }
   });
 };

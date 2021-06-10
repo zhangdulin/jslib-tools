@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-09 10:53:39
+ * @LastEditTime: 2021-06-10 17:59:15
  * @Description:
  */
 /**
@@ -12,7 +12,7 @@
  * @param {*} name excel名称
  * @param {*} callBack 导出成功/失败回调  回调返回{type:fail/success}  fail情况下 返回{ type: "fail", code, msg }
  */
-function exportXls(data, name = "jtools", callBack) {
+ export function exportXls(data, name = "jtools", callBack) {
   if (!data || data.size == 0) {
     callBack && callBack({ type: "fail", msg: "数据为空" });
     return false;
@@ -49,4 +49,3 @@ function _downFile(data, fileName) {
     window.URL.revokeObjectURL(link.href);
   }
 }
-module.exports = exportXls;

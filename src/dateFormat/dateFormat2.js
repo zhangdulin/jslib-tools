@@ -1,3 +1,11 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 17:55:38
+ * @Description: 
+ */
 /**
  * 日期格式化
  * 时间规则：
@@ -9,7 +17,7 @@
  * @param {*} dateTimeStamp 时间戳，单位s
  * @return {*} 格式化后的日期
  */
-function dateFormat2(dateTimeStamp) {
+export function dateFormat2(dateTimeStamp) {
   if (!dateTimeStamp) return "";
   dateTimeStamp = dateTimeStamp * 1000;
   var minute = 1000 * 60; // 把分，时，天，周，半个月，一个月用毫秒表示
@@ -43,4 +51,3 @@ function dateFormat2(dateTimeStamp) {
   }
   return result;
 }
-module.exports = dateFormat2;

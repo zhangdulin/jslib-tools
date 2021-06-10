@@ -1,3 +1,11 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-09 10:54:37
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 14:58:32
+ * @Description: 
+ */
 // 令 Rollup 从 JSON 文件中读取数据。
 const pkg = require("../package.json");
 const path = require("path");
@@ -6,14 +14,21 @@ const path = require("path");
 const nodeResolve = require("rollup-plugin-node-resolve");
 // npm包大多是commonjs规范，需要将commonjs模块转换为es6供rollup处理
 const commonjs = require("rollup-plugin-commonjs");
+// const typescript = require("rollup-plugin-typescript2");
+const typescript = require("rollup-plugin-typescript");
+
+
 const babel = require("rollup-plugin-babel");
 const packageName = pkg.config.packageName;
+
 
 const resolve = p => {
   return path.resolve(__dirname, "../", p);
 };
 
 const banner = "/*!\n" + " * jtools v" + pkg.version + "\n" + " * jlb web team\n" + " */";
+
+const extensions = ['.js', '.ts'];
 
 // 分别编译三种运行环境的包:commonjs、es module、umd
 const builds = {
@@ -44,17 +59,29 @@ function getConfig(name) {
   const config = {
     input: opts.entry,
     plugins: [
-      // 如果项目引入node_modules第三方插件，需要打开此配置
+      // commonjs(), // 将 CommonJS 转换成 ES2015 模块供 Rollup 处理
       commonjs({
         namedExports: {
           "node_modules/core-js/library/modules/es6.object.to-string.js": ["default"]
         }
       }),
-      nodeResolve(),
+      // 如果项目引入node_modules第三方插件，需要打开此配置
+      nodeResolve({
+        extensions,
+        modulesOnly: true,
+      }),
+      // resolve(), // 查找和打包node_modules中的第三方模块
+      // commonjs(), // 将 CommonJS 转换成 ES2015 模块供 Rollup 处理
+      typescript(), // 解析TypeScript
+      // babel({
+      //   exclude: 'node_modules/**',
+      //   extensions,
+      // })
       babel({
         exclude: "node_modules/**",
         babelrc: false, // 不读取babelrc文件
-        presets: [["@babel/env", { modules: false }]], // 设置modules: false,否则babel会在rollup处理之前，把模块转移成commonjs风格，导致tree-shake失败
+        extensions,
+        presets: [["@babel/env", { modules: false }, '@babel/preset-typescript']], // 设置modules: false,否则babel会在rollup处理之前，把模块转移成commonjs风格，导致tree-shake失败
         runtimeHelpers: true,
         plugins: [
           [
@@ -63,7 +90,7 @@ function getConfig(name) {
               corejs: 2
             }
           ]
-        ]
+        ],
       })
     ].concat(opts.plugins || []),
     output: {

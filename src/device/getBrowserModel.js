@@ -4,7 +4,7 @@
  * @example
  * getBrowserModel() => "Chrome:70.0.3538.102"
  */
-function getBrowserModel() {
+export function getBrowserModel() {
   var sys = {};
   var ua = navigator.userAgent.toLowerCase();
   var s = null;
@@ -41,4 +41,3 @@ function getBrowserModel() {
 
   return "Unknown";
 }
-module.exports = getBrowserModel;

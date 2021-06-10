@@ -1,9 +1,17 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 17:52:31
+ * @Description: 
+ */
 var utf16toEntities = require("./utf16toEntities")
 /**
  * 实体字符转utf16字符串
  * @param {*} str 待解析的字符串
  */
-function entitiestoUtf16(str) {
+ export function entitiestoUtf16(str) {
   if (!str) return "";
   if (typeof str !== "string") {
     console.error("需要解析的数据类型需要是字符串类型");
@@ -27,4 +35,3 @@ function entitiestoUtf16(str) {
   }
   return strObj;
 }
-module.exports = entitiestoUtf16;

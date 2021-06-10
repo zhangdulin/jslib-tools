@@ -3,12 +3,12 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-09 09:45:26
+ * @LastEditTime: 2021-06-10 14:56:57
  * @Description:
 -->
 
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
-[![Eclipse Marketplace](https://img.shields.io/eclipse-marketplace/dt/notepad4e.svg)](https://www.npmjs.com/package/jib-tools)
+[![Eclipse Marketplace](https://img.shields.io/eclipse-marketplace/dt/notepad4e.svg)](https://www.npmjs.com/package/jslib-tools)
 ![NpmVersion](https://img.shields.io/npm/v/npm.svg)
 
 ### Description:
@@ -18,10 +18,11 @@
 ## Todo
 
 - [√] 引入代码校验工具 eslint
-- [√] jsdocs 自动化生成 api 文档
+- [√] jsdocs typedocs 自动化生成 api 文档
 - [√] 测试覆盖率统计 coverage
-- [x] 按需加载
-- [x] 支持浏览器环境，node 环境、es6 环境
+- [√] 测试覆盖率统计 coverage
+- [√] 支持Typescript
+- [√] 支持浏览器环境，node 环境、es6 环境
 
 ### 如何使用:
 
