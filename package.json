@@ -1,6 +1,6 @@
 {
   "name": "jslib-tools",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "js工具库 封装常用的工具函数 如深拷贝 时间转换日期格式化、浏览器判断等，提高开发效率",
   "main": "dist/jtools.runtime.common.js",
   "module": "dist/jtools.runtime.esm.js",
@@ -12,9 +12,9 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test karma start",
     "build:lib": "node script/rollup.build.js",
+    "typedoc": "npx typedoc --tsconfig typedoc.json",
     "doc": "jsdoc -r --readme README.md -c conf.json",
     "build:doc": "gh-pages -d api-docs",
-    "build:typedoc": "npx typedoc --tsconfig typedoc.json",
     "publish": "node publish/index.js",
     "lint": "eslint 'src/**/*.{js,ts}'"
   },
@@ -24,7 +24,9 @@
   },
   "files": [
     "lib",
-    "dist"
+    "dist",
+    "docs",
+    "api-docs"
   ],
   "keywords": [
     "jlb",

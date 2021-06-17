@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-09 15:29:17
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-17 10:43:58
+ * @LastEditTime: 2021-06-17 13:27:37
  * @Description:
  */
 
@@ -41,6 +41,7 @@ console.log('-i', `"version": "${currentVersion}"`, `"version": "${newVersion}"`
   shelljs.sed('-i', `"version": "${currentVersion}"`, `"version": "${newVersion}"`, targetFile); // 修改版本号
 //   shelljs.cd('dist');
 // npm login --registry http://registry.npmjs.org
+// npm unpublish jslib-tools@0.0.6 --force
   shelljs.exec('npm publish --registry http://registry.npmjs.org'); // 发布
   // shelljs.kill('SIGINT')
 
