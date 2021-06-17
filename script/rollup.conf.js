@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-09 10:54:37
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-17 10:32:23
+ * @LastEditTime: 2021-06-17 10:52:33
  * @Description: 
  */
 // 令 Rollup 从 JSON 文件中读取数据。
@@ -83,15 +83,15 @@ function getConfig(name) {
         extensions,
         presets: [["@babel/env", { modules: false }, '@babel/preset-typescript']], // 设置modules: false,否则babel会在rollup处理之前，把模块转移成commonjs风格，导致tree-shake失败
         runtimeHelpers: true,
-        plugins: ['@babel/plugin-transform-runtime']
-        // plugins: [
-        //   [
-        //     "@babel/transform-runtime",
-        //     {
-        //       corejs: 2
-        //     }
-        //   ]
-        // ],
+        // plugins: ['@babel/plugin-transform-runtime']
+        plugins: [
+          [
+            "@babel/transform-runtime",
+            {
+              corejs: 2
+            }
+          ]
+        ],
       })
     ].concat(opts.plugins || []),
     output: {

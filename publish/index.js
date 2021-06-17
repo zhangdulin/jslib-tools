@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-09 15:29:17
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 10:44:02
+ * @LastEditTime: 2021-06-17 10:43:58
  * @Description:
  */
 
@@ -40,8 +40,9 @@ console.log('-i', `"version": "${currentVersion}"`, `"version": "${newVersion}"`
 //   shelljs.sed('-i', '"name": "ktools"', '"name": "@kagol/ktools"', targetFile); // 修改包名
   shelljs.sed('-i', `"version": "${currentVersion}"`, `"version": "${newVersion}"`, targetFile); // 修改版本号
 //   shelljs.cd('dist');
+// npm login --registry http://registry.npmjs.org
   shelljs.exec('npm publish --registry http://registry.npmjs.org'); // 发布
-  shelljs.kill('SIGINT')
+  // shelljs.kill('SIGINT')
 
 // }
 
