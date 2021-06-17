@@ -1,0 +1,113 @@
+<!--
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-15 10:54:49
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-15 10:57:47
+ * @Description:  多个图片dom 展示成 video效果
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+    width: 256px; height: 464px;
+    margin: auto;
+    background-color: #000;
+    position: relative;
+}
+.container > img {
+    position: absolute;
+    width: 100%; height: 100%;
+}
+.loading {
+    position: absolute;
+    height: 8px; width: 150px;
+    border: 1px solid #eee;
+    background: linear-gradient(to top, #eee, #eee);
+    background-size: 0 100%;
+    transition: background-size .1s;
+    left: 0; top: 0; right: 0; bottom: 0;
+    margin: auto;
+}
+.loading::before {
+    content: attr(data-percent)'%';
+    position: absolute;
+    left: 0; top: -1.5em;
+    font-size: 12px;
+    color: #eee;
+}
+    </style>
+</head>
+<body>
+    <div id="container" class="container">
+        <span id="loading" class="loading" data-percent="0"></span>
+    </div>
+    <script>
+        var urlRoot = './thumbs/';
+var indexRange = [1, 47];
+var maxLength = indexRange[1] - indexRange[0] + 1;
+// loading
+var eleContainer = document.getElementById('container');
+var eleLoading = document.getElementById('loading');
+// 存储预加载的DOM对象和长度信息
+var store = {
+    length: 0
+};
+// 图片序列预加载
+for ( var start = indexRange[0]; start <= indexRange[1]; start++) {
+    (function (index) {
+        var img = new Image();
+        img.onload = function () {
+            store.length++;
+            // 存储预加载的图片对象
+            store[index] = this;
+            play();
+        };
+        img.onerror = function () {
+            store.length++;
+            play();
+        };
+        img.src = urlRoot + index + '.jpg';
+    })(start);
+}
+
+var play = function () {
+    // loading进度
+    var percent = Math.round(100 * store.length / maxLength);
+    eleLoading.setAttribute('data-percent', percent);
+    eleLoading.style.backgroundSize = percent + '% 100%';
+    // 全部加载完毕，无论成功还是失败
+    if (percent == 100) {
+        var index = indexRange[0];
+        eleContainer.innerHTML = '';
+        // 依次append图片对象
+        var step = function () {
+            if (store[index - 1]) {
+                eleContainer.removeChild(store[index - 1]);
+            }
+            eleContainer.appendChild(store[index]);
+            // 序列增加
+            index++;
+            // 如果超过最大限制
+            if (index <= indexRange[1]) {
+                setTimeout(step, 42);
+            } else {
+                // 本段播放结束回调
+                // 我这里就放一个重新播放的按钮
+                eleContainer.insertAdjacentHTML('beforeEnd', '<button onclick="play()">再看一遍英姿</button>');
+            }
+        };
+        // 等100%动画结束后执行播放
+        setTimeout(step, 100);
+    }
+}
+    </script>
+</body>
+</html>
+

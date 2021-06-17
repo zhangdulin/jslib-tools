@@ -1,6 +1,16 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-10 18:16:50
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-11 10:54:56
+ * @Description: 
+ */
 /* eslint-disable no-undef */
-import { getThumbnails } from "../src/index";
+import tools from "../src/index";
+
 var assert = chai.assert;
+var getThumbnails = tools.getThumbnails;
 
 describe("异常流程测试", () => {
   it("如果没有提供任何参数，应该返回空字符串", () => {

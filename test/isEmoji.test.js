@@ -1,5 +1,15 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-10 18:16:50
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-16 17:30:41
+ * @Description: 
+ */
 /* eslint-disable no-undef */
-import { isEmoji } from "../src/index";
+import tools from "../src/index";
+
+var isEmoji = tools.isEmoji;
 var assert = chai.assert;
 
 describe("检查是否为emoji表情的测试", () => {

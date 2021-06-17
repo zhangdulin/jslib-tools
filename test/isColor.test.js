@@ -3,14 +3,12 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:35:14
+ * @LastEditTime: 2021-06-16 17:30:50
  * @Description: 
  */
-/* eslint-disable no-undef */
-// import tools from "../src/index";
 import tools from "../src/index";
 
-const isColor = tools.isColor
+var isColor = tools.isColor
 var assert = chai.assert;
 describe("顏色校驗", () => {
   it("顏色校驗 false", () => {

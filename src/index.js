@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 18:14:31
+ * @LastEditTime: 2021-06-17 10:36:42
  * @Description: 
  */
 
@@ -38,7 +38,22 @@ import { handleText } from "./transfer/handleText";
 import { handleParam } from "./transfer/handleParam";
 
 import { isColor } from './color/isColor'
-import { getParam, setParam} from './url/urlUtils'
+import { getParam, setParam} from './url/index'
+
+// jsBridge
+import jsBridge from './jsBridge/index'
+
+// dom
+// video 设置自动播放
+import { setVideoPlay } from './dom/videoPlay'
+
+// performance
+// 节流防抖
+import { debounce,throttle } from './performance/index'
+
+// obj
+// 深复制
+import { deepCopy } from './obj/index'
 
 export default {
     isColor,
@@ -59,5 +74,10 @@ export default {
     isMobile,
     handleEmoji,
     handleText,
-    handleParam
+    handleParam,
+    jsBridge,
+    setVideoPlay,
+    debounce,
+    throttle,
+    deepCopy
 }

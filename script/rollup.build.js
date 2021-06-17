@@ -19,6 +19,7 @@ let spinner = ora("building...").start();
 // terminal spinner
 spinner.color = "yellow";
 
+delete require.cache[require.resolve('./rollup.conf.js')];
 let builds = require("./rollup.conf.js").getAllBuilds();
 
 build(builds);
@@ -105,6 +106,7 @@ function copyJsToLib() {
           if (!/index.js/.test(itemChild)) {
             fs.readFile(path.resolve(rootPath, `src/${item}/${itemChild}`), (err,data) => {
               const handleContent = data.toString().replace(/\.\.\/\.internal/g,"./.internal");
+              // const handleContent = data.toString()
               fs.writeFileSync(path.resolve(rootPath, `lib/${itemChild}`), handleContent)
             })
           }

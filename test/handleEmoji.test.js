@@ -1,5 +1,16 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-10 18:16:50
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-16 17:31:36
+ * @Description: 
+ */
 /* eslint-disable no-undef */
-import { handleEmoji } from "../src/index";
+import tools from "../src/index";
+
+var handleEmoji = tools.handleEmoji;
+
 var assert = chai.assert;
 var expect = chai.expect;
 

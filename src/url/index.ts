@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-09 14:28:20
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 11:21:43
+ * @LastEditTime: 2021-06-11 10:39:11
  * @Description:
  */
 
@@ -42,18 +42,36 @@ export function setParam(url: string, obj: any) {
 /**
  * @description: 獲取url 參數
  * @param {*} key key 指定參數返回字符串  默認返回對象
- * @return {*} 字符串或
+ * @param {*} type 获取参数的类型 可传值search hash  默认search 
+ * @return {*} 字符串或对象
  */
-export function getParam(key: string) {
-  const url = location.search; // 获取url中"?"符后的字串
+export function getParam(type: string, key: string) {
+  let url = location.search || ''; // 获取url中'?'符后的字串
   const params: any = {};
-  if (url.indexOf("?") != -1) {
-    const str = url.substr(1);
-    const strs: Array<string> = str.split("&");
-    for (let i = 0; i < strs.length; i++) {
-      params[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+
+  if (type && type === 'hash') {
+    url = location.hash || ''
+  }
+
+  if (url.indexOf('?') != -1) {
+    const str = url.substr(1) || '';
+    const strs: Array<string> = str.split('&');
+
+    if (strs && strs.length) {
+      for (let i = 0; i < strs.length; i++) {
+        const strsItem = strs[i].split('=');
+        if (strsItem.length == 2) {
+          params[strsItem[0]] = decodeURIComponent(strsItem[1]);
+        }
+      }
     }
   }
-  return params;
+
+  if (key && Object.keys(params).length) {
+    return params[key] || ''
+  } else {
+    return params;
+  }
 }
+
 

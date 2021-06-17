@@ -1,7 +1,17 @@
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-10 18:16:50
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-16 17:32:05
+ * @Description: 
+ */
 /* eslint-disable no-undef */
-import { getImgBase64 } from "../src/index";
+import tools from "../src/index";
 import Promise from "es6-promise";
 Promise.polyfill();
+
+var getImgBase64 = tools.getImgBase64;
 var expect = chai.expect;
 
 describe("测试图片转base64", () => {
