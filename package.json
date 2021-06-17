@@ -1,11 +1,12 @@
 {
   "name": "jslib-tools",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "js工具库 封装常用的工具函数 如深拷贝 时间转换日期格式化、浏览器判断等，提高开发效率",
   "main": "dist/jtools.runtime.common.js",
   "module": "dist/jtools.runtime.esm.js",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.0.0",
     "es6-promise": "^4.2.5"
   },
   "scripts": {
