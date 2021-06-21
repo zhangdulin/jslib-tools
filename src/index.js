@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-17 10:36:42
+ * @LastEditTime: 2021-06-18 10:28:23
  * @Description: 
  */
 
@@ -36,12 +36,16 @@ import { isMobile } from "./reg/isMobile";
 import { handleEmoji } from "./transfer/handleEmoji";
 import { handleText } from "./transfer/handleText";
 import { handleParam } from "./transfer/handleParam";
+import { b2size } from "./transfer/bytes";
 
 import { isColor } from './color/isColor'
 import { getParam, setParam} from './url/index'
 
+// plugins
 // jsBridge
-import jsBridge from './jsBridge/index'
+import jsBridge from './plugins//jsBridge/index'
+// 高德地图
+import AMaploader from './plugins/AMap/index'
 
 // dom
 // video 设置自动播放
@@ -75,7 +79,9 @@ export default {
     handleEmoji,
     handleText,
     handleParam,
+    b2size,
     jsBridge,
+    AMaploader,
     setVideoPlay,
     debounce,
     throttle,
