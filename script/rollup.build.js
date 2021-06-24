@@ -105,9 +105,11 @@ function copyJsToLib() {
         folderList1.forEach(itemChild => {
           if (!/index.js/.test(itemChild)) {
             fs.readFile(path.resolve(rootPath, `src/${item}/${itemChild}`), (err,data) => {
-              const handleContent = data.toString().replace(/\.\.\/\.internal/g,"./.internal");
-              // const handleContent = data.toString()
-              fs.writeFileSync(path.resolve(rootPath, `lib/${itemChild}`), handleContent)
+              if (data) {
+                const handleContent = data.toString().replace(/\.\.\/\.internal/g,"./.internal");
+                // const handleContent = data.toString()
+                fs.writeFileSync(path.resolve(rootPath, `lib/${itemChild}`), handleContent)
+              }
             })
           }
         })

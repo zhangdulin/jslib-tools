@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:43:38
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-17 10:08:25
+ * @LastEditTime: 2021-06-23 17:54:35
  * @Description: 
  */
 
@@ -28,7 +28,7 @@ function isObject(obj) {
 function isArray(obj) {
     return toString.call(obj) === "[object Array]";
 }
-    
+
 /* 
 * 数据克隆(深拷贝)
 * @param {object} data 要克隆的对象
@@ -58,4 +58,34 @@ export function deepCopy(data) {
     }
 
     return result;
+}
+
+
+/**
+ * @description: 对象方法工具 hasKey:判断一个对象是否存在key; objEqual: 两个对象是否相等这两个对象的值只能是数字或字符串
+ * @param {*}
+ * @return {* number boolean} 
+ */
+export const objTools = {
+    /**
+     * 判断一个对象是否存在key，如果传入第二个参数key，则是判断这个obj对象是否存在key这个属性
+     * 如果没有传入key这个参数，则判断obj对象是否有键值对
+     */
+    hasKey: (obj, key) => {
+        if (key) return key in obj;
+        else {
+            const keysArr = Object.keys(obj);
+            return keysArr.length;
+        }
+    },
+    // 两个对象是否相等这两个对象的值只能是数字或字符串
+    objEqual: (obj1, obj2) => {
+        const keysArr1 = Object.keys(obj1);
+        const keysArr2 = Object.keys(obj2);
+        if (keysArr1.length !== keysArr2.length) return false;
+        else if (keysArr1.length === 0 && keysArr2.length === 0) return true;
+        /* eslint-disable-next-line */ else {
+            return !keysArr1.some((key) => obj1[key] != obj2[key]);
+        }
+    }
 }

@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 18:29:46
+ * @LastEditTime: 2021-06-24 15:30:51
  * @Description:
 -->
 
@@ -33,7 +33,7 @@
 ```js
 <script src="jtools.min.js"></script>
 <script>
-    var result = jtools.add(1, 2)
+    var result = jtools.deepCopy({a:1})
 </script>
 ```
 
@@ -45,14 +45,14 @@
 
 ```js
 var jtools = require("jslib-tools");
-var result = jtools.add(1, 2);
+var result = jtools.deepCopy({a:1});
 ```
 
 #### es6
 
 ```js
 import jtools from "jslib-tools";
-var result = jtools.add(1, 2);
+var result = jtools.deepCopy({a:1});
 ```
 
 ### 按需加载
@@ -61,7 +61,7 @@ var result = jtools.add(1, 2);
 
 ```js
 import { add } from "jslib-tools";
-var result = add(1, 2);
+var result = deepCopy({a:1});
 ```
 
 #### 自动化生成文档
@@ -73,3 +73,24 @@ var result = add(1, 2);
 ### 扩展
 
 如果你想添加自己的工具库，在 `src` 目录创建文件，对应 `test` 目录添加测试用例，执行 `npm run test`
+
+### utils 
+vue 和 常用插件 axios 封装工具类
+
+### 迭代记录
+0.1.3
+
+增加 
+getHttpBase64 获取网络图片转成base64
+Regs 正则校验对象 包括手机号 邮箱等常用正则规则
+getUUID 随机字符串 前端设置唯一id
+appendJs 插入js 支持回调
+clipboardObj 复制和获取黏贴内容
+cursortPosition 获取焦点光标控制
+sleepSync 睡眠
+sleepAction 延时执行
+objTools 对象操作 判断key 对象相等
+getGlobal, setGlobal, globalLib, removeGlobalItem window对象操作等
+
+删除
+isMobile
