@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 13:22:55
+ * @LastEditTime: 2021-06-25 17:16:50
  * @Description: 
  */
 
@@ -37,7 +37,9 @@ import { Regs } from "./reg/index";
 import { handleEmoji } from "./transfer/handleEmoji";
 import { handleText } from "./transfer/handleText";
 import { handleParam } from "./transfer/handleParam";
-import { b2size } from "./transfer/bytes";
+import * as byteTools from "./transfer/bytes";
+import jsonTools from "./transfer/jsonString";
+
 
 import { isColor } from './color/isColor'
 import { getParam, setParam } from './url/index'
@@ -63,11 +65,15 @@ import { debounce, throttle, sleepSync, sleepAction } from './performance/index'
 // obj
 // 深复制 两个对象是否相等 对象是否有key
 import { deepCopy, objTools } from './obj/index'
-// window
-import { getGlobal, setGlobal, globalLib, removeGlobalItem } from './obj/window'
 // 数组相关操作
 import arrayTools from './obj/array/index'
+// 判断对象数字类型等方法
+import judgeTools from './judgement/index'
 
+// session local cookie 
+import * as store from './store/index'
+// window
+import { getGlobal, setGlobal, globalLib, removeGlobalItem } from './obj/window'
 
 export default {
     getParam,
@@ -96,12 +102,14 @@ export default {
     handleText,
     handleParam,
 
-    b2size,
+    byteTools,
+    jsonTools,
 
     jsBridge,
     AMaploader,
     getUUID,
     appendJs,
+    store,
 
     debounce,
     throttle,
@@ -110,6 +118,7 @@ export default {
     deepCopy,
     objTools,
     arrayTools,
+    judgeTools,
 
     setVideoPlay,
     cursortPosition,

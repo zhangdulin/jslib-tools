@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 13:59:31
+ * @LastEditTime: 2021-06-25 17:21:11
  * @Description:
 -->
 
@@ -78,7 +78,8 @@ var result = deepCopy({a:1});
 vue 和 常用插件 axios 封装工具类
 
 ### 迭代记录
-```js
+
+```
 0.1.3
 
 增加 
@@ -93,9 +94,13 @@ sleepAction 延时执行
 objTools 对象操作 判断key 对象相等
 getGlobal, setGlobal, globalLib, removeGlobalItem window对象操作等
 arrayTools 数组相关操作 arrayToObject 数组转对象 arrayMoveMutate 数组移动位置原数组 arrayMove 数组移动位置返回新数组
-
+judgeTools 判断对象数组等类型方法
+byteTools b2size 自动转换合适的单位 bytes 自定义设置转换的单位
+jsonTools decode_url_param, json_replace, json_encode, json_decode 对象字符串转换等
+store cookie storage
 ---
 
 删除
 isMobile
+b2size
 ```

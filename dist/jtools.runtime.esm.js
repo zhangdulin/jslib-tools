@@ -2721,14 +2721,14 @@ var _parseFloat$3 = _parseFloat$2;
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-18 09:14:05
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-18 10:11:31
+ * @LastEditTime: 2021-06-25 14:52:35
  * @Description:
  */
 
 /**
  * @description: 转换文件大小 B=>KB 等
  * @param {*} bytes B
- * @return {String} String KB 等
+ * @return {string} String KB 等
  */
 var b2size = function b2size(bytes) {
   if (bytes === 0) return '0 B';
@@ -2738,24 +2738,149 @@ var b2size = function b2size(bytes) {
   var result = _parseFloat$3((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   return result;
 };
+/**进位 */
 
-/*
- * @Author: zhangyu
- * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-09 15:22:05
- * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:55:21
- * @Description:
- */
+function _carryBit(t, index) {
+  return t * Math.pow(1024, index - 1) * 8;
+}
+/**降位 */
 
+
+function _dropBit(t, index) {
+  return t / Math.pow(1024, index - 1) / 8;
+}
+
+function _up(t, index) {
+  // return t >> (index * 10)
+  return t / Math.pow(1024, index);
+}
+
+function _down(t, index) {
+  // return t << (index * 10)
+  return t * Math.pow(1024, index);
+}
 /**
- * 判断字符串是否是十六进制的颜色值
- * @param {*} string string
- * @return {*} boolean
- */
-function isColor(value) {
-  return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value);
-} // module.exports = isColor;
+* 字节转换 转换成多种格式
+* @param {number} b byte
+*/
+
+
+function bytes(target) {
+  return {
+    Bit: {
+      toByte: function toByte() {
+        return _dropBit(target, 1);
+      },
+      toKB: function toKB() {
+        return _dropBit(target, 2);
+      },
+      toMB: function toMB() {
+        return _dropBit(target, 3);
+      },
+      toGB: function toGB() {
+        return _dropBit(target, 4);
+      },
+      toTB: function toTB() {
+        return _dropBit(target, 5);
+      }
+    },
+    Byte: {
+      toBit: function toBit() {
+        return _carryBit(target, 1);
+      },
+      toKB: function toKB() {
+        return _up(target, 1);
+      },
+      toMB: function toMB() {
+        return _up(target, 2);
+      },
+      toGB: function toGB() {
+        return _up(target, 3);
+      },
+      toTB: function toTB() {
+        return _up(target, 4);
+      }
+    },
+    KB: {
+      toBit: function toBit() {
+        return _carryBit(target, 2);
+      },
+      toByte: function toByte() {
+        return _down(target, 1);
+      },
+      toMB: function toMB() {
+        return _up(target, 1);
+      },
+      toGB: function toGB() {
+        return _up(target, 2);
+      },
+      toTB: function toTB() {
+        return _up(target, 3);
+      }
+    },
+    MB: {
+      toBit: function toBit() {
+        return _carryBit(target, 3);
+      },
+      toByte: function toByte() {
+        return _down(target, 2);
+      },
+      toKB: function toKB() {
+        return _down(target, 1);
+      },
+      toGB: function toGB() {
+        return _up(target, 1);
+      },
+      toTB: function toTB() {
+        return _up(target, 2);
+      }
+    },
+    GB: {
+      toBit: function toBit() {
+        return _carryBit(target, 4);
+      },
+      toByte: function toByte() {
+        return _down(target, 3);
+      },
+      toKB: function toKB() {
+        return _down(target, 2);
+      },
+      toMB: function toMB() {
+        return _down(target, 1);
+      },
+      toTB: function toTB() {
+        return _up(target, 1);
+      }
+    },
+    TB: {
+      toBit: function toBit() {
+        return _carryBit(target, 5);
+      },
+      toByte: function toByte() {
+        return _down(target, 4);
+      },
+      toKB: function toKB() {
+        return _down(target, 3);
+      },
+      toMB: function toMB() {
+        return _down(target, 2);
+      },
+      toGB: function toGB() {
+        return _down(target, 1);
+      }
+    }
+  };
+}
+var bytes$1 = {
+  b2size: b2size,
+  bytes: bytes
+};
+
+var byteTools = /*#__PURE__*/Object.freeze({
+  b2size: b2size,
+  bytes: bytes,
+  default: bytes$1
+});
 
 var _meta = createCommonjsModule(function (module) {
 var META = _uid$1('meta');
@@ -3504,6 +3629,320 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 });
 
 var _typeof = unwrapExports(_typeof_1);
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-22 10:40:09
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-25 17:04:17
+ * @Description: 
+ */
+//Node.js中闭包外部this并非global eg:(function(g){})(this); //this not global
+//严格模式下this不指向全局变量
+var GLOBAL = (typeof global === "undefined" ? "undefined" : _typeof(global)) == "object" ? global : window,
+    toString$5 = Object.prototype.toString;
+ //严格模式与window识别检测
+//2018/10/10: uglify压缩会导致此检测函数失效
+//function detect_strict_mode() {
+//    var f = function (arg) {
+//        arguments[0] = 1;
+//        return arg != arguments[0];
+//    };
+//    return f(0);
+//}
+//默认严格模式,不再通过检测判断
+
+var //detect_strict_mode(),
+is_window_mode = GLOBAL == GLOBAL.window;
+/**
+ * 获取数据类型(小写) undefined|null|string|number|array|function|date|regexp|window|node|list
+ * @param {object} obj 要检测的数据
+ */
+
+function getType(obj) {
+  if (obj == undefined) return "" + obj; //内置函数,性能最好 (注意：safari querySelectorAll返回值类型为function)
+
+  if (_typeof(obj) !== "object" && typeof obj !== "function") return _typeof(obj); //非window模式(Node)下禁用以下检测
+
+  if (is_window_mode) {
+    if (typeof obj.nodeType === "number") return "node";
+
+    if (typeof obj.length === "number") {
+      //严格模式禁止使用 arguments.callee,调用会报错
+      //IE9+等使用 toString.call 会返回 [object Arguments],此为兼容低版本IE
+      //if (!is_strict_mode && obj.callee) return "arguments";
+      //IE9+等使用 toString.call 会返回 [object Window],此为兼容低版本IE
+      if (obj == obj.window) return "window"; //document.getElementsByTagName("*") => HTMLCollection
+      //document.querySelectorAll("*")     => NodeList
+      //此处统一为 list
+
+      if (obj.item) return "list";
+    }
+  } //在某些最新的浏览器中(IE11、Firefox、Chrome)性能与hash读取差不多 eg: return class2type[toString.call(obj)];
+
+
+  return toString$5.call(obj).slice(8, -1).toLowerCase();
+}
+/**
+ * 检测是否为函数
+ * @param {object} fn 要检测的数据
+ */
+
+function isFunc(fn) {
+  //在IE11兼容模式（ie6-8）下存在bug,当调用次数过多时可能返回不正确的结果
+  //return typeof fn == "function";
+  return toString$5.call(fn) === "[object Function]" || toString$5.call(fn) === "[object AsyncFunction]";
+}
+/**
+ * 检测是否为对象
+ * @param {object} obj 要检测的数据
+ */
+
+function isObject(obj) {
+  //typeof null => object
+  //toString.call(null) => [object Object]
+  return obj && toString$5.call(obj) === "[object Object]";
+}
+/**
+ * 检测是否为数组
+ * @param {object} obj 要检测的数据
+ */
+
+function isArray$2(obj) {
+  return toString$5.call(obj) === "[object Array]";
+}
+/**
+ * 检测是否为数组或类数组
+ * @param {object} obj 要检测的数据
+ */
+
+function isArrayLike(obj) {
+  var type = getType(obj);
+  return type == "array" || type == "list" || type == "arguments";
+}
+/**
+ * 若value不为undefine,则返回value;否则返回defValue
+ * @param {object} value 
+ * @param {object} defValue value不存在时返回的值
+ */
+
+function def$2(value, defValue) {
+  return value !== undefined ? value : defValue;
+}
+/**
+ * 检测是否是符合条件的数字(n必须为数字类型)
+ * @param {number} n 数字
+ * @param {number|undefined} min 允许的最小值
+ * @param {number|undefined} max 允许的最大值
+ * @param {number|undefined} max_decimal_len 最大小数位数
+ */
+
+function isNum(n, min, max, max_decimal_len) {
+  if (typeof n != "number" || isNaN(n)) return false;
+  if (min != undefined && n < min) return false;
+  if (max != undefined && n > max) return false;
+
+  if (max_decimal_len) {
+    var l = ((n + '').split('.')[1] || '').length;
+    if (l > max_decimal_len) return false;
+  }
+
+  return true;
+}
+/**
+ * 检测是否为大于0的数字(n必须为数字类型)
+ * @param {number} n 数字
+ */
+
+function isUNum(n) {
+  return !isNaN(n) && n > 0;
+}
+/**
+ * 检测是否为整数(n必须为数字类型)
+ * @param {number} n 数字
+ * @param {number|undefined} min 允许的最小值
+ * @param {number|undefined} max 允许的最大值
+ */
+
+function isInt(n, min, max) {
+  return isNum(n, min, max) && n === Math.floor(n);
+}
+/**
+ * 检测是否为大于0的整数
+ * @param {number} n 数字
+ */
+
+function isUInt(n) {
+  return isInt(n, 1);
+}
+/**
+ * 判断是否是符合条件的数字
+ * @param {string|number} str 要检测的字符串或数字
+ * @param {number|undefined} min 允许的最小值
+ * @param {number|undefined} max 允许的最大值
+ * @param {number|undefined} max_decimal_len 最大小数位数
+ */
+
+function checkNum(str, min, max, max_decimal_len) {
+  if (typeof str == "number") return isNum(str, min, max, max_decimal_len);
+
+  if (typeof str == "string") {
+    str = str.trim();
+    return str && isNum(+str, min, max, max_decimal_len);
+  }
+
+  return false;
+}
+/**
+ * 判断是否是符合条件的整数
+ * @param {string|number} str 要检测的字符串或数字
+ * @param {number|undefined} min 允许的最小值
+ * @param {number|undefined} max 允许的最大值
+ */
+
+function checkInt(str, min, max) {
+  if (typeof str == "number") return isInt(str, min, max);
+
+  if (typeof str == "string") {
+    str = str.trim();
+    return str && isInt(+str, min, max);
+  }
+
+  return false;
+}
+var judgeTools = {
+  getType: getType,
+  isArrayLike: isArrayLike,
+  isArray: isArray$2,
+  isObject: isObject,
+  def: def$2,
+  isNum: isNum,
+  isUNum: isUNum,
+  isFunc: isFunc,
+  isInt: isInt,
+  isUInt: isUInt,
+  checkNum: checkNum,
+  checkInt: checkInt
+};
+
+/**
+ * 解码url参数值 eg:%E6%B5%8B%E8%AF%95 => 测试
+ * @param {string} param 要解码的字符串 eg:%E6%B5%8B%E8%AF%95
+ */
+
+function decode_url_param(param) {
+  try {
+    return decodeURIComponent(param);
+  } catch (e) {
+    return param;
+  }
+} //----------------------- JSON.js -----------------------
+
+var has$1 = Object.prototype.hasOwnProperty,
+    JSON_SPECIAL = {
+  '\b': '\\b',
+  '\t': '\\t',
+  '\n': '\\n',
+  '\f': '\\f',
+  '\r': '\\r',
+  '"': '\\"',
+  '\\': '\\\\'
+},
+    JSON_NULL = "null"; //字符转义
+
+function json_replace(c) {
+  //return JSON_SPECIAL[c]||'\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4);
+  return JSON_SPECIAL[c] || c;
+} //json转化
+
+
+function json_encode(obj) {
+  switch (getType(obj)) {
+    case "string":
+      return '"' + obj.replace(/[\x00-\x1f\\"]/g, json_replace) + '"';
+
+    case "list":
+    case "array":
+      var tmp = [];
+
+      for (var i = 0, len = obj.length; i < len; i++) {
+        if (typeof obj[i] !== "function") tmp.push(obj[i] != undefined ? json_encode(obj[i]) : JSON_NULL);
+      }
+
+      return "[" + tmp + "]";
+
+    case "object":
+    case "arguments":
+      var tmp = [];
+
+      for (var k in obj) {
+        if (has$1.call(obj, k) && typeof obj[k] !== "function") tmp.push("\"" + k + "\":" + json_encode(obj[k]));
+      }
+
+      return "{" + tmp.toString() + "}";
+
+    case "boolean":
+      return obj + "";
+
+    case "number":
+      return isFinite(obj) ? obj + "" : JSON_NULL;
+
+    case "date":
+      return isFinite(obj.valueOf()) ? "\"" + obj.toUTC().format("yyyy-MM-ddTHH:mm:ss.SZ") + "\"" : JSON_NULL;
+
+    case "function":
+      return;
+
+    default:
+      return _typeof(obj) == "object" ? "{}" : JSON_NULL;
+  }
+} //json解析
+//secure:是否进行安全检测
+
+
+function json_decode(text, secure) {
+  //安全检测
+  if (secure !== false && !/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]").replace(/(?:^|:|,)(?:\s*\[)+/g, ""))) throw new Error("JSON SyntaxError");
+
+  try {
+    return new Function("return " + text)();
+  } catch (e) {}
+}
+
+if (!window.JSON) {
+  window.JSON = {
+    stringify: json_encode,
+    parse: json_decode
+  };
+}
+
+JSON.encode = json_encode;
+JSON.decode = json_decode;
+var jsonTools = {
+  decode_url_param: decode_url_param,
+  json_replace: json_replace,
+  json_encode: json_encode,
+  json_decode: json_decode
+};
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-09 15:22:05
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-10 17:55:21
+ * @Description:
+ */
+
+/**
+ * 判断字符串是否是十六进制的颜色值
+ * @param {*} string string
+ * @return {*} boolean
+ */
+function isColor(value) {
+  return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value);
+} // module.exports = isColor;
 
 /*
  * @Author: zhangyu
@@ -4259,13 +4698,13 @@ function sleepSync(ms) {
  * @LastEditTime: 2021-06-25 14:16:15
  * @Description: 
  */
-var has = Object.prototype.hasOwnProperty;
+var has$2 = Object.prototype.hasOwnProperty;
 /**
  * 检测是否为对象
  * @param {object} obj 要检测的数据
  */
 
-function isObject(obj) {
+function isObject$1(obj) {
   //typeof null => object
   //toString.call(null) => [object Object]
   return obj && toString.call(obj) === "[object Object]";
@@ -4276,7 +4715,7 @@ function isObject(obj) {
  */
 
 
-function isArray$2(obj) {
+function isArray$3(obj) {
   return toString.call(obj) === "[object Array]";
 }
 /* 
@@ -4297,17 +4736,17 @@ function deepCopy(data) {
 
   var result;
 
-  if (isArray$2(data)) {
+  if (isArray$3(data)) {
     result = [];
 
     for (var i = 0, len = data.length; i < len; i++) {
       result[i] = deepCopy(data[i]);
     }
-  } else if (isObject(data)) {
+  } else if (isObject$1(data)) {
     result = {};
 
     for (var key in data) {
-      if (has.call(data, key)) result[key] = deepCopy(data[key]);
+      if (has$2.call(data, key)) result[key] = deepCopy(data[key]);
     }
   }
 
@@ -4346,66 +4785,6 @@ var objTools = {
       }
   }
 };
-
-/*
- * @Author: zhangyu
- * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-24 14:20:26
- * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-24 14:22:09
- * @Description:  window 对象
- */
-
-/**
- * 获取全局对象
- */
-function globalLib() {
-  var _secret = '__COMMON_LIB__';
-
-  var _g = window || global;
-
-  if (_g[_secret]) return _g[_secret];
-  return _g[_secret] = {};
-}
-/**
- * set 全局对象
- * @param {string} key
- * @param {any} value
- * @param {boolean} cover
- */
-
-function setGlobal(key, value, cover) {
-  if (cover === void 0) {
-    cover = true;
-  }
-
-  var _g = globalLib();
-
-  if (!cover && _g[key]) return false;
-  _g[key] = value;
-  return true;
-}
-/**
- * get 全局对象
- * @param {string} key
- */
-
-function getGlobal(key) {
-  var _g = globalLib();
-
-  return _g[key];
-}
-/**
- * 删除 对象数据
- * @param {string} key
- */
-
-function removeGlobalItem(key) {
-  var _g = globalLib();
-
-  var bool = delete _g[key];
-  return bool;
-}
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -4521,15 +4900,287 @@ var arrayTools = {
   arrayMove: arrayMove
 };
 
+//解析cookie值
+
+function parseCookieValue(s) {
+  if (s.indexOf('"') === 0) s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  return decode_url_param(s.replace(/\+/g, ' '));
+} //读取cookie值或返回整个对象
+
+/**
+ * @description: 
+ * @param {*} key
+ * @return {*}
+ */
+
+
+function getCookie(key) {
+  var result = key ? undefined : {},
+      cookies = document.cookie ? document.cookie.split('; ') : [];
+
+  for (var i = 0, len = cookies.length; i < len; i++) {
+    var parts = cookies[i].split('='),
+        name = decode_url_param(parts[0]),
+        cookie = parts.slice(1).join('=');
+
+    if (key && key === name) {
+      result = parseCookieValue(cookie);
+      break;
+    }
+
+    if (!key && (cookie = parseCookieValue(cookie)) !== undefined) {
+      result[name] = cookie;
+    }
+  }
+
+  return result;
+} //设置cookie
+
+
+function setCookie(key, value, ops) {
+  ops = ops || {};
+  var expires = ops.expires;
+  if (typeof expires === "number") expires = new Date().add("d", expires);
+  document.cookie = [encode_url_param(key), '=', encode_url_param(value), expires ? '; expires=' + expires.toUTCString() : '', ops.path ? '; path=' + ops.path : '', ops.domain ? '; domain=' + ops.domain : '', ops.secure ? '; secure' : ''].join('');
+} //移除cookie
+
+
+function removeCookie(key) {
+  if (getCookie(key) != undefined) setCookie(key, '', {
+    expires: -1
+  });
+} //清空cookie
+
+
+function clearCookie() {
+  var cookies = document.cookie ? document.cookie.split('; ') : [];
+
+  for (var i = 0, len = cookies.length; i < len; i++) {
+    var parts = cookies[i].split('='),
+        key = decode_url_param(parts[0]);
+    removeCookie(key);
+  }
+}
+/**
+ * @description: 获取设置清除cookie 
+ * @param {*}
+ * @return {object}
+ */
+
+
+var cookie = {
+  get: getCookie,
+  set: setCookie,
+  remove: removeCookie,
+  clear: clearCookie
+}; //------------------------------- Storage.js -------------------------------
+//type:localStorage | sessionStorage
+//useCookie:在其它特性不支持的情况下是否启用cookie模拟
+
+/**
+ * @description: 获取设置清除Storage 
+ * @param {*} type type:localStorage | sessionStorage
+ * @param {*} useCookie 是否用cookie 模拟store
+ * @return {object}
+ */
+
+function storage(type, useCookie) {
+  var isLocal = type != "sessionStorage";
+  if (!isLocal && !location.host) return;
+  var STORE_NAME = type,
+      storage = window[STORE_NAME],
+      adapter = storage && "getItem" in storage ? "storage" : null;
+
+  if (!adapter) {
+    var userData = document.documentElement,
+        TEST_KEY = "_TEST_";
+
+    try {
+      //ie userdata
+      userData.addBehavior('#default#userdata'); //7天后过期
+
+      if (isLocal) userData.expires = new Date().add("d", 7).toUTCString();
+      STORE_NAME = location.hostname || "local";
+      userData.save(STORE_NAME);
+      storage = {
+        getItem: function getItem(key) {
+          userData.load(STORE_NAME);
+          return userData.getAttribute(key);
+        },
+        setItem: function setItem(key, value) {
+          userData.setAttribute(key, value);
+          userData.save(STORE_NAME);
+        },
+        removeItem: function removeItem(key) {
+          userData.removeAttribute(key);
+          userData.save(STORE_NAME);
+        },
+        clear: function clear() {
+          userData.load(STORE_NAME);
+          var now = new Date().add("d", -1);
+          userData.expires = now.toUTCString();
+          userData.save(STORE_NAME);
+        }
+      };
+
+      if (storage.getItem(TEST_KEY) === undefined) {
+        storage.setItem(TEST_KEY, 1);
+        storage.removeItem(TEST_KEY);
+      }
+
+      adapter = "userdata";
+    } catch (e) {} //cookie 模拟
+
+
+    if (!adapter && useCookie) {
+      storage = {
+        getItem: getCookie,
+        //setItem: setCookie,
+        setItem: isLocal ? function (key, value) {
+          setCookie(key, value, {
+            expires: 7
+          });
+        } : setCookie,
+        removeItem: removeCookie,
+        clear: clearCookie
+      };
+      adapter = "cookie";
+    }
+  }
+
+  var support = !!adapter;
+  var store = {
+    //是否支持本地缓存
+    support: support,
+    //适配器:storage|userdata|cookie|null
+    adapter: adapter,
+    //获取本地缓存
+    get: function get(key, isJSON) {
+      if (support) {
+        try {
+          var value = storage.getItem(key);
+          return isJSON ? value ? JSON.parse(value) : null : value;
+        } catch (e) {}
+      }
+
+      return undefined;
+    },
+    //设置本地缓存
+    set: function set(key, value) {
+      if (support) {
+        try {
+          storage.setItem(key, typeof value == "string" ? value : stringify$1(value));
+          return true;
+        } catch (e) {}
+      }
+
+      return false;
+    },
+    //删除本地缓存
+    remove: function remove(key) {
+      if (support) {
+        try {
+          storage.removeItem(key);
+          return true;
+        } catch (e) {}
+      }
+
+      return false;
+    },
+    //清空本地缓存
+    clear: function clear() {
+      if (support) {
+        try {
+          storage.clear();
+          return true;
+        } catch (e) {}
+      }
+
+      return false;
+    }
+  };
+  return store;
+}
+var index = {
+  cookie: cookie,
+  storage: storage
+};
+
+var store = /*#__PURE__*/Object.freeze({
+  cookie: cookie,
+  storage: storage,
+  default: index
+});
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-24 14:20:26
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-24 14:22:09
+ * @Description:  window 对象
+ */
+
+/**
+ * 获取全局对象
+ */
+function globalLib() {
+  var _secret = '__COMMON_LIB__';
+
+  var _g = window || global;
+
+  if (_g[_secret]) return _g[_secret];
+  return _g[_secret] = {};
+}
+/**
+ * set 全局对象
+ * @param {string} key
+ * @param {any} value
+ * @param {boolean} cover
+ */
+
+function setGlobal(key, value, cover) {
+  if (cover === void 0) {
+    cover = true;
+  }
+
+  var _g = globalLib();
+
+  if (!cover && _g[key]) return false;
+  _g[key] = value;
+  return true;
+}
+/**
+ * get 全局对象
+ * @param {string} key
+ */
+
+function getGlobal(key) {
+  var _g = globalLib();
+
+  return _g[key];
+}
+/**
+ * 删除 对象数据
+ * @param {string} key
+ */
+
+function removeGlobalItem(key) {
+  var _g = globalLib();
+
+  var bool = delete _g[key];
+  return bool;
+}
+
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 13:22:55
+ * @LastEditTime: 2021-06-25 17:16:50
  * @Description: 
  */
-var index = {
+var index$1 = {
   getParam: getParam,
   setParam: setParam,
   getImgBase64: getImgBase64,
@@ -4550,11 +5201,13 @@ var index = {
   handleEmoji: handleEmoji,
   handleText: handleText,
   handleParam: handleParam,
-  b2size: b2size,
+  byteTools: byteTools,
+  jsonTools: jsonTools,
   jsBridge: jsBridge,
   AMaploader: AMaploader,
   getUUID: getUUID,
   appendJs: appendJs,
+  store: store,
   debounce: debounce,
   throttle: throttle,
   sleepSync: sleepSync,
@@ -4562,6 +5215,7 @@ var index = {
   deepCopy: deepCopy,
   objTools: objTools,
   arrayTools: arrayTools,
+  judgeTools: judgeTools,
   setVideoPlay: setVideoPlay,
   cursortPosition: cursortPosition,
   clipboardObj: clipboardObj,
@@ -4571,4 +5225,4 @@ var index = {
   removeGlobalItem: removeGlobalItem
 };
 
-export default index;
+export default index$1;

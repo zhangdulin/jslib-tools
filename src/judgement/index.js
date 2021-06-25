@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-22 10:40:09
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-24 09:23:50
+ * @LastEditTime: 2021-06-25 17:04:17
  * @Description: 
  */
 //Node.js中闭包外部this并非global eg:(function(g){})(this); //this not global
@@ -188,4 +188,20 @@ export function checkInt(str, min, max) {
     return str && isInt(+str, min, max);
   }
   return false;
+}
+
+
+export default {
+  getType,
+  isArrayLike,
+  isArray,
+  isObject,
+  def,
+  isNum,
+  isUNum,
+  isFunc,
+  isInt,
+  isUInt,
+  checkNum,
+  checkInt
 }
