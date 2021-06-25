@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:43:38
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-23 17:54:35
+ * @LastEditTime: 2021-06-25 14:16:15
  * @Description: 
  */
 
@@ -64,7 +64,7 @@ export function deepCopy(data) {
 /**
  * @description: 对象方法工具 hasKey:判断一个对象是否存在key; objEqual: 两个对象是否相等这两个对象的值只能是数字或字符串
  * @param {*}
- * @return {* number boolean} 
+ * @returns {number|boolean}
  */
 export const objTools = {
     /**

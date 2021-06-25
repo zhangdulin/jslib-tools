@@ -1,5 +1,5 @@
 /*!
- * jtools v0.0.2
+ * jtools v0.1.3
  * jlb web team
  */
 import regeneratorRuntime from 'regenerator-runtime';
@@ -814,7 +814,7 @@ var _invoke$1 = function (fn, args, that) {
   } return fn.apply(that, args);
 };
 
-var process = _global$1.process;
+var process$1 = _global$1.process;
 var setTask = _global$1.setImmediate;
 var clearTask = _global$1.clearImmediate;
 var MessageChannel = _global$1.MessageChannel;
@@ -852,9 +852,9 @@ if (!setTask || !clearTask) {
     delete queue[id];
   };
   // Node.js 0.8-
-  if (_cof$1(process) == 'process') {
+  if (_cof$1(process$1) == 'process') {
     defer = function (id) {
-      process.nextTick(_ctx$1(run, id, 1));
+      process$1.nextTick(_ctx$1(run, id, 1));
     };
   // Sphere (JS game engine) Dispatch API
   } else if (Dispatch && Dispatch.now) {
@@ -890,7 +890,7 @@ if (!setTask || !clearTask) {
   }
 }
 
-var process$1 = _global$1.process;
+var process$2 = _global$1.process;
 var setTask$1 = _global$1.setImmediate;
 var clearTask$1 = _global$1.clearImmediate;
 var MessageChannel$1 = _global$1.MessageChannel;
@@ -928,9 +928,9 @@ if (!setTask$1 || !clearTask$1) {
     delete queue$1[id];
   };
   // Node.js 0.8-
-  if (_cof$1(process$1) == 'process') {
+  if (_cof$1(process$2) == 'process') {
     defer$1 = function (id) {
-      process$1.nextTick(_ctx$1(run$1, id, 1));
+      process$2.nextTick(_ctx$1(run$1, id, 1));
     };
   // Sphere (JS game engine) Dispatch API
   } else if (Dispatch$1 && Dispatch$1.now) {
@@ -971,9 +971,9 @@ var _task$1 = {
 };
 
 var Observer = _global$1.MutationObserver || _global$1.WebKitMutationObserver;
-var process$2 = _global$1.process;
-var Promise = _global$1.Promise;
-var isNode = _cof$1(process$2) == 'process';
+var process$3 = _global$1.process;
+var Promise$1 = _global$1.Promise;
+var isNode = _cof$1(process$3) == 'process';
 
 var navigator$1 = _global$1.navigator;
 
@@ -1050,16 +1050,16 @@ var _speciesConstructor$1 = function (O, D) {
 
 var macrotask$1 = _task$1.set;
 var Observer$1 = _global$1.MutationObserver || _global$1.WebKitMutationObserver;
-var process$3 = _global$1.process;
-var Promise$1 = _global$1.Promise;
-var isNode$1 = _cof$1(process$3) == 'process';
+var process$4 = _global$1.process;
+var Promise$2 = _global$1.Promise;
+var isNode$1 = _cof$1(process$4) == 'process';
 
 var _microtask$1 = function () {
   var head, last, notify;
 
   var flush = function () {
     var parent, fn;
-    if (isNode$1 && (parent = process$3.domain)) parent.exit();
+    if (isNode$1 && (parent = process$4.domain)) parent.exit();
     while (head) {
       fn = head.fn;
       head = head.next;
@@ -1077,7 +1077,7 @@ var _microtask$1 = function () {
   // Node.js
   if (isNode$1) {
     notify = function () {
-      process$3.nextTick(flush);
+      process$4.nextTick(flush);
     };
   // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
   } else if (Observer$1 && !(_global$1.navigator && _global$1.navigator.standalone)) {
@@ -1088,9 +1088,9 @@ var _microtask$1 = function () {
       node.data = toggle = !toggle;
     };
   // environments with maybe non-completely correct, but existent Promise
-  } else if (Promise$1 && Promise$1.resolve) {
+  } else if (Promise$2 && Promise$2.resolve) {
     // Promise.resolve without an argument throws an error in LG WebOS 2
-    var promise = Promise$1.resolve(undefined);
+    var promise = Promise$2.resolve(undefined);
     notify = function () {
       promise.then(flush);
     };
@@ -1184,11 +1184,11 @@ var microtask = _microtask$1();
 
 var PROMISE = 'Promise';
 var TypeError$1 = _global$1.TypeError;
-var process$4 = _global$1.process;
-var versions = process$4 && process$4.versions;
+var process$5 = _global$1.process;
+var versions = process$5 && process$5.versions;
 var v8 = versions && versions.v8 || '';
 var $Promise = _global$1[PROMISE];
-var isNode$2 = _classof$1(process$4) == 'process';
+var isNode$2 = _classof$1(process$5) == 'process';
 var empty = function () { /* empty */ };
 var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
 var newPromiseCapability = newGenericPromiseCapability = _newPromiseCapability$1.f;
@@ -1270,7 +1270,7 @@ var onUnhandled = function (promise) {
     if (unhandled) {
       result = _perform$1(function () {
         if (isNode$2) {
-          process$4.emit('unhandledRejection', value, promise);
+          process$5.emit('unhandledRejection', value, promise);
         } else if (handler = _global$1.onunhandledrejection) {
           handler({ promise: promise, reason: value });
         } else if ((console = _global$1.console) && console.error) {
@@ -1290,7 +1290,7 @@ var onHandleUnhandled = function (promise) {
   task.call(_global$1, function () {
     var handler;
     if (isNode$2) {
-      process$4.emit('rejectionHandled', promise);
+      process$5.emit('rejectionHandled', promise);
     } else if (handler = _global$1.onrejectionhandled) {
       handler({ promise: promise, reason: promise._v });
     }
@@ -1362,7 +1362,7 @@ if (!USE_NATIVE) {
       var reaction = newPromiseCapability(_speciesConstructor$1(this, $Promise));
       reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
       reaction.fail = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode$2 ? process$4.domain : undefined;
+      reaction.domain = isNode$2 ? process$5.domain : undefined;
       this._c.push(reaction);
       if (this._a) this._a.push(reaction);
       if (this._s) notify(this, false);
@@ -1526,11 +1526,11 @@ var microtask$1 = _microtask$1();
 
 var PROMISE$1 = 'Promise';
 var TypeError$2 = _global$1.TypeError;
-var process$5 = _global$1.process;
-var versions$1 = process$5 && process$5.versions;
+var process$6 = _global$1.process;
+var versions$1 = process$6 && process$6.versions;
 var v8$1 = versions$1 && versions$1.v8 || '';
 var $Promise$1 = _global$1[PROMISE$1];
-var isNode$3 = _classof$1(process$5) == 'process';
+var isNode$3 = _classof$1(process$6) == 'process';
 var empty$1 = function () { /* empty */ };
 var Internal$1, newGenericPromiseCapability$1, OwnPromiseCapability$1, Wrapper$1;
 var newPromiseCapability$1 = newGenericPromiseCapability$1 = _newPromiseCapability$1.f;
@@ -1612,7 +1612,7 @@ var onUnhandled$1 = function (promise) {
     if (unhandled) {
       result = _perform$1(function () {
         if (isNode$3) {
-          process$5.emit('unhandledRejection', value, promise);
+          process$6.emit('unhandledRejection', value, promise);
         } else if (handler = _global$1.onunhandledrejection) {
           handler({ promise: promise, reason: value });
         } else if ((console = _global$1.console) && console.error) {
@@ -1632,7 +1632,7 @@ var onHandleUnhandled$1 = function (promise) {
   task$1.call(_global$1, function () {
     var handler;
     if (isNode$3) {
-      process$5.emit('rejectionHandled', promise);
+      process$6.emit('rejectionHandled', promise);
     } else if (handler = _global$1.onrejectionhandled) {
       handler({ promise: promise, reason: promise._v });
     }
@@ -1704,7 +1704,7 @@ if (!USE_NATIVE$1) {
       var reaction = newPromiseCapability$1(_speciesConstructor$1(this, $Promise$1));
       reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
       reaction.fail = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode$3 ? process$5.domain : undefined;
+      reaction.domain = isNode$3 ? process$6.domain : undefined;
       this._c.push(reaction);
       if (this._a) this._a.push(reaction);
       if (this._s) notify$1(this, false);
@@ -1840,13 +1840,58 @@ function getImgBase64(url) {
           width = Img.width,
           height = Img.height;
       var ctx = canvas.getContext("2d");
-      var scale = 5;
+      var scale = 1;
       ctx.scale(scale, scale);
       canvas.width = width * scale;
       canvas.height = height * scale;
-      ctx.drawImage(Img, 0, 0, width * scale, height * scale);
+      ctx.drawImage(Img, 0, 0, width * scale, height * scale); // ctx.drawImage(img, 0, 0);
+      // const dataURL = canvas.toDataURL(outputFormat);
+
       dataURL = canvas.toDataURL("image/png");
       resolve(dataURL);
+    };
+  });
+}
+/**
+ * @description: 获取图片的base64
+ * @param {string} url 图片url
+ * @returns {Promise} 图片base64信息
+ */
+
+function getHttpBase64(url) {
+
+  var imgUrl = url;
+  window.URL = window.URL || window.webkitURL;
+  var xhr = new XMLHttpRequest();
+  xhr.open('get', imgUrl, true); // 至关重要
+
+  xhr.responseType = 'blob';
+  xhr.send();
+  return new promise$1(function (resolve, reject) {
+    xhr.onload = function () {
+      if (this.status == 200) {
+        // 得到一个blob对象
+        var blob = this.response; // 至关重要
+
+        var oFileReader = new FileReader();
+
+        oFileReader.onloadend = function (e) {
+          // 此处拿到的已经是 base64的图片了
+          var base64 = e.target.result;
+          resolve(base64);
+        };
+
+        oFileReader.readAsDataURL(blob); // ====为了在页面显示图片，可以删除====
+        // var img = document.createElement('img');
+        // img.onload = function (e) {
+        //   window.URL.revokeObjectURL(img.src); // 清除释放
+        // };
+        // const src = window.URL.createObjectURL(blob);
+        // img.src = src
+        // console.log(src, 'oFileReader')
+        // document.getElementById("container1").appendChild(img);
+        // ====为了在页面显示图片，可以删除====
+      }
     };
   });
 }
@@ -2050,7 +2095,7 @@ var isArray$1 = isArray;
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:55:45
+ * @LastEditTime: 2021-06-25 14:16:55
  * @Description:
  */
 
@@ -2058,7 +2103,7 @@ var isArray$1 = isArray;
  * 获取饿了么框架时间选择器时间戳
  * @param {*} time 时间
  * @param {*} type 类型  默认值 0  0 开始时间  1  结束时间
- * @return {number|string|null} 时间戳
+ * @returns {number|string|null} 时间戳
  */
 function elDateFormat(time) {
   var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -2327,8 +2372,8 @@ function getDefaultAvatar() {
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-17 10:38:52
- * @Description: 
+ * @LastEditTime: 2021-06-22 10:16:38
+ * @Description:
  */
 
 /**
@@ -2341,15 +2386,35 @@ function isEmoji(value) {
   return new RegExp(arr.join("|"), "g").test(value);
 }
 
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-24 14:34:12
+ * @Description:
+ */
+
 /**
  * 校验十八位身份证号码
  * @param {*} idcard 身份证号码
  * @return {boolean} 验证结果true/false
  */
 function isIDCard(idcard) {
-  var reg = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+  // 身份证号（15位或18位数字）
+  var reg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/; // let reg = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+
   return reg.test(idcard);
 }
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-08 11:30:40
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-22 10:17:05
+ * @Description:
+ */
 
 /**
  * @description 检查是否为特殊字符
@@ -2366,20 +2431,28 @@ function isSpecialChar(value) {
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-08 11:30:40
+ * @Date: 2021-06-21 19:52:26
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-15 14:01:08
- * @Description: 
+ * @LastEditTime: 2021-06-24 14:39:58
+ * @Description:
  */
 
 /**
- * 检查是否为正确手机号 1开头11位数字
- * @param {*} value 正则校验变量
- * @return {boolean} 正则校验结果
+ * @description: 常用正则 cellPhone手机号码验证;landline座机;email邮件验证;domain网址验证 不精确到后缀; pwd 密码由数字和字母6-16位
+ * @param {*}
+ * @return {*}
  */
-function isMobile(value) {
-  return /^[1][0-9]{10}$/.test(value);
-}
+var Regs = {
+  cellPhone: /^1[3456789][0-9]{9}$/,
+  pwd: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/,
+  landline: /^[0-9]{6,16}$/,
+  email: /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/,
+  url: /^((https|http|ftp|rtsp|mms)?:\/\/)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/,
+  chinese: /^[\u4e00-\u9fa5]+$/,
+  integer: /^-?\d+$/,
+  floatplus: /^\d+(\.\d+)?$/,
+  floatminus: /^((-\d+(\.\d+)?)|(0+(\.0+)?))$/
+};
 
 /*
  * @Author: zhangyu
@@ -2614,6 +2687,57 @@ function handleParam() {
   });
   return res;
 }
+
+var $parseFloat = _global$1.parseFloat;
+var $trim$2 = _stringTrim$1.trim;
+
+var _parseFloat = 1 / $parseFloat(_stringWs$1 + '-0') !== -Infinity ? function parseFloat(str) {
+  var string = $trim$2(String(str), 3);
+  var result = $parseFloat(string);
+  return result === 0 && string.charAt(0) == '-' ? -0 : result;
+} : $parseFloat;
+
+var $parseFloat$1 = _global$1.parseFloat;
+var $trim$3 = _stringTrim$1.trim;
+
+var _parseFloat$1 = 1 / $parseFloat$1(_stringWs$1 + '-0') !== -Infinity ? function parseFloat(str) {
+  var string = $trim$3(String(str), 3);
+  var result = $parseFloat$1(string);
+  return result === 0 && string.charAt(0) == '-' ? -0 : result;
+} : $parseFloat$1;
+
+// 18.2.4 parseFloat(string)
+_export$1(_export$1.G + _export$1.F * (parseFloat != _parseFloat$1), { parseFloat: _parseFloat$1 });
+
+// 18.2.4 parseFloat(string)
+_export$1(_export$1.G + _export$1.F * (parseFloat != _parseFloat$1), { parseFloat: _parseFloat$1 });
+
+var _parseFloat$2 = _core$1.parseFloat;
+
+var _parseFloat$3 = _parseFloat$2;
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-18 09:14:05
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-18 10:11:31
+ * @Description:
+ */
+
+/**
+ * @description: 转换文件大小 B=>KB 等
+ * @param {*} bytes B
+ * @return {String} String KB 等
+ */
+var b2size = function b2size(bytes) {
+  if (bytes === 0) return '0 B';
+  var k = 1024;
+  var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  var i = Math.floor(Math.log(bytes) / Math.log(k));
+  var result = _parseFloat$3((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return result;
+};
 
 /*
  * @Author: zhangyu
@@ -3627,6 +3751,166 @@ var jsBridge = {
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-18 10:18:51
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-18 10:24:28
+ * @Description: 
+ */
+
+/**
+ * @description: 加载高德地图
+ * @param {*} p  数组 插件名称
+ * @return {*}
+ */
+function AMaploader(p) {
+  return new promise$1(function (resolve, reject) {
+    var plugin = p && p.join(',') || '';
+
+    if (window.AMap) {
+      resolve(window.AMap);
+    } else {
+      // 加载高德地图代码
+      var id = 'gaode-map';
+      var oldjs = document.getElementById(id);
+      if (oldjs) oldjs.parentNode.removeChild(oldjs);
+      var url = "https://webapi.amap.com/maps?v=1.4.15&plugin=".concat(plugin, "&key=").concat(process.env.VUE_APP_MAPKEY, "&callback=initAMap");
+      var jsapi = document.createElement('script');
+      jsapi.charset = 'utf-8';
+      jsapi.src = url;
+      jsapi.id = id;
+      document.head.appendChild(jsapi);
+
+      window.initAMap = function () {
+        resolve(window.AMap);
+      };
+    }
+  });
+} // 用法
+// 引用
+// import AMaploader from '*/AMap.js';
+// 同时引入工具条插件，比例尺插件和鹰眼插件
+// AMaploader([
+//   'AMap.ToolBar',
+//   'AMap.Scale',
+//   'AMap.Autocomplete',
+//   'AMap.PlaceSearch',
+//   'AMap.Geolocation',
+//   'AMap.Geocoder'
+// ]).then(
+//   AMap => {
+//     this.map = new AMap.Map('container', {
+//       resizeEnable: true, // 是否监控地图容器尺寸变化
+//       zoom: 14, // 设置地图显示的缩放级别
+//       // center: [], //设置地图中心点坐标
+//       viewMode: '2D', // 设置地图模式
+//       lang: 'zh_cn' // 设置地图语言类型
+//     });
+//     this.map.on('complete', () => {
+//       // 地图图块加载完成后触发
+//     });
+//     this.map.on('click', ev => {
+//       // 触发事件的对象
+//       // const target = ev.target
+//       // 触发事件的地理坐标，AMap.LngLat 类型 精度lng 纬度lat
+//       const lnglat = ev.lnglat;
+//       // 触发事件的像素坐标，AMap.Pixel 类型 x y
+//       // const pixel = ev.pixel
+//       // 触发事件类型
+//       // const type = ev.type
+//     });
+//     this.map.on('dragend', () => {
+//     });
+//     this.map.on('dragging', () => {
+//     });
+//     this.map.on('zoomend', e => {
+//       // 获取地图缩放级别
+//       console.log(e, 'zoomend');
+//     });
+//     this.map.addControl(new AMap.ToolBar());
+//     // 在图面添加比例尺控件，展示地图在当前层级和纬度下的比例尺
+//     const scale = new AMap.Scale({
+//       offset: new AMap.Pixel(10, 20),
+//       position: 'RB'
+//     });
+//     this.map.addControl(scale);
+//     this.map.addControl(new AMap.PlaceSearch());
+//     // 地理编码与逆地理编码服务，用于地址描述与坐标间的相互转换
+//     const geocoder = new AMap.Geocoder({
+//       radius: this.mapInfoDefault.radius // 范围，默认：500
+//     });
+//     this.map.addControl(geocoder);
+//     // 在图面添加定位控件，用来获取和展示用户主机所在的经纬度位置
+//     const geolocation = new AMap.Geolocation({
+//       // 是否使用高精度定位，默认：true
+//       enableHighAccuracy: true,
+//       // 设置定位超时时间，默认：无穷大
+//       timeout: 3000,
+//       // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+//       convert: true,
+//       // 是否使用安卓定位sdk用来进行定位，
+//       useNative: true,
+//       // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
+//       buttonOffset: new AMap.Pixel(10, 20),
+//       //  定位按钮的排放位置,  RB表示右下
+//       buttonPosition: 'LB',
+//       showMarker: false, // 定位成功后在定位到的位置显示点标记，默认：true
+//       showCircle: false, // 定位成功后用圆圈表示定位精度范围，默认：true
+//       panToLocation: false, // 定位成功后将定位到的位置作为地图中心点，默认：true
+//       zoomToAccuracy: true // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+//     });
+//     // AMap.event.addListener(
+//     //   geolocation,
+//     //   'complete',
+//     //   _this.geolocationComplete
+//     // );
+//     // AMap.event.addListener(geolocation, 'error', console.log(e));
+//     this.map.addControl(geolocation);
+//   },
+//   e => {
+//     this.$toast.fail('地图加载失败！请重新进入页面');
+//     console.log(e);
+//   }
+// )
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-21 20:09:32
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-24 15:17:00
+ * @Description:
+ */
+
+/**
+ *  获得UUId
+ */
+function getUUID() {
+  var d = new Date().getTime();
+  var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c === "x" ? r : r & 0x3 | 0x8).toString(16);
+  });
+  return uuid;
+}
+/**
+ * html -> body 增加 <script src=[...]></script>
+ *
+ * @export
+ * @param {string} src
+ * @param {(Function | undefined)} cb
+ */
+
+function appendJs(src, cb) {
+  var script = document.createElement('script');
+  script.src = src;
+  script.onload = cb;
+  document.body.appendChild(script);
+}
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-11 14:27:40
  * @LastEditors: zhangyu
  * @LastEditTime: 2021-06-15 10:48:26
@@ -3676,6 +3960,190 @@ function setVideoPlay(id) {
   // ...
 }
 
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-22 09:05:29
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-25 14:09:39
+ * @Description: 
+ */
+function isDOM(dom) {
+  return typeof HTMLElement === 'function' ? dom instanceof HTMLElement : dom && _typeof(dom) === 'object' && dom.nodeType === 1 && typeof dom.nodeName === 'string';
+}
+
+function pasteEvent(event) {
+  //谷歌浏览器的的粘贴文件在这个对象下面
+  if (event.clipboardData || event.originalEvent) {
+    var clipboardData = event.clipboardData || event.originalEvent.clipboardData;
+    var items = clipboardData.items; //获取文件的属性就在这里获取，打印该对象可以看到相关属性，结果的操作就在items里面，所以需要循环items
+
+    var fileObj = null;
+
+    for (var i = 0; i < items.length; i++) {
+      // (items[i].type.indexOf("image")  
+      //getAsFile() 此方法只是该浏览器下才会有的方法 
+      fileObj = items[i].getAsFile();
+    }
+
+    return fileObj; // 第一种
+    // 在上面的代码if处接着写
+    // if(fileObj !== null) {
+    //     var fileUrl=URL.createObjectURL(blob);
+    //     document.getElementById("imgNode").src=fileUrl;
+    // }
+    // URL是一个公用的对象
+    // 第二种方法是用base64的方法可以实现， 需要借助FileReader对象
+    // var reader = new FileReader();
+    // reader.onload = function (event) {
+    //   //event.target.result 即为图片的Base64编码字符串
+    //    var base64_str = event.target.result;
+    //    document.getElementById("imgNode").src=base64_str;
+    // }
+    //  reader.readAsDataURL(blob);
+  } else {
+    return 'errpr-nonsupport';
+  }
+}
+/**
+ * @description: 获取黏贴内容 复制文本内容
+ * @param {*} clipboardObj.getClipboardData 获取黏贴内容传参dom; clipboardObj.copyToClipBoard 复制传参字符串
+ * @return {*} Boolean
+ */
+
+
+var clipboardObj = {
+  dom: '',
+  value: '',
+  getClipboardData: function getClipboardData(dom) {
+    var domPaste = dom && isDOM(dom) || document.body;
+    domPaste && dom.addEventListener('paste', pasteEvent);
+  },
+  copyToClipBoard: function copyToClipBoard(value) {
+    if (document.execCommand) {
+      var x = document.createElement("INPUT");
+      console.log(x);
+      x.setAttribute("type", "text");
+      x.value = value;
+      document.body.appendChild(x);
+      x.select();
+      document.execCommand("Copy");
+      x.style.display = 'none';
+      document.body.removeChild(x);
+      return true;
+    }
+
+    if (window.clipboardData) {
+      window.clipboardData.setData("Text", value);
+      return true;
+    }
+
+    return false;
+  }
+};
+/**
+ * @description: 焦点相关功能函数
+ * @param {*} focus：获取焦点 传入dom；insertAfterText：插入文本 传参dom 文本；getCursortPosition：获取光标位置 传参dom; setCaretPosition: 设置光标位置 传参dom 位置
+ * @return {*} 
+ */
+
+var cursortPosition = {
+  textDom: '',
+  value: '',
+  focus: function focus(textDom) {
+    if (window.getSelection) {
+      // ie11 10 9 ff safari
+      textDom.focus(); // 解决ff不获取焦点无法定位问题
+
+      var range = window.getSelection(); // 创建range
+
+      range.selectAllChildren(textDom); // range 选择textDom下所有子内容
+
+      range.collapseToEnd(); // 光标移至最后
+    } else if (document.selection) {
+      // ie10 9 8 7 6 5
+      var _range = document.selection.createRange(); // 创建选择对象
+      // var range = document.body.createTextRange();
+
+
+      _range.moveToElementText(textDom); // range定位到textDom
+
+
+      _range.collapse(false); // 光标移至最后
+
+
+      _range.select();
+    } else {
+      textDom.focus();
+    }
+  },
+  // 插入文本
+  insertAfterText: function insertAfterText(textDom, value) {
+    var selectRange; // 文本长度
+
+    var length = textDom.value && String(textDom.value + value).length || String(value).length;
+
+    if (document.selection) {
+      // IE Support
+      textDom.focus();
+      selectRange = document.selection.createRange();
+      selectRange.text = value;
+      textDom.focus();
+      this.setCaretPosition(textDom, length);
+      return selectRange.text;
+    } else if (textDom.selectionStart || textDom.selectionStart == '0') {
+      // Firefox support
+      var startPos = textDom.selectionStart;
+      var endPos = textDom.selectionEnd;
+      var scrollTop = textDom.scrollTop;
+      textDom.value = textDom.value.substring(0, startPos) + value + textDom.value.substring(endPos, textDom.value.length);
+      textDom.focus();
+      textDom.selectionStart = startPos + value.length;
+      textDom.selectionEnd = startPos + value.length;
+      textDom.scrollTop = scrollTop;
+      this.setCaretPosition(textDom, length);
+      return textDom.value;
+    } else {
+      textDom.value += value;
+      textDom.focus();
+      this.setCaretPosition(textDom, length);
+      return textDom.value;
+    }
+  },
+  // 获取光标位置
+  getCursortPosition: function getCursortPosition(textDom) {
+    var cursorPos = 0;
+
+    if (document.selection) {
+      // IE Support
+      textDom.focus();
+      var selectRange = document.selection.createRange();
+      selectRange.moveStart('character', -textDom.value.length);
+      cursorPos = selectRange.text.length;
+    } else if (textDom.selectionStart || textDom.selectionStart == '0') {
+      // Firefox support
+      cursorPos = textDom.selectionStart;
+    }
+
+    return cursorPos;
+  },
+  // 设置光标位置
+  setCaretPosition: function setCaretPosition(textDom, pos) {
+    if (textDom.setSelectionRange) {
+      // IE Support
+      textDom.focus();
+      textDom.setSelectionRange(pos, pos);
+    } else if (textDom.createTextRange) {
+      // Firefox support
+      var range = textDom.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', pos);
+      range.moveStart('character', pos);
+      range.select();
+    }
+  }
+};
+
 // 20.3.3.1 / 15.9.4.4 Date.now()
 
 
@@ -3695,7 +4163,7 @@ var now$1 = now;
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:44:08
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-16 17:44:08
+ * @LastEditTime: 2021-06-25 14:18:37
  * @Description: 
  */
 
@@ -3755,13 +4223,40 @@ var throttle = function throttle(func, wait, type) {
     }
   };
 };
+/**
+ * @description: 延迟执行函数
+ * @param {number|string} ms
+ * @param {function} callback
+ * @return {void}
+ */
+
+var sleepAction = function sleepAction(ms, callback) {
+  setTimeout(function () {
+    callback();
+  }, ms);
+};
+/**
+ * sync
+ *
+ * @description 睡眠
+ * @param {number|string} ms
+ * @returns {Promise<void>}
+ */
+
+function sleepSync(ms) {
+  return new promise$1(function (resolve) {
+    setTimeout(function () {
+      resolve();
+    }, ms);
+  });
+}
 
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:43:38
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-17 10:08:25
+ * @LastEditTime: 2021-06-25 14:16:15
  * @Description: 
  */
 var has = Object.prototype.hasOwnProperty;
@@ -3818,20 +4313,227 @@ function deepCopy(data) {
 
   return result;
 }
+/**
+ * @description: 对象方法工具 hasKey:判断一个对象是否存在key; objEqual: 两个对象是否相等这两个对象的值只能是数字或字符串
+ * @param {*}
+ * @returns {number|boolean}
+ */
+
+var objTools = {
+  /**
+   * 判断一个对象是否存在key，如果传入第二个参数key，则是判断这个obj对象是否存在key这个属性
+   * 如果没有传入key这个参数，则判断obj对象是否有键值对
+   */
+  hasKey: function hasKey(obj, key) {
+    if (key) return key in obj;else {
+      var keysArr = keys$1(obj);
+
+      return keysArr.length;
+    }
+  },
+  // 两个对象是否相等这两个对象的值只能是数字或字符串
+  objEqual: function objEqual(obj1, obj2) {
+    var keysArr1 = keys$1(obj1);
+
+    var keysArr2 = keys$1(obj2);
+
+    if (keysArr1.length !== keysArr2.length) return false;else if (keysArr1.length === 0 && keysArr2.length === 0) return true;
+    /* eslint-disable-next-line */
+    else {
+        return !keysArr1.some(function (key) {
+          return obj1[key] != obj2[key];
+        });
+      }
+  }
+};
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-24 14:20:26
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-24 14:22:09
+ * @Description:  window 对象
+ */
+
+/**
+ * 获取全局对象
+ */
+function globalLib() {
+  var _secret = '__COMMON_LIB__';
+
+  var _g = window || global;
+
+  if (_g[_secret]) return _g[_secret];
+  return _g[_secret] = {};
+}
+/**
+ * set 全局对象
+ * @param {string} key
+ * @param {any} value
+ * @param {boolean} cover
+ */
+
+function setGlobal(key, value, cover) {
+  if (cover === void 0) {
+    cover = true;
+  }
+
+  var _g = globalLib();
+
+  if (!cover && _g[key]) return false;
+  _g[key] = value;
+  return true;
+}
+/**
+ * get 全局对象
+ * @param {string} key
+ */
+
+function getGlobal(key) {
+  var _g = globalLib();
+
+  return _g[key];
+}
+/**
+ * 删除 对象数据
+ * @param {string} key
+ */
+
+function removeGlobalItem(key) {
+  var _g = globalLib();
+
+  var bool = delete _g[key];
+  return bool;
+}
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+}
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-25 11:30:34
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-25 13:20:20
+ * @Description:
+ */
+/**
+ * @description: 数组转对象
+ * @param {string} key
+ * @param {any} arr
+ * @return {*object}
+ */
+
+function arrayToObject(key, arr) {
+  if (arr === void 0) {
+    arr = [];
+  }
+
+  var mapping = {};
+  arr.forEach(function (item) {
+    if (item[key]) {
+      mapping[item[key]] = item;
+    }
+  });
+  return mapping;
+}
+/**
+ * 引用数组位移，性能优化
+ * @param {<any[]>} array
+ * @param {number} from
+ * @param {number} to
+ */
+
+function arrayMoveMutate(array, from, to) {
+  var startIndex = from < 0 ? array.length + from : from;
+
+  if (startIndex >= 0 && startIndex < array.length) {
+    var endIndex = to < 0 ? array.length + to : to;
+    var item = array.splice(from, 1)[0];
+    array.splice(endIndex, 0, item);
+  }
+}
+/**
+ * 数组位移
+ * @param {<any[]>} array
+ * @param {number} from
+ * @param {number} to
+ * @returns
+ * @example
+    ```
+        const { arrayMove } = require('@alrale/common-lib');
+
+        const input = ['a', 'b', 'c'];
+
+        const array1 = arrayMove(input, 1, 2);
+        console.log(array1);
+        //=> ['a', 'c', 'b']
+
+        const array2 = arrayMove(input, -1, 0);
+        console.log(array2);
+        //=> ['c', 'a', 'b']
+
+        const array3 = arrayMove(input, -2, -3);
+        console.log(array3);
+        //=> ['b', 'a', 'c']
+    ```
+ */
+
+function arrayMove(array, from, to) {
+  var _array = __spreadArrays(array);
+
+  arrayMoveMutate(_array, from, to);
+  return _array;
+}
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-25 11:30:34
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-25 13:20:29
+ * @Description:
+ */
+var arrayTools = {
+  arrayToObject: arrayToObject,
+  arrayMoveMutate: arrayMoveMutate,
+  arrayMove: arrayMove
+};
 
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-17 10:36:42
+ * @LastEditTime: 2021-06-25 13:22:55
  * @Description: 
  */
 var index = {
-  isColor: isColor,
   getParam: getParam,
   setParam: setParam,
   getImgBase64: getImgBase64,
+  getHttpBase64: getHttpBase64,
   dateFormat1: dateFormat1,
   dateFormat2: dateFormat2,
   elDateFormat: elDateFormat,
@@ -3840,18 +4542,33 @@ var index = {
   exportXls: exportXls,
   getThumbnails: getThumbnails,
   getDefaultAvatar: getDefaultAvatar,
+  Regs: Regs,
+  isColor: isColor,
   isEmoji: isEmoji,
   isIDCard: isIDCard,
   isSpecialChar: isSpecialChar,
-  isMobile: isMobile,
   handleEmoji: handleEmoji,
   handleText: handleText,
   handleParam: handleParam,
+  b2size: b2size,
   jsBridge: jsBridge,
-  setVideoPlay: setVideoPlay,
+  AMaploader: AMaploader,
+  getUUID: getUUID,
+  appendJs: appendJs,
   debounce: debounce,
   throttle: throttle,
-  deepCopy: deepCopy
+  sleepSync: sleepSync,
+  sleepAction: sleepAction,
+  deepCopy: deepCopy,
+  objTools: objTools,
+  arrayTools: arrayTools,
+  setVideoPlay: setVideoPlay,
+  cursortPosition: cursortPosition,
+  clipboardObj: clipboardObj,
+  getGlobal: getGlobal,
+  setGlobal: setGlobal,
+  globalLib: globalLib,
+  removeGlobalItem: removeGlobalItem
 };
 
 export default index;

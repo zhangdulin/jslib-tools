@@ -3,14 +3,14 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:55:45
+ * @LastEditTime: 2021-06-25 14:16:55
  * @Description:
  */
 /**
  * 获取饿了么框架时间选择器时间戳
  * @param {*} time 时间
  * @param {*} type 类型  默认值 0  0 开始时间  1  结束时间
- * @return {number|string|null} 时间戳
+ * @returns {number|string|null} 时间戳
  */
  export function elDateFormat(time, type = 0) {
   if (!time) {

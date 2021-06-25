@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-24 15:30:51
+ * @LastEditTime: 2021-06-25 13:59:31
  * @Description:
 -->
 
@@ -78,6 +78,7 @@ var result = deepCopy({a:1});
 vue 和 常用插件 axios 封装工具类
 
 ### 迭代记录
+```js
 0.1.3
 
 增加 
@@ -91,6 +92,10 @@ sleepSync 睡眠
 sleepAction 延时执行
 objTools 对象操作 判断key 对象相等
 getGlobal, setGlobal, globalLib, removeGlobalItem window对象操作等
+arrayTools 数组相关操作 arrayToObject 数组转对象 arrayMoveMutate 数组移动位置原数组 arrayMove 数组移动位置返回新数组
+
+---
 
 删除
 isMobile
+```

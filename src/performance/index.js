@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:44:08
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-24 15:05:38
+ * @LastEditTime: 2021-06-25 14:18:37
  * @Description: 
  */
 /**
@@ -72,9 +72,9 @@ export const throttle = function (func, wait, type) {
 
 /**
  * @description: 延迟执行函数
- * @param {*number|string} ms
- * @param {*Function} callback
- * @return {* void}
+ * @param {number|string} ms
+ * @param {function} callback
+ * @return {void}
  */
 export const sleepAction = (ms, callback) => {
   setTimeout(() => { callback() }, ms);
@@ -85,7 +85,7 @@ export const sleepAction = (ms, callback) => {
  * sync
  *
  * @description 睡眠
- * @param {*number|string} ms
+ * @param {number|string} ms
  * @returns {Promise<void>}
  */
 export function sleepSync(ms) {
