@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: dateFormat/dateFormat2.js</title>
+    <title>JSDoc: Source: performance/index.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: dateFormat/dateFormat2.js</h1>
+    <h1 class="page-title">Source: performance/index.js</h1>
 
     
 
@@ -29,57 +29,75 @@
             <pre class="prettyprint source linenums"><code>/*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-08 11:30:40
+ * @Date: 2021-06-16 17:44:08
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:55:38
+ * @LastEditTime: 2021-06-16 17:44:08
  * @Description: 
  */
 /**
- * 日期格式化
- * 时间规则：
- * 小于一分钟显示：刚刚
- * 1分钟-60分钟内显示：xx分钟前
- * 大于60分钟显示：xx小时前
- * 昨天显示：昨天 xx:xx
- * 更早日期显示：xx-xx-xx xx:xx
- * @param {*} dateTimeStamp 时间戳，单位s
- * @return {*} 格式化后的日期
+ * @desc 函数防抖
+ * @param func 函数
+ * @param wait 延迟执行毫秒数
+ * @param immediate true 表立即执行，false 表非立即执行
  */
-export function dateFormat2(dateTimeStamp) {
-  if (!dateTimeStamp) return "";
-  dateTimeStamp = dateTimeStamp * 1000;
-  var minute = 1000 * 60; // 把分，时，天，周，半个月，一个月用毫秒表示
-  var hour = minute * 60;
-  var now = new Date().getTime(); // 获取当前时间毫秒
-  var result = "";
-  var diffValue = now - dateTimeStamp; // 时间差
-
-  if (diffValue &lt; 0) {
-    return;
+ export const debounce = function(func, wait, immediate) {
+    let timeout
+  
+    return function() {
+      const context = this
+      const args = arguments
+  
+      if (timeout) clearTimeout(timeout)
+      if (immediate) {
+        var callNow = !timeout
+        timeout = setTimeout(() => {
+          timeout = null
+        }, wait)
+        if (callNow) func.apply(context, args)
+      } else {
+        timeout = setTimeout(function() {
+          func.apply(context, args)
+        }, wait)
+      }
+    }
   }
-  var minC = diffValue / minute; // 计算时间差的分，时，天，周，月
-  var hourC = diffValue / hour;
-  var datetime = new Date();
-  datetime.setTime(dateTimeStamp);
-  var Nyear = datetime.getFullYear();
-  var Nmonth = datetime.getMonth() + 1 &lt; 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-  var Ndate = datetime.getDate() &lt; 10 ? "0" + datetime.getDate() : datetime.getDate();
-  var Nhour = datetime.getHours() &lt; 10 ? "0" + datetime.getHours() : datetime.getHours();
-  var Nminute = datetime.getMinutes() &lt; 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-  if (hourC >= 1 &amp;&amp; hourC &lt; 24) {
-    result = " " + parseInt(hourC) + "小时前";
-  } else if (hourC >= 24 &amp;&amp; hourC &lt; 48 &amp;&amp; new Date().getDate() - Ndate === 1) {
-    result = "昨天 " + Nhour + ":" + Nminute;
-  } else if (minC >= 1 &amp;&amp; minC &lt; 60) {
-    result = " " + parseInt(minC) + "分钟前";
-  } else if (diffValue >= 0 &amp;&amp; diffValue &lt;= minute) {
-    result = "刚刚";
-  } else {
-    result = Nyear + "-" + Nmonth + "-" + Ndate + " " + Nhour + ":" + Nminute;
+  
+  /**
+   * @desc 函数节流
+   * @param func 函数
+   * @param wait 延迟执行毫秒数
+   * @param type 1 表时间戳版，2 表定时器版
+   */
+  export const throttle = function(func, wait, type) {
+    if (type === 1) {
+      // eslint-disable-next-line no-unused-vars
+      const previous = 0
+    } else if (type === 2) {
+      // eslint-disable-next-line no-unused-varsutils
+      // eslint-disable-next-line no-unused-vars
+      let timeout
+    }
+    return function() {
+      const context = this
+      const args = arguments
+      if (type === 1) {
+        const now = Date.now()
+  
+        if (now - previous > wait) {
+          func.apply(context, args)
+          previous = now
+        }
+      } else if (type === 2) {
+        if (!timeout) {
+          timeout = setTimeout(() => {
+            timeout = null
+            func.apply(context, args)
+          }, wait)
+        }
+      }
+    }
   }
-  return result;
-}
-</code></pre>
+  </code></pre>
         </article>
     </section>
 

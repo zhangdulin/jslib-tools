@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: dateFormat/dateFormat2.js</title>
+    <title>JSDoc: Source: dom/videoPlay.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: dateFormat/dateFormat2.js</h1>
+    <h1 class="page-title">Source: dom/videoPlay.js</h1>
 
     
 
@@ -29,57 +29,57 @@
             <pre class="prettyprint source linenums"><code>/*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-08 11:30:40
+ * @Date: 2021-06-11 14:27:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:55:38
+ * @LastEditTime: 2021-06-15 10:48:26
  * @Description: 
  */
-/**
- * 日期格式化
- * 时间规则：
- * 小于一分钟显示：刚刚
- * 1分钟-60分钟内显示：xx分钟前
- * 大于60分钟显示：xx小时前
- * 昨天显示：昨天 xx:xx
- * 更早日期显示：xx-xx-xx xx:xx
- * @param {*} dateTimeStamp 时间戳，单位s
- * @return {*} 格式化后的日期
- */
-export function dateFormat2(dateTimeStamp) {
-  if (!dateTimeStamp) return "";
-  dateTimeStamp = dateTimeStamp * 1000;
-  var minute = 1000 * 60; // 把分，时，天，周，半个月，一个月用毫秒表示
-  var hour = minute * 60;
-  var now = new Date().getTime(); // 获取当前时间毫秒
-  var result = "";
-  var diffValue = now - dateTimeStamp; // 时间差
 
-  if (diffValue &lt; 0) {
-    return;
-  }
-  var minC = diffValue / minute; // 计算时间差的分，时，天，周，月
-  var hourC = diffValue / hour;
-  var datetime = new Date();
-  datetime.setTime(dateTimeStamp);
-  var Nyear = datetime.getFullYear();
-  var Nmonth = datetime.getMonth() + 1 &lt; 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-  var Ndate = datetime.getDate() &lt; 10 ? "0" + datetime.getDate() : datetime.getDate();
-  var Nhour = datetime.getHours() &lt; 10 ? "0" + datetime.getHours() : datetime.getHours();
-  var Nminute = datetime.getMinutes() &lt; 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-  if (hourC >= 1 &amp;&amp; hourC &lt; 24) {
-    result = " " + parseInt(hourC) + "小时前";
-  } else if (hourC >= 24 &amp;&amp; hourC &lt; 48 &amp;&amp; new Date().getDate() - Ndate === 1) {
-    result = "昨天 " + Nhour + ":" + Nminute;
-  } else if (minC >= 1 &amp;&amp; minC &lt; 60) {
-    result = " " + parseInt(minC) + "分钟前";
-  } else if (diffValue >= 0 &amp;&amp; diffValue &lt;= minute) {
-    result = "刚刚";
-  } else {
-    result = Nyear + "-" + Nmonth + "-" + Ndate + " " + Nhour + ":" + Nminute;
-  }
-  return result;
-}
-</code></pre>
+// chrom浏览器禁止自动播放 video标签添加muted属性静音可以自动：
+// android h5 webview
+// android 4.2 webview添加了是否需要用户手势去触发音视频的播放开关，默认为true(需要用户手势触发)。
+// 将webview的这个开关设置为不需要用户触发：
+// mWebview.getSettings().setMediaPlaybackRequiresUserGesture(false);
+// IOS h5 webview
+// IOS APP给webview设置mediaPlaybackRequiresUserAction后可以允许自动播放.
+/**
+ * @description: 设置video 自动播放 
+ * @param {*} id video的dom的id
+ * @return {*}
+ */
+export function setVideoPlay(id) {  
+    /**video.play()返回一个promise，未禁止则resolve，禁止则reject**/
+    let video = document.getElementById(id);
+    video.addEventListener('ended', () => { //结束
+      console.log("播放结束")
+      // this.$bridgePromise.closeWebView()
+    }, false);
+    video.muted = false; // 设置有音
+    let videoPlay = video.play();
+ 
+    // document.body.addEventListener('mousedown', function () {
+    //   video.muted = false;
+    // }, false);
+ 
+    videoPlay.then(() => {
+      console.log('可以自动播放');
+    }).catch((err) => {
+      console.log(err);
+      console.log("不允许自动播放");
+ 
+      //视频元素可以选择静音后再播放,提示用户打开声音
+      video.muted = true;
+      // video.play();
+ 
+      video.onloadedmetadata = function () {
+        video.muted = false;
+        video.play()
+      }
+      video.load() // 重新
+    })
+      //也可以在用户交互后调用.play()
+      // ...
+}</code></pre>
         </article>
     </section>
 

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: jsBridge/index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: jsBridge/index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-11 11:00:48
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-16 18:07:04
+ * @Description: 
+ */
+
+//JS注册事件监听
+var initflag  = false
+
+function connectWebViewJavascriptBridge(callback) {
+ if (window.WebViewJavascriptBridge) {
+     callback(WebViewJavascriptBridge)
+ } else {
+     document.addEventListener(
+         'WebViewJavascriptBridgeReady'
+         , function() {
+             callback(WebViewJavascriptBridge)
+         },
+         false
+     );
+ }
+}
+
+//注册回调函数，第一次连接时调用 初始化函数
+// connectWebViewJavascriptBridge(function(bridge) {
+//   //初始化
+//  bridge.init(function(message, responseCallback) {
+//    initflag = true
+//      var data = {
+//          'Javascript Responds': 'Wee!'
+//      };
+//      // alert("jasdashjd");
+//      responseCallback(data);
+//  });
+// })
+
+ /**
+  * @description: jsbridge callHandler
+  * @param {*} callHandlerData 
+  * @param {*} name n请求的方法
+  * @param {*} data 请求时传的参数
+  * @return {*} function
+  */
+ export function callHandler (callHandlerData={name:'', data:{}}) {
+   let _resolve
+   let _reject
+   // 生成promise对象，保留resolve，reject
+   const readyPromise = new Promise((resolve, reject) => {
+     _resolve = resolve
+     _reject = reject
+   })
+   connectWebViewJavascriptBridge(function(bridge) {
+    //初始化
+    if (!initflag) { 
+     bridge.init(function(message, responseCallback) {
+     initflag = true
+       var data = {
+           'Javascript Responds': 'Wee!'
+       };
+       responseCallback(data);
+      });
+      try {
+        bridge.callHandler(callHandlerData.name, callHandlerData.data, (response) => {
+          // 调用成功，使用保留的resolve改变返回的promise状态
+          _resolve(response)
+         })
+       } catch (e) {
+         // 调用成功，使用保留的reject改变返回的promise状态
+         _reject(e)
+        }
+   } else {
+     try {
+       bridge.callHandler(callHandlerData.name, callHandlerData.data, (response) => {
+         // 调用成功，使用保留的resolve改变返回的promise状态
+         _resolve(response)
+       })
+     } catch (e) {
+       // 调用成功，使用保留的reject改变返回的promise状态
+       _reject(e)
+     }
+   }
+  })
+  
+   return readyPromise
+ }
+
+
+ /*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-11 11:00:48
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-06-11 14:05:50
+ * @Description: 
+ */
+// 注册方法获取WebViewJavascriptBridge对象
+function setupWebViewJavascriptBridge(callback) {
+  if (window.WebViewJavascriptBridge) {
+    return callback(window.WebViewJavascriptBridge)
+  }
+  if (window.WVJBCallbacks) {
+    return window.WVJBCallbacks.push(callback)
+  }
+  // 兼容安卓
+  document.addEventListener(
+    'WebViewJavascriptBridgeReady',
+    () => callback(window.WebViewJavascriptBridge),
+    false
+  )
+  // 兼容ios
+  window.WVJBCallbacks = [callback]
+  var WVJBIframe = document.createElement('iframe')
+  WVJBIframe.style.display = 'none'
+  WVJBIframe.src = 'https://__bridge_loaded__'
+  document.documentElement.appendChild(WVJBIframe)
+  setTimeout(function() {
+    document.documentElement.removeChild(WVJBIframe)
+  }, 0)
+}
+//  获取WebViewJavascriptBridge对象
+function getBirdge() {
+  return new Promise(resolve => {
+    if (window.WebViewJavascriptBridge) {
+      return resolve(window.WebViewJavascriptBridge)
+    }
+    setupWebViewJavascriptBridge(bridge => {
+      // 初始化
+      bridge.init(function(message, responseCallback) {
+        var data = {
+            'Javascript Responds': 'Wee!'
+        };
+        responseCallback(data);
+      });
+
+      resolve(bridge)
+    })
+  })
+}
+
+// 重写之后的birdge
+/**
+* @description: jsbridge callHandler
+* @param {*} callHandlerData 
+* @param {*} name n请求的方法
+* @param {*} data 请求时传的参数
+* @return {*} function
+*/
+export default {
+  ctx: null, // WebViewJavascriptBridge
+  callHandler(callHandlerData={name:'', data:{}}) {
+    return new Promise(async resolve => {
+      if (!this.ctx) {
+        this.ctx = await getBirdge()
+      }
+      this.ctx.callHandler(callHandlerData.name, callHandlerData.data, res => resolve(res))
+    })
+  },
+  registerHandler(jsHandlerName) {
+    // 重写事件注册方法
+    this.ctx.registerHandler(jsHandlerName, (data, callback) => {
+      if (callback) {
+        callback(
+          `返回一个字符串，告诉ObjC：我已收到数据${JSON.stringify(data)}`
+        )
+      }
+    })
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#callHandler">callHandler</a></li><li><a href="global.html#dateFormat1">dateFormat1</a></li><li><a href="global.html#dateFormat2">dateFormat2</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#elDateFormat">elDateFormat</a></li><li><a href="global.html#exportXls">exportXls</a></li><li><a href="global.html#getBrowserModel">getBrowserModel</a></li><li><a href="global.html#getDefaultAvatar">getDefaultAvatar</a></li><li><a href="global.html#getDeviceModel">getDeviceModel</a></li><li><a href="global.html#getImgBase64">getImgBase64</a></li><li><a href="global.html#getThumbnails">getThumbnails</a></li><li><a href="global.html#handleEmoji">handleEmoji</a></li><li><a href="global.html#handleParam">handleParam</a></li><li><a href="global.html#handleText">handleText</a></li><li><a href="global.html#isArray">isArray</a></li><li><a href="global.html#isEmoji">isEmoji</a></li><li><a href="global.html#isIDCard">isIDCard</a></li><li><a href="global.html#isMobile">isMobile</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#isSpecialChar">isSpecialChar</a></li><li><a href="global.html#parseTime">parseTime</a></li><li><a href="global.html#setVideoPlay">setVideoPlay</a></li><li><a href="global.html#throttle">throttle</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jun 17 2021 13:34:59 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

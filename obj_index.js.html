@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: dateFormat/dateFormat2.js</title>
+    <title>JSDoc: Source: obj/index.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: dateFormat/dateFormat2.js</h1>
+    <h1 class="page-title">Source: obj/index.js</h1>
 
     
 
@@ -29,57 +29,64 @@
             <pre class="prettyprint source linenums"><code>/*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-08 11:30:40
+ * @Date: 2021-06-16 17:43:38
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:55:38
+ * @LastEditTime: 2021-06-17 10:08:25
  * @Description: 
  */
-/**
- * 日期格式化
- * 时间规则：
- * 小于一分钟显示：刚刚
- * 1分钟-60分钟内显示：xx分钟前
- * 大于60分钟显示：xx小时前
- * 昨天显示：昨天 xx:xx
- * 更早日期显示：xx-xx-xx xx:xx
- * @param {*} dateTimeStamp 时间戳，单位s
- * @return {*} 格式化后的日期
- */
-export function dateFormat2(dateTimeStamp) {
-  if (!dateTimeStamp) return "";
-  dateTimeStamp = dateTimeStamp * 1000;
-  var minute = 1000 * 60; // 把分，时，天，周，半个月，一个月用毫秒表示
-  var hour = minute * 60;
-  var now = new Date().getTime(); // 获取当前时间毫秒
-  var result = "";
-  var diffValue = now - dateTimeStamp; // 时间差
 
-  if (diffValue &lt; 0) {
-    return;
-  }
-  var minC = diffValue / minute; // 计算时间差的分，时，天，周，月
-  var hourC = diffValue / hour;
-  var datetime = new Date();
-  datetime.setTime(dateTimeStamp);
-  var Nyear = datetime.getFullYear();
-  var Nmonth = datetime.getMonth() + 1 &lt; 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-  var Ndate = datetime.getDate() &lt; 10 ? "0" + datetime.getDate() : datetime.getDate();
-  var Nhour = datetime.getHours() &lt; 10 ? "0" + datetime.getHours() : datetime.getHours();
-  var Nminute = datetime.getMinutes() &lt; 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-  if (hourC >= 1 &amp;&amp; hourC &lt; 24) {
-    result = " " + parseInt(hourC) + "小时前";
-  } else if (hourC >= 24 &amp;&amp; hourC &lt; 48 &amp;&amp; new Date().getDate() - Ndate === 1) {
-    result = "昨天 " + Nhour + ":" + Nminute;
-  } else if (minC >= 1 &amp;&amp; minC &lt; 60) {
-    result = " " + parseInt(minC) + "分钟前";
-  } else if (diffValue >= 0 &amp;&amp; diffValue &lt;= minute) {
-    result = "刚刚";
-  } else {
-    result = Nyear + "-" + Nmonth + "-" + Ndate + " " + Nhour + ":" + Nminute;
-  }
-  return result;
+
+var has = Object.prototype.hasOwnProperty;
+
+/**
+ * 检测是否为对象
+ * @param {object} obj 要检测的数据
+ */
+function isObject(obj) {
+    //typeof null => object
+    //toString.call(null) => [object Object]
+
+    return obj &amp;&amp; toString.call(obj) === "[object Object]";
 }
-</code></pre>
+
+/**
+ * 检测是否为数组
+ * @param {object} obj 要检测的数据
+ */
+function isArray(obj) {
+    return toString.call(obj) === "[object Array]";
+}
+    
+/* 
+* 数据克隆(深拷贝)
+* @param {object} data 要克隆的对象
+*/
+export function deepCopy(data) {
+    if (!data) return data;
+
+    switch (typeof data) {
+        case "string":
+        case "number":
+        case "boolean":
+            return data;
+    }
+
+    var result;
+
+    if (isArray(data)) {
+        result = [];
+        for (var i = 0, len = data.length; i &lt; len; i++) {
+            result[i] = deepCopy(data[i]);
+        }
+    } else if (isObject(data)) {
+        result = {};
+        for (var key in data) {
+            if (has.call(data, key)) result[key] = deepCopy(data[key]);
+        }
+    }
+
+    return result;
+}</code></pre>
         </article>
     </section>
 
