@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 17:21:11
+ * @LastEditTime: 2021-06-28 11:00:05
  * @Description:
 -->
 
@@ -67,8 +67,15 @@ var result = deepCopy({a:1});
 #### 自动化生成文档
 
 [JSDoc](http://www.css88.com/doc/jsdoc/about-configuring-jsdoc.html)是一个根据 javascript 文件中注释信息，生成 JavaScript 应用程序或库、模块的 API 文档 的工具。你可以使用他记录如：命名空间，类，方法，方法参数等。类似 JavaDoc 和 PHPDoc。现在很多编辑器或 IDE 中还可以通过 JSDoc 直接或使用插件生成智能提示。从而使开发者很容易了解整个类和其中的属性和方法，并且快速知道如何使用，从而提高开发效率，降低维护成本。
+[typedoc](https://typedoc.org/) 是根据typescript注释生成的文档
+
+文件
+`npm run typedoc`
+api-docs: typescript 方法文档
 
 `npm run doc`
+docs: js 方法文档
+
 
 ### 扩展
 
