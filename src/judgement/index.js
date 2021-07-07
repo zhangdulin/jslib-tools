@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-22 10:40:09
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 17:04:17
+ * @LastEditTime: 2021-06-28 09:56:06
  * @Description: 
  */
 //Node.js中闭包外部this并非global eg:(function(g){})(this); //this not global
@@ -191,6 +191,27 @@ export function checkInt(str, min, max) {
 }
 
 
+// 判断字符串是否可以转换对象
+export const isJSONStringify = str => {
+  if (typeof str == 'string') {
+      try {
+          var obj = JSON.parse(str);
+          if (typeof obj == 'object' && obj) {
+              return true;
+          } else {
+              return false;
+          }
+      } catch (e) {
+          console.log('error：' + e + 'info' + str);
+          return false;
+      }
+  } else {
+      console.log('It is not a string!');
+      return false;
+  }
+};
+
+
 export default {
   getType,
   isArrayLike,
@@ -203,5 +224,6 @@ export default {
   isInt,
   isUInt,
   checkNum,
-  checkInt
+  checkInt,
+  isJSONStringify
 }

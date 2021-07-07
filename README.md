@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-28 11:00:05
+ * @LastEditTime: 2021-07-02 15:42:42
  * @Description:
 -->
 
@@ -111,3 +111,13 @@ store cookie storage
 isMobile
 b2size
 ```
+```
+0.1.4
+
+增加 
+judgeTools.isJSONStringify 判断字符串是否可以转换对象
+createWebsocket 创建 websocket
+
+```
+
+

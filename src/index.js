@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 17:16:50
+ * @LastEditTime: 2021-07-01 14:22:49
  * @Description: 
  */
 
@@ -49,6 +49,9 @@ import { getParam, setParam } from './url/index'
 import jsBridge from './plugins//jsBridge/index'
 // 高德地图
 import AMaploader from './plugins/AMap/index'
+// websocket
+import createWebsocket from './plugins/websocket/index'
+
 // UUID appendJs
 import { getUUID, appendJs } from './plugins/index'
 
@@ -107,6 +110,7 @@ export default {
 
     jsBridge,
     AMaploader,
+    createWebsocket,
     getUUID,
     appendJs,
     store,
