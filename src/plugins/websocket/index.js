@@ -3,11 +3,11 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-28 09:47:26
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-01 14:22:36
+ * @LastEditTime: 2021-07-09 13:33:25
  * @Description: 创建websocket对象
  */
 
-import { isJSONStringify } from '@/judgement/index';
+import { isJSONStringify } from '../../judgement/index';
 
 /**
   * @description: 建立websocket连接函数

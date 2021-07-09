@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-02 15:42:42
+ * @LastEditTime: 2021-07-09 18:08:15
  * @Description:
 -->
 
@@ -86,9 +86,9 @@ vue 和 常用插件 axios 封装工具类
 
 ### 迭代记录
 
-```
-0.1.3
 
+#### 0.1.3
+```
 增加 
 getHttpBase64 获取网络图片转成base64
 Regs 正则校验对象 包括手机号 邮箱等常用正则规则
@@ -111,13 +111,27 @@ store cookie storage
 isMobile
 b2size
 ```
+
+#### 0.1.4
+
 ```
-0.1.4
 
 增加 
 judgeTools.isJSONStringify 判断字符串是否可以转换对象
 createWebsocket 创建 websocket
 
+arrayTools 方法里增加
+arrVals  根据指定的键或索引抽取数组项的值
+arrFibonacci 按条件产生数组 arr(5,2,2) => [2,4,6,8,10]
+
+objTools 方法里增加
+alias 给对象增加别名
+
+objTransfer
+    toLower,
+    toUpper,
+    toArray,
+    makeArray
 ```
 
 

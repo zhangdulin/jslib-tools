@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-01 14:22:49
+ * @LastEditTime: 2021-07-09 18:07:24
  * @Description: 
  */
 
@@ -39,6 +39,8 @@ import { handleText } from "./transfer/handleText";
 import { handleParam } from "./transfer/handleParam";
 import * as byteTools from "./transfer/bytes";
 import jsonTools from "./transfer/jsonString";
+import objTransfer from "./transfer/index";
+
 
 
 import { isColor } from './color/isColor'
@@ -107,6 +109,7 @@ export default {
 
     byteTools,
     jsonTools,
+    objTransfer,
 
     jsBridge,
     AMaploader,

@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:43:38
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 14:16:15
+ * @LastEditTime: 2021-07-09 15:13:55
  * @Description: 
  */
 
@@ -61,6 +61,29 @@ export function deepCopy(data) {
 }
 
 
+
+/**
+ * 给原型方法或属性添加别名 eg:alias(Array,"forEach","each");
+ * @param {object} obj 对象
+ * @param {string|object} name 属性名称或对象 eg: 'forEach' | {forEach:'each'}
+ * @param {string} aliasName 别名
+ */
+export function alias(obj, name, aliasName) {
+    if (!obj || !obj.prototype) return;
+
+    var prototype = obj.prototype;
+
+    if (typeof name == "string") {
+        prototype[aliasName] = prototype[name];
+    } else {
+        for (var key in name) {
+            if (has.call(name, key) && has.call(prototype, key)) prototype[name[key]] = prototype[key];
+        }
+    }
+
+    return obj;
+}
+
 /**
  * @description: 对象方法工具 hasKey:判断一个对象是否存在key; objEqual: 两个对象是否相等这两个对象的值只能是数字或字符串
  * @param {*}
@@ -87,5 +110,6 @@ export const objTools = {
         /* eslint-disable-next-line */ else {
             return !keysArr1.some((key) => obj1[key] != obj2[key]);
         }
-    }
+    },
+    alias
 }
