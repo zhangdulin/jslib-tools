@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-22 10:40:09
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 11:33:19
+ * @LastEditTime: 2021-07-28 14:12:18
  * @Description: 
  */
 import { trim } from '../transfer/regex'
@@ -35,6 +35,7 @@ var is_strict_mode = true, //detect_strict_mode(),
 /**
  * 获取数据类型(小写) undefined|null|string|number|array|function|date|regexp|window|node|list
  * @param {object} obj 要检测的数据
+ * @return {string}
  */
 export function getType(obj) {
   if (obj == undefined) return "" + obj;
@@ -68,6 +69,7 @@ export function getType(obj) {
 /**
  * 检测是否为函数
  * @param {object} fn 要检测的数据
+ * @return {boolean}
  */
 export function isFunc(fn) {
   //在IE11兼容模式（ie6-8）下存在bug,当调用次数过多时可能返回不正确的结果
@@ -79,6 +81,7 @@ export function isFunc(fn) {
 /**
  * 检测是否为对象
  * @param {object} obj 要检测的数据
+ * @return {boolean}
  */
 export function isObject(obj) {
   //typeof null => object
@@ -90,6 +93,7 @@ export function isObject(obj) {
 /**
  * 检测是否为数组
  * @param {object} obj 要检测的数据
+ * @return {boolean}
  */
 export function isArray(obj) {
   return toString.call(obj) === "[object Array]";
@@ -98,6 +102,7 @@ export function isArray(obj) {
 /**
  * 检测是否为数组或类数组
  * @param {object} obj 要检测的数据
+ * @return {boolean}
  */
 export function isArrayLike(obj) {
   var type = getType(obj);
@@ -109,6 +114,7 @@ export function isArrayLike(obj) {
  * 若value不为undefine,则返回value;否则返回defValue
  * @param {object} value 
  * @param {object} defValue value不存在时返回的值
+ * @return {*}
  */
 export function def(value, defValue) {
   return value !== undefined ? value : defValue;
@@ -116,8 +122,8 @@ export function def(value, defValue) {
 
 /**
 * @description: 判断对象是否相等
-* @param {*object} 对象
-* @return {*boolean} 
+* @param {object} 对象
+* @return {boolean} 
 */
 export const isDiff = (obj1, obj2) => {
   var o1 = obj1 instanceof Object;

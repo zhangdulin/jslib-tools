@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-25 11:30:34
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-09 18:09:26
+ * @LastEditTime: 2021-07-28 14:17:37
  * @Description: 
  */
 
@@ -13,7 +13,7 @@ import { isFunc } from '../../judgement/index'
  * @description: 数组转对象
  * @param {string} key
  * @param {any} arr
- * @return {*object}
+ * @return {object}
  */
 export function arrayToObject(key, arr) {
     const mapping = {};
@@ -27,7 +27,7 @@ export function arrayToObject(key, arr) {
 
 /**
  * 引用数组位移，性能优化
- * @param {<any[]>} array 
+ * @param {*} array 
  * @param {number} from 
  * @param {number} to 
  */
@@ -44,10 +44,10 @@ export function arrayMoveMutate(array, from, to) {
 
 /**
  * 数组位移
- * @param {<any[]>} array 
+ * @param {array} array 
  * @param {number} from 
  * @param {number} to 
- * @returns 
+ * @return {*}
  * @example
     ```
         const { arrayMove } = require('@alrale/common-lib');
@@ -112,7 +112,7 @@ export function arrFibonacci(length, value, step) {
  * 根据指定的键或索引抽取数组项的值
  * eg:vals([{id:1},{id:2}], "id")  =>  [1,2]
  * eg:vals([[1,"a"],[2,"b"]], 1)   =>  ["a","b"]
- * @param {Array} list 对象数组
+ * @param {array} list 对象数组
  * @param {string} prop 要抽取的属性
  * @param {boolean} skipUndefined 是否跳过值不存在的项,默认为true
  */

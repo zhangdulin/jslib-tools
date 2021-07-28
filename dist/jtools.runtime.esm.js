@@ -1,5 +1,5 @@
 /*!
- * jtools v0.1.3
+ * jtools v0.1.4
  * jlb web team
  */
 import regeneratorRuntime from 'regenerator-runtime';
@@ -972,7 +972,7 @@ var _task$1 = {
 
 var Observer = _global$1.MutationObserver || _global$1.WebKitMutationObserver;
 var process$3 = _global$1.process;
-var Promise$1 = _global$1.Promise;
+var Promise = _global$1.Promise;
 var isNode = _cof$1(process$3) == 'process';
 
 var navigator$1 = _global$1.navigator;
@@ -1051,7 +1051,7 @@ var _speciesConstructor$1 = function (O, D) {
 var macrotask$1 = _task$1.set;
 var Observer$1 = _global$1.MutationObserver || _global$1.WebKitMutationObserver;
 var process$4 = _global$1.process;
-var Promise$2 = _global$1.Promise;
+var Promise$1 = _global$1.Promise;
 var isNode$1 = _cof$1(process$4) == 'process';
 
 var _microtask$1 = function () {
@@ -1088,9 +1088,9 @@ var _microtask$1 = function () {
       node.data = toggle = !toggle;
     };
   // environments with maybe non-completely correct, but existent Promise
-  } else if (Promise$2 && Promise$2.resolve) {
+  } else if (Promise$1 && Promise$1.resolve) {
     // Promise.resolve without an argument throws an error in LG WebOS 2
-    var promise = Promise$2.resolve(undefined);
+    var promise = Promise$1.resolve(undefined);
     notify = function () {
       promise.then(flush);
     };
@@ -3633,13 +3633,112 @@ var _typeof = unwrapExports(_typeof_1);
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-22 10:40:09
+ * @Date: 2021-07-13 13:25:06
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 17:04:17
+ * @LastEditTime: 2021-07-28 13:51:11
  * @Description: 
  */
-//Node.js中闭包外部this并非global eg:(function(g){})(this); //this not global
+// trim 方法是去掉字符串的开头和结尾的空白符。有两种思路去做。 第一种，匹配到开头和结尾的空白符，然后替换成空字符。如：
+function trim$2(str) {
+  return str.replace(/^\s+|\s+$/g, '');
+} // 第二种，匹配整个字符串，然后用引用来提取出相应的数据：
+// function trim(str) {
+//   return str.replace(/^\s*(.*?)\s*$/g, "$1");
+// }
+// 这里使用了惰性匹配 *?，不然也会匹配最后一个空格之前的所有空格的。
+// 当然，前者效率高。
+
+/**
+ * @description: 将每个单词的首字母转换为大写
+ * @param {*string} str
+ * @return {*string}
+ */
+
+function titleize(str) {
+  return str.toLowerCase().replace(/(?:^|\s)\w/g, function (c) {
+    return c.toUpperCase();
+  });
+} // console.log(titleize('my name is epeli'));
+// => "My Name Is Epeli"
+// 思路是找到每个单词的首字母，当然这里不使用非捕获匹配也是可以的。
+
+/**
+ * @description: 驼峰化 
+ * @param {*string} str
+ * @return {*string}
+ */
+
+function camelize(str) {
+  return str.replace(/[-_\s]+(.)?/g, function (match, c) {
+    return c ? c.toUpperCase() : '';
+  });
+} // console.log(camelize('-moz-transform'));
+// => "MozTransform"
+// 其中分组 (.) 表示首字母。单词的界定是，前面的字符可以是多个连字符、下划线以及空白符。正则后面
+// 的 ? 的目的，是为了应对 str 尾部的字符可能不是单词字符，比如 str 是 '-moz-transform '。
+
+/**
+ * @description: 中划线化
+ * @param {*string} str
+ * @return {*string}
+ */
+
+function dasherize(str) {
+  return str.replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
+} // console.log(dasherize('MozTransform'));
+// => "-moz-transform"
+// 驼峰化的逆过程。
+// HTML 转义和反转义
+
+/**
+ * @description: 将HTML特殊字符转换成等值的实体 
+ * @param {*string}
+ * @return {*string}
+ */
+
+function escapeHTML(str) {
+  var escapeChars = {
+    '<': 'lt',
+    '>': 'gt',
+    '"': 'quot',
+    '&': 'amp',
+    '\'': '#39'
+  };
+  return str.replace(new RegExp('[' + keys$1(escapeChars).join('') + ']', 'g'), function (match) {
+    return '&' + escapeChars[match] + ';';
+  });
+} // console.log(escapeHTML('<div>Blah blah blah</div>'));
+// => "&lt;div&gt;Blah blah blah&lt;/div&gt";
+// 其中使用了用构造函数生成的正则，然后替换相应的格式就行了。
+// 倒是它的逆过程，使用了括号，以便提供引用，也很简单，如下：
+
+/**
+ * @description: 实体字符转换为等值的HTML 
+ * @param {*string}
+ * @return {*string}
+ */
+
+function unescapeHTML(str) {
+  var htmlEntities = {
+    nbsp: ' ',
+    lt: '<',
+    gt: '>',
+    quot: '"',
+    amp: '&',
+    apos: '\''
+  };
+  return str.replace(/\&([^;]+);/g, function (match, key) {
+    if (key in htmlEntities) {
+      return htmlEntities[key];
+    }
+
+    return match;
+  });
+} // console.log(unescapeHTML('&lt;div&gt;Blah blah blah&lt;/div&gt;'));
+// => "<div>Blah blah blah</div>"
+
 //严格模式下this不指向全局变量
+
 var GLOBAL = (typeof global === "undefined" ? "undefined" : _typeof(global)) == "object" ? global : window,
     toString$5 = Object.prototype.toString;
  //严格模式与window识别检测
@@ -3731,6 +3830,38 @@ function def$2(value, defValue) {
   return value !== undefined ? value : defValue;
 }
 /**
+* @description: 判断对象是否相等
+* @param {*object} 对象
+* @return {*boolean} 
+*/
+
+var isDiff = function isDiff(obj1, obj2) {
+  var o1 = obj1 instanceof Object;
+  var o2 = obj2 instanceof Object;
+
+  if (!o1 || !o2) {
+    /*  判断不是对象  */
+    return obj1 === obj2;
+  }
+
+  if (keys$1(obj1).length !== keys$1(obj2).length) {
+    return false; //Object.keys() 返回一个由对象的自身可枚举属性(key值)组成的数组,例如：数组返回下表：let arr = ["a", "b", "c"];console.log(Object.keys(arr))->0,1,2;
+  }
+
+  for (var attr in obj1) {
+    var t1 = obj1[attr] instanceof Object;
+    var t2 = obj2[attr] instanceof Object;
+
+    if (t1 && t2) {
+      return isDiff(obj1[attr], obj2[attr]);
+    } else if (obj1[attr] !== obj2[attr]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+/**
  * 检测是否是符合条件的数字(n必须为数字类型)
  * @param {number} n 数字
  * @param {number|undefined} min 允许的最小值
@@ -3810,7 +3941,27 @@ function checkInt(str, min, max) {
   }
 
   return false;
-}
+} // 判断字符串是否可以转换对象
+
+var isJSONStringify = function isJSONStringify(str) {
+  if (typeof str == 'string') {
+    try {
+      var obj = JSON.parse(str);
+
+      if (_typeof(obj) == 'object' && obj) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      console.log('error：' + e + 'info' + str);
+      return false;
+    }
+  } else {
+    console.log('It is not a string!');
+    return false;
+  }
+};
 var judgeTools = {
   getType: getType,
   isArrayLike: isArrayLike,
@@ -3823,7 +3974,9 @@ var judgeTools = {
   isInt: isInt,
   isUInt: isUInt,
   checkNum: checkNum,
-  checkInt: checkInt
+  checkInt: checkInt,
+  isJSONStringify: isJSONStringify,
+  isDiff: isDiff
 };
 
 /**
@@ -3924,6 +4077,701 @@ var jsonTools = {
   json_replace: json_replace,
   json_encode: json_encode,
   json_decode: json_decode
+};
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-07-08 09:50:14
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-07-08 09:53:46
+ * @Description: 
+ */
+
+/**
+  * 将字符串转为大写,若str不是字符串,则返回defValue
+  * @param {string} str 字符串
+  * @param {string} defValue str不是字符串时返回的值
+  */
+function toUpper(str, defValue) {
+  return typeof str == "string" ? str.toUpperCase() : defValue;
+}
+/**
+ * 将字符串转为小写,若str不是字符串,则返回defValue
+ * @param {string} str 字符串
+ * @param {string} defValue str不是字符串时返回的值
+ */
+
+function toLower(str, defValue) {
+  return typeof str == "string" ? str.toLowerCase() : defValue;
+}
+
+var _createProperty$1 = function (object, index, value) {
+  if (index in object) _objectDp$1.f(object, index, _propertyDesc$1(0, value));
+  else object[index] = value;
+};
+
+_export$1(_export$1.S + _export$1.F * !_iterDetect$1(function (iter) { }), 'Array', {
+  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
+    var O = _toObject$1(arrayLike);
+    var C = typeof this == 'function' ? this : Array;
+    var aLen = arguments.length;
+    var mapfn = aLen > 1 ? arguments[1] : undefined;
+    var mapping = mapfn !== undefined;
+    var index = 0;
+    var iterFn = core_getIteratorMethod$1(O);
+    var length, result, step, iterator;
+    if (mapping) mapfn = _ctx$1(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+    // if object isn't iterable or it's array with default iterator - use simple case
+    if (iterFn != undefined && !(C == Array && _isArrayIter$1(iterFn))) {
+      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
+        _createProperty$1(result, index, mapping ? _iterCall$1(iterator, mapfn, [step.value, index], true) : step.value);
+      }
+    } else {
+      length = _toLength$1(O.length);
+      for (result = new C(length); length > index; index++) {
+        _createProperty$1(result, index, mapping ? mapfn(O[index], index) : O[index]);
+      }
+    }
+    result.length = index;
+    return result;
+  }
+});
+
+_export$1(_export$1.S + _export$1.F * !_iterDetect$1(function (iter) { }), 'Array', {
+  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
+    var O = _toObject$1(arrayLike);
+    var C = typeof this == 'function' ? this : Array;
+    var aLen = arguments.length;
+    var mapfn = aLen > 1 ? arguments[1] : undefined;
+    var mapping = mapfn !== undefined;
+    var index = 0;
+    var iterFn = core_getIteratorMethod$1(O);
+    var length, result, step, iterator;
+    if (mapping) mapfn = _ctx$1(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+    // if object isn't iterable or it's array with default iterator - use simple case
+    if (iterFn != undefined && !(C == Array && _isArrayIter$1(iterFn))) {
+      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
+        _createProperty$1(result, index, mapping ? _iterCall$1(iterator, mapfn, [step.value, index], true) : step.value);
+      }
+    } else {
+      length = _toLength$1(O.length);
+      for (result = new C(length); length > index; index++) {
+        _createProperty$1(result, index, mapping ? mapfn(O[index], index) : O[index]);
+      }
+    }
+    result.length = index;
+    return result;
+  }
+});
+
+var from_1 = _core$1.Array.from;
+
+var from_1$1 = from_1;
+
+var getOwnPropertySymbols = _core$1.Object.getOwnPropertySymbols;
+
+// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+
+var $getOwnPropertyDescriptor$2 = _objectGopd$1.f;
+
+_objectSap$1('getOwnPropertyDescriptor', function () {
+  return function getOwnPropertyDescriptor(it, key) {
+    return $getOwnPropertyDescriptor$2(_toIobject$1(it), key);
+  };
+});
+
+// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+
+var $getOwnPropertyDescriptor$3 = _objectGopd$1.f;
+
+_objectSap$1('getOwnPropertyDescriptor', function () {
+  return function getOwnPropertyDescriptor(it, key) {
+    return $getOwnPropertyDescriptor$3(_toIobject$1(it), key);
+  };
+});
+
+var $Object = _core$1.Object;
+
+// all object keys, includes non-enumerable and symbols
+
+
+
+var Reflect = _global$1.Reflect;
+var _ownKeys = Reflect && Reflect.ownKeys || function ownKeys(it) {
+  var keys = _objectGopn$1.f(_anObject$1(it));
+  var getSymbols = _objectGops$1.f;
+  return getSymbols ? keys.concat(getSymbols(it)) : keys;
+};
+
+// all object keys, includes non-enumerable and symbols
+
+
+
+var Reflect$1 = _global$1.Reflect;
+var _ownKeys$1 = Reflect$1 && Reflect$1.ownKeys || function ownKeys(it) {
+  var keys = _objectGopn$1.f(_anObject$1(it));
+  var getSymbols = _objectGops$1.f;
+  return getSymbols ? keys.concat(getSymbols(it)) : keys;
+};
+
+// https://github.com/tc39/proposal-object-getownpropertydescriptors
+
+
+
+
+
+
+_export$1(_export$1.S, 'Object', {
+  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+    var O = _toIobject$1(object);
+    var getDesc = _objectGopd$1.f;
+    var keys = _ownKeys$1(O);
+    var result = {};
+    var i = 0;
+    var key, desc;
+    while (keys.length > i) {
+      desc = getDesc(O, key = keys[i++]);
+      if (desc !== undefined) _createProperty$1(result, key, desc);
+    }
+    return result;
+  }
+});
+
+// https://github.com/tc39/proposal-object-getownpropertydescriptors
+
+
+
+
+
+
+_export$1(_export$1.S, 'Object', {
+  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+    var O = _toIobject$1(object);
+    var getDesc = _objectGopd$1.f;
+    var keys = _ownKeys$1(O);
+    var result = {};
+    var i = 0;
+    var key, desc;
+    while (keys.length > i) {
+      desc = getDesc(O, key = keys[i++]);
+      if (desc !== undefined) _createProperty$1(result, key, desc);
+    }
+    return result;
+  }
+});
+
+var getOwnPropertyDescriptors = _core$1.Object.getOwnPropertyDescriptors;
+
+// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
+_export$1(_export$1.S + _export$1.F * !_descriptors$1, 'Object', { defineProperties: _objectDps$1 });
+
+// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
+_export$1(_export$1.S + _export$1.F * !_descriptors$1, 'Object', { defineProperties: _objectDps$1 });
+
+var $Object$1 = _core$1.Object;
+
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+_export$1(_export$1.S + _export$1.F * !_descriptors$1, 'Object', { defineProperty: _objectDp$1.f });
+
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+_export$1(_export$1.S + _export$1.F * !_descriptors$1, 'Object', { defineProperty: _objectDp$1.f });
+
+var $Object$2 = _core$1.Object;
+var defineProperty$2 = function defineProperty(it, key, desc) {
+  return $Object$2.defineProperty(it, key, desc);
+};
+
+var defineProperty$3 = defineProperty$2;
+
+var defineProperty$4 = createCommonjsModule(function (module) {
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    defineProperty$3(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(defineProperty$4);
+
+var _validateCollection$1 = function (it, TYPE) {
+  if (!_isObject$1(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
+  return it;
+};
+
+var fastKey = _meta$1.fastKey;
+
+var SPECIES$4 = _wks$1('species');
+
+var SPECIES$5 = _wks$1('species');
+
+var _arraySpeciesConstructor$1 = function (original) {
+  var C;
+  if (_isArray$1(original)) {
+    C = original.constructor;
+    // cross-realm fallback
+    if (typeof C == 'function' && (C === Array || _isArray$1(C.prototype))) C = undefined;
+    if (_isObject$1(C)) {
+      C = C[SPECIES$5];
+      if (C === null) C = undefined;
+    }
+  } return C === undefined ? Array : C;
+};
+
+// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
+
+
+var _arraySpeciesCreate$1 = function (original, length) {
+  return new (_arraySpeciesConstructor$1(original))(length);
+};
+
+// 0 -> Array#forEach
+// 1 -> Array#map
+// 2 -> Array#filter
+// 3 -> Array#some
+// 4 -> Array#every
+// 5 -> Array#find
+// 6 -> Array#findIndex
+
+
+
+
+
+var _arrayMethods$1 = function (TYPE, $create) {
+  var IS_MAP = TYPE == 1;
+  var IS_FILTER = TYPE == 2;
+  var IS_SOME = TYPE == 3;
+  var IS_EVERY = TYPE == 4;
+  var IS_FIND_INDEX = TYPE == 6;
+  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+  var create = $create || _arraySpeciesCreate$1;
+  return function ($this, callbackfn, that) {
+    var O = _toObject$1($this);
+    var self = _iobject$1(O);
+    var f = _ctx$1(callbackfn, that, 3);
+    var length = _toLength$1(self.length);
+    var index = 0;
+    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+    var val, res;
+    for (;length > index; index++) if (NO_HOLES || index in self) {
+      val = self[index];
+      res = f(val, index, O);
+      if (TYPE) {
+        if (IS_MAP) result[index] = res;   // map
+        else if (res) switch (TYPE) {
+          case 3: return true;             // some
+          case 5: return val;              // find
+          case 6: return index;            // findIndex
+          case 2: result.push(val);        // filter
+        } else if (IS_EVERY) return false; // every
+      }
+    }
+    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
+  };
+};
+
+var dP$6 = _objectDp$1.f;
+
+
+
+
+
+
+
+
+
+var fastKey$1 = _meta$1.fastKey;
+
+var SIZE$1 = _descriptors$1 ? '_s' : 'size';
+
+var getEntry$1 = function (that, key) {
+  // fast case
+  var index = fastKey$1(key);
+  var entry;
+  if (index !== 'F') return that._i[index];
+  // frozen object case
+  for (entry = that._f; entry; entry = entry.n) {
+    if (entry.k == key) return entry;
+  }
+};
+
+var _collectionStrong$1 = {
+  getConstructor: function (wrapper, NAME, IS_MAP, ADDER) {
+    var C = wrapper(function (that, iterable) {
+      _anInstance$1(that, C, NAME, '_i');
+      that._t = NAME;         // collection type
+      that._i = _objectCreate$1(null); // index
+      that._f = undefined;    // first entry
+      that._l = undefined;    // last entry
+      that[SIZE$1] = 0;         // size
+      if (iterable != undefined) _forOf$1(iterable, IS_MAP, that[ADDER], that);
+    });
+    _redefineAll$1(C.prototype, {
+      // 23.1.3.1 Map.prototype.clear()
+      // 23.2.3.2 Set.prototype.clear()
+      clear: function clear() {
+        for (var that = _validateCollection$1(this, NAME), data = that._i, entry = that._f; entry; entry = entry.n) {
+          entry.r = true;
+          if (entry.p) entry.p = entry.p.n = undefined;
+          delete data[entry.i];
+        }
+        that._f = that._l = undefined;
+        that[SIZE$1] = 0;
+      },
+      // 23.1.3.3 Map.prototype.delete(key)
+      // 23.2.3.4 Set.prototype.delete(value)
+      'delete': function (key) {
+        var that = _validateCollection$1(this, NAME);
+        var entry = getEntry$1(that, key);
+        if (entry) {
+          var next = entry.n;
+          var prev = entry.p;
+          delete that._i[entry.i];
+          entry.r = true;
+          if (prev) prev.n = next;
+          if (next) next.p = prev;
+          if (that._f == entry) that._f = next;
+          if (that._l == entry) that._l = prev;
+          that[SIZE$1]--;
+        } return !!entry;
+      },
+      // 23.2.3.6 Set.prototype.forEach(callbackfn, thisArg = undefined)
+      // 23.1.3.5 Map.prototype.forEach(callbackfn, thisArg = undefined)
+      forEach: function forEach(callbackfn /* , that = undefined */) {
+        _validateCollection$1(this, NAME);
+        var f = _ctx$1(callbackfn, arguments.length > 1 ? arguments[1] : undefined, 3);
+        var entry;
+        while (entry = entry ? entry.n : this._f) {
+          f(entry.v, entry.k, this);
+          // revert to the last existing entry
+          while (entry && entry.r) entry = entry.p;
+        }
+      },
+      // 23.1.3.7 Map.prototype.has(key)
+      // 23.2.3.7 Set.prototype.has(value)
+      has: function has(key) {
+        return !!getEntry$1(_validateCollection$1(this, NAME), key);
+      }
+    });
+    if (_descriptors$1) dP$6(C.prototype, 'size', {
+      get: function () {
+        return _validateCollection$1(this, NAME)[SIZE$1];
+      }
+    });
+    return C;
+  },
+  def: function (that, key, value) {
+    var entry = getEntry$1(that, key);
+    var prev, index;
+    // change existing entry
+    if (entry) {
+      entry.v = value;
+    // create new entry
+    } else {
+      that._l = entry = {
+        i: index = fastKey$1(key, true), // <- index
+        k: key,                        // <- key
+        v: value,                      // <- value
+        p: prev = that._l,             // <- previous entry
+        n: undefined,                  // <- next entry
+        r: false                       // <- removed
+      };
+      if (!that._f) that._f = entry;
+      if (prev) prev.n = entry;
+      that[SIZE$1]++;
+      // add to index
+      if (index !== 'F') that._i[index] = entry;
+    } return that;
+  },
+  getEntry: getEntry$1,
+  setStrong: function (C, NAME, IS_MAP) {
+    // add .keys, .values, .entries, [@@iterator]
+    // 23.1.3.4, 23.1.3.8, 23.1.3.11, 23.1.3.12, 23.2.3.5, 23.2.3.8, 23.2.3.10, 23.2.3.11
+    _iterDefine$1(C, NAME, function (iterated, kind) {
+      this._t = _validateCollection$1(iterated, NAME); // target
+      this._k = kind;                     // kind
+      this._l = undefined;                // previous
+    }, function () {
+      var that = this;
+      var kind = that._k;
+      var entry = that._l;
+      // revert to the last existing entry
+      while (entry && entry.r) entry = entry.p;
+      // get next entry
+      if (!that._t || !(that._l = entry = entry ? entry.n : that._t._f)) {
+        // or finish the iteration
+        that._t = undefined;
+        return _iterStep$1(1);
+      }
+      // return step by kind
+      if (kind == 'keys') return _iterStep$1(0, entry.k);
+      if (kind == 'values') return _iterStep$1(0, entry.v);
+      return _iterStep$1(0, [entry.k, entry.v]);
+    }, IS_MAP ? 'entries' : 'values', !IS_MAP, true);
+
+    // add [@@species], 23.1.2.2, 23.2.2.2
+    _setSpecies$1(NAME);
+  }
+};
+
+var dP$7 = _objectDp$1.f;
+var each$1 = _arrayMethods$1(0);
+
+
+var _collection$1 = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
+  var Base = _global$1[NAME];
+  var C = Base;
+  var ADDER = IS_MAP ? 'set' : 'add';
+  var proto = C && C.prototype;
+  var O = {};
+  if (!_descriptors$1 || typeof C != 'function' || !(IS_WEAK || proto.forEach && !_fails$1(function () {
+    new C().entries().next();
+  }))) {
+    // create collection constructor
+    C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
+    _redefineAll$1(C.prototype, methods);
+    _meta$1.NEED = true;
+  } else {
+    C = wrapper(function (target, iterable) {
+      _anInstance$1(target, C, NAME, '_c');
+      target._c = new Base();
+      if (iterable != undefined) _forOf$1(iterable, IS_MAP, target[ADDER], target);
+    });
+    each$1('add,clear,delete,forEach,get,has,set,keys,values,entries,toJSON'.split(','), function (KEY) {
+      var IS_ADDER = KEY == 'add' || KEY == 'set';
+      if (KEY in proto && !(IS_WEAK && KEY == 'clear')) _hide$1(C.prototype, KEY, function (a, b) {
+        _anInstance$1(this, C, KEY);
+        if (!IS_ADDER && IS_WEAK && !_isObject$1(a)) return KEY == 'get' ? undefined : false;
+        var result = this._c[KEY](a === 0 ? 0 : a, b);
+        return IS_ADDER ? this : result;
+      });
+    });
+    IS_WEAK || dP$7(C.prototype, 'size', {
+      get: function () {
+        return this._c.size;
+      }
+    });
+  }
+
+  _setToStringTag$1(C, NAME);
+
+  O[NAME] = C;
+  _export$1(_export$1.G + _export$1.W + _export$1.F, O);
+
+  if (!IS_WEAK) common.setStrong(C, NAME, IS_MAP);
+
+  return C;
+};
+
+var MAP = 'Map';
+
+// 23.1 Map Objects
+var es6_map = _collection$1(MAP, function (get) {
+  return function Map() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
+}, {
+  // 23.1.3.6 Map.prototype.get(key)
+  get: function get(key) {
+    var entry = _collectionStrong$1.getEntry(_validateCollection$1(this, MAP), key);
+    return entry && entry.v;
+  },
+  // 23.1.3.9 Map.prototype.set(key, value)
+  set: function set(key, value) {
+    return _collectionStrong$1.def(_validateCollection$1(this, MAP), key === 0 ? 0 : key, value);
+  }
+}, _collectionStrong$1, true);
+
+var _arrayFromIterable$1 = function (iter, ITERATOR) {
+  var result = [];
+  _forOf$1(iter, false, result.push, result, ITERATOR);
+  return result;
+};
+
+// https://github.com/DavidBruant/Map-Set.prototype.toJSON
+
+
+var _collectionToJson$1 = function (NAME) {
+  return function toJSON() {
+    if (_classof$1(this) != NAME) throw TypeError(NAME + "#toJSON isn't generic");
+    return _arrayFromIterable$1(this);
+  };
+};
+
+// https://github.com/DavidBruant/Map-Set.prototype.toJSON
+
+
+_export$1(_export$1.P + _export$1.R, 'Map', { toJSON: _collectionToJson$1('Map') });
+
+// https://tc39.github.io/proposal-setmap-offrom/
+
+
+var _setCollectionOf$1 = function (COLLECTION) {
+  _export$1(_export$1.S, COLLECTION, { of: function of() {
+    var length = arguments.length;
+    var A = new Array(length);
+    while (length--) A[length] = arguments[length];
+    return new this(A);
+  } });
+};
+
+// https://tc39.github.io/proposal-setmap-offrom/#sec-map.of
+_setCollectionOf$1('Map');
+
+// https://tc39.github.io/proposal-setmap-offrom/
+
+
+
+
+
+var _setCollectionFrom$1 = function (COLLECTION) {
+  _export$1(_export$1.S, COLLECTION, { from: function from(source /* , mapFn, thisArg */) {
+    var mapFn = arguments[1];
+    var mapping, A, n, cb;
+    _aFunction$1(this);
+    mapping = mapFn !== undefined;
+    if (mapping) _aFunction$1(mapFn);
+    if (source == undefined) return new this();
+    A = [];
+    if (mapping) {
+      n = 0;
+      cb = _ctx$1(mapFn, arguments[2], 2);
+      _forOf$1(source, false, function (nextItem) {
+        A.push(cb(nextItem, n++));
+      });
+    } else {
+      _forOf$1(source, false, A.push, A);
+    }
+    return new this(A);
+  } });
+};
+
+// https://tc39.github.io/proposal-setmap-offrom/#sec-map.from
+_setCollectionFrom$1('Map');
+
+var MAP$1 = 'Map';
+
+// 23.1 Map Objects
+var es6_map$1 = _collection$1(MAP$1, function (get) {
+  return function Map() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
+}, {
+  // 23.1.3.6 Map.prototype.get(key)
+  get: function get(key) {
+    var entry = _collectionStrong$1.getEntry(_validateCollection$1(this, MAP$1), key);
+    return entry && entry.v;
+  },
+  // 23.1.3.9 Map.prototype.set(key, value)
+  set: function set(key, value) {
+    return _collectionStrong$1.def(_validateCollection$1(this, MAP$1), key === 0 ? 0 : key, value);
+  }
+}, _collectionStrong$1, true);
+
+// https://github.com/DavidBruant/Map-Set.prototype.toJSON
+
+
+_export$1(_export$1.P + _export$1.R, 'Map', { toJSON: _collectionToJson$1('Map') });
+
+// https://tc39.github.io/proposal-setmap-offrom/#sec-map.of
+_setCollectionOf$1('Map');
+
+// https://tc39.github.io/proposal-setmap-offrom/#sec-map.from
+_setCollectionFrom$1('Map');
+
+var map = _core$1.Map;
+
+var slice$1 = Array.prototype.slice;
+/**
+ * 转为数组
+ * @param {Array|NodeList} obj 数组或类数组
+ * @param {number} from 开始索引,默认为0
+ */
+
+function toArray(obj, from) {
+  var tmp = [];
+
+  for (var i = from || 0, len = obj.length; i < len; i++) {
+    tmp.push(obj[i]);
+  }
+
+  return tmp;
+} //将 NodeList 转为 Array
+
+var makeArrayNode = function () {
+  try {
+    slice$1.call(document.documentElement.childNodes);
+    return function (obj, from) {
+      return slice$1.call(obj, from);
+    };
+  } catch (e) {
+    return toArray;
+  }
+}();
+/**
+ * 将类数组对象转为数组,若对象不存在,则返回空数组
+ * @param {Array|arguments|NodeList} obj 数组或类数组
+ * @param {number} from 开始索引,默认为0
+ */
+
+
+function makeArray(obj, from) {
+  if (obj == undefined) return [];
+
+  switch (getType(obj)) {
+    case "array":
+      return from ? obj.slice(from) : obj;
+
+    case "list":
+      return makeArrayNode(obj, from);
+
+    case "arguments":
+      return slice$1.call(obj, from);
+  }
+
+  return [obj];
+} //  var arr = [
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-07-09 16:36:19
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-07-28 13:58:24
+ * @Description: 
+ */
+var objTransfer = {
+  toLower: toLower,
+  toUpper: toUpper,
+  toArray: toArray,
+  makeArray: makeArray
+};
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
+ * @Date: 2021-07-09 16:36:19
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-07-28 13:58:33
+ * @Description: 
+ */
+var strTransfer = {
+  trim: trim$2,
+  titleize: titleize,
+  camelize: camelize,
+  dasherize: dasherize,
+  escapeHTML: escapeHTML,
+  unescapeHTML: unescapeHTML
 };
 
 /*
@@ -4314,6 +5162,176 @@ function AMaploader(p) {
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
+ * @Date: 2021-06-28 09:47:26
+ * @LastEditors: zhangyu
+ * @LastEditTime: 2021-07-21 10:58:10
+ * @Description: 创建websocket对象
+ */
+/**
+  * @description: 建立websocket连接函数
+  * @param {*} wsUrl 连接地址
+  * @param {*} event 回调函数
+  * @param {*} onmessage 回调函数里事件监听 消息
+  * @param {*} onclose 回调函数里事件监听 关闭
+  * @param {*} onerror 回调函数里事件监听 错误
+  * @return {*} create() => socket
+  */
+
+var createWebsocket = {
+  // 保存websocket对象
+  socket: null,
+  // websocket 参数
+  websocketInfo: null,
+  // reConnect函数节流标识符
+  flag: true,
+  // 记录ws失败信息
+  socketErrorInfo: {
+    times: 0,
+    // 次数
+    limit: 5 // 限制 超出限制业务处理
+
+  },
+  timeOut: 1000 * 60 * 3,
+  // 3分钟心跳一次
+  timeObj: null,
+  serverTimeObj: null,
+  // 心跳机制
+  heart: function heart() {
+    // console.log('******ws heart beat******');
+    var self = this; // 清除延时器
+
+    this.timeObj && clearTimeout(this.timeObj);
+    this.serverTimeObj && clearTimeout(this.serverTimeObj);
+    this.timeObj = setTimeout(function () {
+      self.socket.send('islive'); // 发送消息，服务端返回信息，即表示连接良好，可以在socket的onmessage事件重置心跳机制函数
+      // 定义一个延时器等待服务器响应，若超时，则关闭连接，重新请求server建立socket连接
+
+      self.serverTimeObj = setTimeout(function () {
+        self.socket.close();
+        self.reConnect();
+      }, self.timeOut);
+    }, this.timeOut);
+  },
+  // 重连函数
+  // 因为重连函数会被socket事件频繁触发，所以通过函数节流限制重连请求发送
+  reConnect: function reConnect() {
+    var _this = this;
+
+    if (!this.flag) {
+      return;
+    } // 重连超过5次 提示用户网络异常
+
+
+    if (this.socketErrorInfo.times && this.socketErrorInfo.times > this.socketErrorInfo.limit) {
+      this.socketErrorInfo.times = 0;
+      alert('您当前网络环境差');
+    }
+
+    this.flag = false;
+    setTimeout(function () {
+      _this.create(_this.websocketInfo);
+
+      _this.flag = true;
+      _this.socketErrorInfo.times++;
+    }, 3000);
+  },
+
+  /**
+   * @description: 建立websocket连接函数
+   * @param {*} wsUrl 连接地址
+   * @param {*} event 回调函数
+   * @param {*} onmessage 回调函数里事件监听 消息
+   * @param {*} onclose 回调函数里事件监听 关闭
+   * @param {*} onerror 回调函数里事件监听 错误
+   * @return {*} socket
+   */
+  create: function create(_ref) {
+    var _this2 = this;
+
+    var wsUrl = _ref.wsUrl,
+        _ref$event = _ref.event,
+        onopen = _ref$event.onopen,
+        onmessage = _ref$event.onmessage,
+        onclose = _ref$event.onclose,
+        onerror = _ref$event.onerror;
+
+    // 兼容性检验
+    if (typeof WebSocket == 'undefined') {
+      // console.log('您的浏览器不支持WebSocket, 请使用主流浏览器访问页面，如Chrome浏览器');
+      alert('您的浏览器不支持接收消息, 请使用主流浏览器访问页面，如Chrome浏览器');
+    } // 储存参数
+
+
+    this.websocketInfo = this.websocketInfo || arguments[0]; // 根据环境设置 host
+
+    var socketUrl = "".concat(this.websocketInfo.wsUrl);
+
+    try {
+      // 实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+      this.socket = new WebSocket(socketUrl); // 对WebSocket各种事件进行监听
+
+      this.socket.onopen = function (e) {
+        onopen && onopen(e, _this2.socket); // 重置心跳机制
+
+        _this2.heart();
+      };
+
+      this.socket.onmessage = function (e) {
+        // console.log('推送消息: ' + e.data);
+        // 接收信息类型判断 消息判断需重新定义 20210604
+        // if (e.data == 'living') {
+        //     console.log('hey man i am living');
+        // } else if (e.data == 'connected') {
+        //     console.log('已连接');
+        // } else {
+        //     console.log('推送消息: ' + e.data);
+        // }
+        var data = {}; // 过滤字符串
+
+        if (isJSONStringify(e.data)) {
+          data = {
+            data: JSON.parse(e.data)
+          };
+        } else {
+          console.log('收到不能转换为对象的字符串');
+        }
+
+        onmessage && onmessage(data, _this2.socket);
+        _this2.socketErrorInfo.times = 0; // 通过event.data获取server发送的信息
+        // 对数据进行操作
+        // console.log(event.data);
+        // 收到消息表示连接正常，所以重置心跳机制
+
+        _this2.heart();
+      };
+
+      this.socket.onclose = function (e) {
+        // console.log(e, 'socket-onclose');
+        onclose && onclose(e, _this2.socket);
+
+        _this2.reConnect();
+      };
+
+      this.socket.onerror = function (e) {
+        // 报错+重连
+        // console.log(e, 'socket-onerror');
+        onerror && onerror(e, _this2.socket);
+
+        _this2.reConnect();
+      };
+
+      return this.socket;
+    } catch (e) {
+      // 进行重连;
+      // console.log('websocket连接错误');
+      this.reConnect();
+    }
+  }
+};
+
+/*
+ * @Author: zhangyu
+ * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-21 20:09:32
  * @LastEditors: zhangyu
  * @LastEditTime: 2021-06-24 15:17:00
@@ -4695,7 +5713,7 @@ function sleepSync(ms) {
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:43:38
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 14:16:15
+ * @LastEditTime: 2021-07-09 15:13:55
  * @Description: 
  */
 var has$2 = Object.prototype.hasOwnProperty;
@@ -4753,6 +5771,27 @@ function deepCopy(data) {
   return result;
 }
 /**
+ * 给原型方法或属性添加别名 eg:alias(Array,"forEach","each");
+ * @param {object} obj 对象
+ * @param {string|object} name 属性名称或对象 eg: 'forEach' | {forEach:'each'}
+ * @param {string} aliasName 别名
+ */
+
+function alias(obj, name, aliasName) {
+  if (!obj || !obj.prototype) return;
+  var prototype = obj.prototype;
+
+  if (typeof name == "string") {
+    prototype[aliasName] = prototype[name];
+  } else {
+    for (var key in name) {
+      if (has$2.call(name, key) && has$2.call(prototype, key)) prototype[name[key]] = prototype[key];
+    }
+  }
+
+  return obj;
+}
+/**
  * @description: 对象方法工具 hasKey:判断一个对象是否存在key; objEqual: 两个对象是否相等这两个对象的值只能是数字或字符串
  * @param {*}
  * @returns {number|boolean}
@@ -4783,40 +5822,282 @@ var objTools = {
           return obj1[key] != obj2[key];
         });
       }
-  }
+  },
+  alias: alias
 };
 
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
+var arrayLikeToArray = createCommonjsModule(function (module) {
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+  return arr2;
 }
 
-/*
- * @Author: zhangyu
- * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-25 11:30:34
- * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 13:20:20
- * @Description:
- */
+module.exports = _arrayLikeToArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(arrayLikeToArray);
+
+var arrayLikeToArray$2 = createCommonjsModule(function (module) {
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+module.exports = _arrayLikeToArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(arrayLikeToArray$2);
+
+var arrayWithoutHoles = createCommonjsModule(function (module) {
+function _arrayWithoutHoles(arr) {
+  if (isArray$1(arr)) return arrayLikeToArray$2(arr);
+}
+
+module.exports = _arrayWithoutHoles;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(arrayWithoutHoles);
+
+var iterableToArray = createCommonjsModule(function (module) {
+function _iterableToArray(iter) {
+  if (typeof symbol !== "undefined" && iter[iterator$1] != null || iter["@@iterator"] != null) return from_1$1(iter);
+}
+
+module.exports = _iterableToArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(iterableToArray);
+
+var unsupportedIterableToArray = createCommonjsModule(function (module) {
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray$2(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return from_1$1(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray$2(o, minLen);
+}
+
+module.exports = _unsupportedIterableToArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(unsupportedIterableToArray);
+
+var nonIterableSpread = createCommonjsModule(function (module) {
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableSpread;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(nonIterableSpread);
+
+var arrayWithoutHoles$2 = createCommonjsModule(function (module) {
+function _arrayWithoutHoles(arr) {
+  if (isArray$1(arr)) return arrayLikeToArray$2(arr);
+}
+
+module.exports = _arrayWithoutHoles;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(arrayWithoutHoles$2);
+
+var iterableToArray$2 = createCommonjsModule(function (module) {
+function _iterableToArray(iter) {
+  if (typeof symbol !== "undefined" && iter[iterator$1] != null || iter["@@iterator"] != null) return from_1$1(iter);
+}
+
+module.exports = _iterableToArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(iterableToArray$2);
+
+var unsupportedIterableToArray$2 = createCommonjsModule(function (module) {
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray$2(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return from_1$1(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray$2(o, minLen);
+}
+
+module.exports = _unsupportedIterableToArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(unsupportedIterableToArray$2);
+
+var nonIterableSpread$2 = createCommonjsModule(function (module) {
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableSpread;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(nonIterableSpread$2);
+
+var toConsumableArray = createCommonjsModule(function (module) {
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles$2(arr) || iterableToArray$2(arr) || unsupportedIterableToArray$2(arr) || nonIterableSpread$2();
+}
+
+module.exports = _toConsumableArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+var _toConsumableArray = unwrapExports(toConsumableArray);
+
+var arrayWithHoles = createCommonjsModule(function (module) {
+function _arrayWithHoles(arr) {
+  if (isArray$1(arr)) return arr;
+}
+
+module.exports = _arrayWithHoles;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(arrayWithHoles);
+
+var iterableToArrayLimit = createCommonjsModule(function (module) {
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof symbol !== "undefined" && arr[iterator$1] || arr["@@iterator"];
+
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+
+  var _s, _e;
+
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+module.exports = _iterableToArrayLimit;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(iterableToArrayLimit);
+
+var nonIterableRest = createCommonjsModule(function (module) {
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableRest;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(nonIterableRest);
+
+var arrayWithHoles$2 = createCommonjsModule(function (module) {
+function _arrayWithHoles(arr) {
+  if (isArray$1(arr)) return arr;
+}
+
+module.exports = _arrayWithHoles;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(arrayWithHoles$2);
+
+var iterableToArrayLimit$2 = createCommonjsModule(function (module) {
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof symbol !== "undefined" && arr[iterator$1] || arr["@@iterator"];
+
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+
+  var _s, _e;
+
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+module.exports = _iterableToArrayLimit;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(iterableToArrayLimit$2);
+
+var nonIterableRest$2 = createCommonjsModule(function (module) {
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableRest;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+unwrapExports(nonIterableRest$2);
+
+var slicedToArray = createCommonjsModule(function (module) {
+function _slicedToArray(arr, i) {
+  return arrayWithHoles$2(arr) || iterableToArrayLimit$2(arr, i) || unsupportedIterableToArray$2(arr, i) || nonIterableRest$2();
+}
+
+module.exports = _slicedToArray;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+});
+
+var _slicedToArray = unwrapExports(slicedToArray);
+
 /**
  * @description: 数组转对象
  * @param {string} key
@@ -4825,10 +6106,6 @@ function __spreadArrays() {
  */
 
 function arrayToObject(key, arr) {
-  if (arr === void 0) {
-    arr = [];
-  }
-
   var mapping = {};
   arr.forEach(function (item) {
     if (item[key]) {
@@ -4839,9 +6116,9 @@ function arrayToObject(key, arr) {
 }
 /**
  * 引用数组位移，性能优化
- * @param {<any[]>} array
- * @param {number} from
- * @param {number} to
+ * @param {<any[]>} array 
+ * @param {number} from 
+ * @param {number} to 
  */
 
 function arrayMoveMutate(array, from, to) {
@@ -4849,16 +6126,20 @@ function arrayMoveMutate(array, from, to) {
 
   if (startIndex >= 0 && startIndex < array.length) {
     var endIndex = to < 0 ? array.length + to : to;
-    var item = array.splice(from, 1)[0];
+
+    var _array$splice = array.splice(from, 1),
+        _array$splice2 = _slicedToArray(_array$splice, 1),
+        item = _array$splice2[0];
+
     array.splice(endIndex, 0, item);
   }
 }
 /**
  * 数组位移
- * @param {<any[]>} array
- * @param {number} from
- * @param {number} to
- * @returns
+ * @param {<any[]>} array 
+ * @param {number} from 
+ * @param {number} to 
+ * @returns 
  * @example
     ```
         const { arrayMove } = require('@alrale/common-lib');
@@ -4880,7 +6161,7 @@ function arrayMoveMutate(array, from, to) {
  */
 
 function arrayMove(array, from, to) {
-  var _array = __spreadArrays(array);
+  var _array = _toConsumableArray(array);
 
   arrayMoveMutate(_array, from, to);
   return _array;
@@ -4891,13 +6172,15 @@ function arrayMove(array, from, to) {
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-25 11:30:34
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 13:20:29
- * @Description:
+ * @LastEditTime: 2021-07-09 15:03:47
+ * @Description: 
  */
 var arrayTools = {
   arrayToObject: arrayToObject,
   arrayMoveMutate: arrayMoveMutate,
-  arrayMove: arrayMove
+  arrayMove: arrayMove,
+  arrFibonacci: arrFibonacci,
+  arrVals: arrVals
 };
 
 //解析cookie值
@@ -5177,7 +6460,7 @@ function removeGlobalItem(key) {
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-25 17:16:50
+ * @LastEditTime: 2021-07-28 13:59:27
  * @Description: 
  */
 var index$1 = {
@@ -5203,8 +6486,11 @@ var index$1 = {
   handleParam: handleParam,
   byteTools: byteTools,
   jsonTools: jsonTools,
+  objTransfer: objTransfer,
+  strTransfer: strTransfer,
   jsBridge: jsBridge,
   AMaploader: AMaploader,
+  createWebsocket: createWebsocket,
   getUUID: getUUID,
   appendJs: appendJs,
   store: store,
