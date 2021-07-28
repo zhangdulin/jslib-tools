@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-28 09:47:26
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-09 13:33:25
+ * @LastEditTime: 2021-07-21 10:58:10
  * @Description: 创建websocket对象
  */
 
@@ -35,13 +35,13 @@ export default {
   serverTimeObj: null,
   // 心跳机制
   heart() {
-    console.log('******ws heart beat******');
+    // console.log('******ws heart beat******');
     const self = this;
     // 清除延时器
     this.timeObj && clearTimeout(this.timeObj);
     this.serverTimeObj && clearTimeout(this.serverTimeObj);
     this.timeObj = setTimeout(function () {
-      self.socket.send('yxj-islive'); // 发送消息，服务端返回信息，即表示连接良好，可以在socket的onmessage事件重置心跳机制函数
+      self.socket.send('islive'); // 发送消息，服务端返回信息，即表示连接良好，可以在socket的onmessage事件重置心跳机制函数
       // 定义一个延时器等待服务器响应，若超时，则关闭连接，重新请求server建立socket连接
       self.serverTimeObj = setTimeout(function () {
         self.socket.close();
@@ -81,11 +81,11 @@ export default {
   create({ wsUrl, event: { onopen, onmessage, onclose, onerror } }) {
     // 兼容性检验
     if (typeof WebSocket == 'undefined') {
-      console.log('您的浏览器不支持WebSocket, 请使用主流浏览器访问页面，如Chrome浏览器');
+      // console.log('您的浏览器不支持WebSocket, 请使用主流浏览器访问页面，如Chrome浏览器');
 
       alert('您的浏览器不支持接收消息, 请使用主流浏览器访问页面，如Chrome浏览器');
     } else {
-      console.log('您的浏览器支持WebSocket');
+      // console.log('您的浏览器支持WebSocket');
     }
 
     // 储存参数
@@ -103,10 +103,10 @@ export default {
         this.heart();
       };
       this.socket.onmessage = e => {
-        console.log('推送消息: ' + e.data);
+        // console.log('推送消息: ' + e.data);
 
         // 接收信息类型判断 消息判断需重新定义 20210604
-        // if (e.data == 'yxj-living') {
+        // if (e.data == 'living') {
         //     console.log('hey man i am living');
         // } else if (e.data == 'connected') {
         //     console.log('已连接');
@@ -117,13 +117,12 @@ export default {
         let data = {};
         // 过滤字符串
         if (isJSONStringify(e.data)) {
-          data = JSON.parse(e.data);
+          data = {data: JSON.parse(e.data)};
         } else {
           console.log('收到不能转换为对象的字符串');
         }
 
-        e.data = data;
-        onmessage && onmessage(e, this.socket);
+        onmessage && onmessage(data, this.socket);
 
         this.socketErrorInfo.times = 0;
 
@@ -134,13 +133,13 @@ export default {
         this.heart();
       };
       this.socket.onclose = e => {
-        console.log(e, 'socket-onclose');
+        // console.log(e, 'socket-onclose');
         onclose && onclose(e, this.socket);
         this.reConnect();
       };
       this.socket.onerror = e => {
         // 报错+重连
-        console.log(e, 'socket-onerror');
+        // console.log(e, 'socket-onerror');
         onerror && onerror(e, this.socket);
         this.reConnect();
       };
@@ -148,7 +147,7 @@ export default {
       return this.socket;
     } catch (e) {
       // 进行重连;
-      console.log('websocket连接错误');
+      // console.log('websocket连接错误');
       this.reConnect();
     }
   }

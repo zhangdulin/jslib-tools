@@ -3,9 +3,11 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-22 10:40:09
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-28 09:56:06
+ * @LastEditTime: 2021-07-28 11:33:19
  * @Description: 
  */
+import { trim } from '../transfer/regex'
+
 //Node.js中闭包外部this并非global eg:(function(g){})(this); //this not global
 //严格模式下this不指向全局变量
 var GLOBAL = typeof global == "object" ? global : window,
@@ -113,6 +115,36 @@ export function def(value, defValue) {
 }
 
 /**
+* @description: 判断对象是否相等
+* @param {*object} 对象
+* @return {*boolean} 
+*/
+export const isDiff = (obj1, obj2) => {
+  var o1 = obj1 instanceof Object;
+  var o2 = obj2 instanceof Object;
+  if (!o1 || !o2) {
+    /*  判断不是对象  */
+    return obj1 === obj2;
+  }
+
+  if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+    return false;
+    //Object.keys() 返回一个由对象的自身可枚举属性(key值)组成的数组,例如：数组返回下表：let arr = ["a", "b", "c"];console.log(Object.keys(arr))->0,1,2;
+  }
+
+  for (var attr in obj1) {
+    var t1 = obj1[attr] instanceof Object;
+    var t2 = obj2[attr] instanceof Object;
+    if (t1 && t2) {
+      return isDiff(obj1[attr], obj2[attr]);
+    } else if (obj1[attr] !== obj2[attr]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * 检测是否是符合条件的数字(n必须为数字类型)
  * @param {number} n 数字
  * @param {number|undefined} min 允许的最小值
@@ -194,20 +226,20 @@ export function checkInt(str, min, max) {
 // 判断字符串是否可以转换对象
 export const isJSONStringify = str => {
   if (typeof str == 'string') {
-      try {
-          var obj = JSON.parse(str);
-          if (typeof obj == 'object' && obj) {
-              return true;
-          } else {
-              return false;
-          }
-      } catch (e) {
-          console.log('error：' + e + 'info' + str);
-          return false;
+    try {
+      var obj = JSON.parse(str);
+      if (typeof obj == 'object' && obj) {
+        return true;
+      } else {
+        return false;
       }
-  } else {
-      console.log('It is not a string!');
+    } catch (e) {
+      console.log('error：' + e + 'info' + str);
       return false;
+    }
+  } else {
+    console.log('It is not a string!');
+    return false;
   }
 };
 
@@ -225,5 +257,6 @@ export default {
   isUInt,
   checkNum,
   checkInt,
-  isJSONStringify
+  isJSONStringify,
+  isDiff
 }

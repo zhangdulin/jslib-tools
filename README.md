@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-09 18:08:15
+ * @LastEditTime: 2021-07-28 14:02:08
  * @Description:
 -->
 
@@ -113,25 +113,37 @@ b2size
 ```
 
 #### 0.1.4
-
-```
-
-增加 
-judgeTools.isJSONStringify 判断字符串是否可以转换对象
-createWebsocket 创建 websocket
-
-arrayTools 方法里增加
-arrVals  根据指定的键或索引抽取数组项的值
-arrFibonacci 按条件产生数组 arr(5,2,2) => [2,4,6,8,10]
-
-objTools 方法里增加
-alias 给对象增加别名
-
-objTransfer
-    toLower,
-    toUpper,
-    toArray,
-    makeArray
-```
+- 增加 
+1. judgeTools.isJSONStringify 
+> 判断字符串是否可以转换对象
+2. createWebsocket 
+> 创建 websocket
+3. arrayTools.arrVals
+> 根据指定的键或索引抽取数组项的值
+4. arrayTools.arrFibonacci
+> 按条件产生数组 arr(5,2,2) => [2,4,6,8,10]
+5. objTools.alias      
+> 给对象增加别名
+7. objTransfer
+   1. objTransfer.toLower
+   2. objTransfer.toUpper
+   3. objTransfer.toArray
+   4. objTransfer.makeArray
+8. judgeTools
+   1. judgeTools.isDiff
+   > 判断对象是否相等
+9. strTransfer
+   1. strTransfer.trim
+   > 方法是去掉字符串的开头和结尾的空白符
+   2. strTransfer.titleize
+   >  将每个单词的首字母转换为大写
+   3. strTransfer.camelize
+   > 驼峰化
+   4. strTransfer.dasherize
+   > 中划线化
+   5. strTransfer.escapeHTML
+   > 将HTML特殊字符转换成等值的实体
+   6. strTransfer.unescapeHTML
+   > 实体字符转换为等值的HTML
 
 
