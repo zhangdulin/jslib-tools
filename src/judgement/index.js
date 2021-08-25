@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-22 10:40:09
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 14:12:18
+ * @LastEditTime: 2021-08-25 15:47:18
  * @Description: 
  */
 import { trim } from '../transfer/regex'
@@ -65,6 +65,30 @@ export function getType(obj) {
   //在某些最新的浏览器中(IE11、Firefox、Chrome)性能与hash读取差不多 eg: return class2type[toString.call(obj)];
   return toString.call(obj).slice(8, -1).toLowerCase();
 }
+
+// export function typeIs<T>(target: T): string {
+//   const Type: any = {
+//     '[object String]': 'string',
+//     '[object Number]': 'number',
+//     '[object Boolean]': 'boolean',
+//     '[object Symbol]': 'symbol',
+//     '[object Undefined]': 'undefined',
+//     '[object Null]': 'null',
+//     '[object Function]': 'function',
+//     '[object Date]': 'date',
+//     '[object Array]': 'array',
+//     '[object Object]': 'object',
+//     '[object Map]': 'map',
+//     '[object RegExp]': 'regexp',
+//     '[object Error]': 'error',
+//     '[object HTMLDocument]': 'document',
+//     '[object global]': 'window' // window 是全局对象 global 的引用
+//   }
+//   const find_proto: string = Object.prototype.toString.call(target)
+//   const type_to_string: string = Type[find_proto]
+//   return type_to_string
+// }
+
 
 /**
  * 检测是否为函数
@@ -249,6 +273,27 @@ export const isJSONStringify = str => {
   }
 };
 
+/**
+* 判断Object array是否是空对象
+* @param {any} target 
+*/
+export function isObjEmpty(target) {
+  if (!['object', 'array'].includes(getType(target))) return false;
+  return ['{}', '[]'].includes(JSON.stringify(target));
+}
+
+/**
+ * 比较大小
+ * @returns -1 0 1
+ */
+export function compareSize(small, big){
+  let before, after;
+  before = isNum(small) ? +small : small
+  after = isNum(big) ? +big : big
+  if (before < after) return 1;
+  if (before === after) return 0;
+  return -1;
+}
 
 export default {
   getType,
@@ -264,5 +309,7 @@ export default {
   checkNum,
   checkInt,
   isJSONStringify,
-  isDiff
+  isDiff,
+  isObjEmpty,
+  compareSize
 }

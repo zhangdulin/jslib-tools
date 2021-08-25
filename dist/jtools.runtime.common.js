@@ -1,5 +1,5 @@
 /*!
- * jtools v0.1.4
+ * jtools v0.1.5
  * jlb web team
  */
 'use strict';
@@ -238,7 +238,7 @@ var store = _global$1[SHARED] || (_global$1[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: _core$1.version,
-  mode: 'pure',
+  mode: _library$1 ? 'pure' : 'global',
   copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
 });
 });
@@ -2006,7 +2006,7 @@ var _parseInt$3 = _parseInt$2;
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-06-10 17:55:38
+ * @LastEditTime: 2021-08-25 15:51:30
  * @Description: 
  */
 
@@ -2033,7 +2033,7 @@ function dateFormat2(dateTimeStamp) {
   var diffValue = now - dateTimeStamp; // 时间差
 
   if (diffValue < 0) {
-    return;
+    return '不久前';
   }
 
   var minC = diffValue / minute; // 计算时间差的分，时，天，周，月
@@ -3627,7 +3627,7 @@ var _typeof = unwrapExports(_typeof_1);
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-07-13 13:25:06
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 13:51:11
+ * @LastEditTime: 2021-07-28 14:14:37
  * @Description: 
  */
 // trim 方法是去掉字符串的开头和结尾的空白符。有两种思路去做。 第一种，匹配到开头和结尾的空白符，然后替换成空字符。如：
@@ -3642,8 +3642,8 @@ function trim$2(str) {
 
 /**
  * @description: 将每个单词的首字母转换为大写
- * @param {*string} str
- * @return {*string}
+ * @param {string} str
+ * @return {string}
  */
 
 function titleize(str) {
@@ -3656,8 +3656,8 @@ function titleize(str) {
 
 /**
  * @description: 驼峰化 
- * @param {*string} str
- * @return {*string}
+ * @param {string} str
+ * @return {string}
  */
 
 function camelize(str) {
@@ -3671,8 +3671,8 @@ function camelize(str) {
 
 /**
  * @description: 中划线化
- * @param {*string} str
- * @return {*string}
+ * @param {string} str
+ * @return {string}
  */
 
 function dasherize(str) {
@@ -3684,8 +3684,8 @@ function dasherize(str) {
 
 /**
  * @description: 将HTML特殊字符转换成等值的实体 
- * @param {*string}
- * @return {*string}
+ * @param {string}
+ * @return {string}
  */
 
 function escapeHTML(str) {
@@ -3706,8 +3706,8 @@ function escapeHTML(str) {
 
 /**
  * @description: 实体字符转换为等值的HTML 
- * @param {*string}
- * @return {*string}
+ * @param {string}
+ * @return {string}
  */
 
 function unescapeHTML(str) {
@@ -3749,6 +3749,7 @@ is_window_mode = GLOBAL == GLOBAL.window;
 /**
  * 获取数据类型(小写) undefined|null|string|number|array|function|date|regexp|window|node|list
  * @param {object} obj 要检测的数据
+ * @return {string}
  */
 
 function getType(obj) {
@@ -3774,10 +3775,33 @@ function getType(obj) {
 
 
   return toString$5.call(obj).slice(8, -1).toLowerCase();
-}
+} // export function typeIs<T>(target: T): string {
+//   const Type: any = {
+//     '[object String]': 'string',
+//     '[object Number]': 'number',
+//     '[object Boolean]': 'boolean',
+//     '[object Symbol]': 'symbol',
+//     '[object Undefined]': 'undefined',
+//     '[object Null]': 'null',
+//     '[object Function]': 'function',
+//     '[object Date]': 'date',
+//     '[object Array]': 'array',
+//     '[object Object]': 'object',
+//     '[object Map]': 'map',
+//     '[object RegExp]': 'regexp',
+//     '[object Error]': 'error',
+//     '[object HTMLDocument]': 'document',
+//     '[object global]': 'window' // window 是全局对象 global 的引用
+//   }
+//   const find_proto: string = Object.prototype.toString.call(target)
+//   const type_to_string: string = Type[find_proto]
+//   return type_to_string
+// }
+
 /**
  * 检测是否为函数
  * @param {object} fn 要检测的数据
+ * @return {boolean}
  */
 
 function isFunc(fn) {
@@ -3788,6 +3812,7 @@ function isFunc(fn) {
 /**
  * 检测是否为对象
  * @param {object} obj 要检测的数据
+ * @return {boolean}
  */
 
 function isObject(obj) {
@@ -3798,6 +3823,7 @@ function isObject(obj) {
 /**
  * 检测是否为数组
  * @param {object} obj 要检测的数据
+ * @return {boolean}
  */
 
 function isArray$2(obj) {
@@ -3806,6 +3832,7 @@ function isArray$2(obj) {
 /**
  * 检测是否为数组或类数组
  * @param {object} obj 要检测的数据
+ * @return {boolean}
  */
 
 function isArrayLike(obj) {
@@ -3816,6 +3843,7 @@ function isArrayLike(obj) {
  * 若value不为undefine,则返回value;否则返回defValue
  * @param {object} value 
  * @param {object} defValue value不存在时返回的值
+ * @return {*}
  */
 
 function def$2(value, defValue) {
@@ -3823,8 +3851,8 @@ function def$2(value, defValue) {
 }
 /**
 * @description: 判断对象是否相等
-* @param {*object} 对象
-* @return {*boolean} 
+* @param {object} 对象
+* @return {boolean} 
 */
 
 var isDiff = function isDiff(obj1, obj2) {
@@ -3954,6 +3982,28 @@ var isJSONStringify = function isJSONStringify(str) {
     return false;
   }
 };
+/**
+* 判断Object array是否是空对象
+* @param {any} target 
+*/
+
+function isObjEmpty(target) {
+  if (!['object', 'array'].includes(getType(target))) return false;
+  return ['{}', '[]'].includes(stringify$1(target));
+}
+/**
+ * 比较大小
+ * @returns -1 0 1
+ */
+
+function compareSize(small, big) {
+  var before, after;
+  before = isNum(small) ? +small : small;
+  after = isNum(big) ? +big : big;
+  if (before < after) return 1;
+  if (before === after) return 0;
+  return -1;
+}
 var judgeTools = {
   getType: getType,
   isArrayLike: isArrayLike,
@@ -3968,7 +4018,9 @@ var judgeTools = {
   checkNum: checkNum,
   checkInt: checkInt,
   isJSONStringify: isJSONStringify,
-  isDiff: isDiff
+  isDiff: isDiff,
+  isObjEmpty: isObjEmpty,
+  compareSize: compareSize
 };
 
 /**
@@ -4298,7 +4350,7 @@ module.exports = _defineProperty;
 module.exports["default"] = module.exports, module.exports.__esModule = true;
 });
 
-unwrapExports(defineProperty$4);
+var _defineProperty = unwrapExports(defineProperty$4);
 
 var _validateCollection$1 = function (it, TYPE) {
   if (!_isObject$1(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
@@ -4683,6 +4735,8 @@ _setCollectionFrom$1('Map');
 
 var map = _core$1.Map;
 
+var map$1 = map;
+
 var slice$1 = Array.prototype.slice;
 /**
  * 转为数组
@@ -4754,16 +4808,148 @@ var objTransfer = {
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-07-09 16:36:19
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 13:58:33
+ * @LastEditTime: 2021-08-25 14:42:38
  * @Description: 
  */
+/**
+ * 阿拉伯数字转换为简写汉字
+ *
+ * @export
+ * @param {number} num
+ * @returns {string}
+ */
+
+function toSimplifiedChinese(num) {
+  if (isNaN(num)) return ""; //字符处理完毕后开始转换，采用前后两部分分别转换
+
+  var part = String(num).split(".");
+  var newchar = ""; //小数点前进行转化
+
+  for (var i = part[0].length - 1; i >= 0; i--) {
+    if (part[0].length > 10) {
+      //位数过大，无法计算
+      return "";
+    } //若数量超过拾亿单位，提示
+
+
+    var tmpnewchar = "";
+    var perchar = part[0].charAt(i);
+
+    switch (perchar) {
+      case "0":
+        tmpnewchar = "零" + tmpnewchar;
+        break;
+
+      case "1":
+        tmpnewchar = "一" + tmpnewchar;
+        break;
+
+      case "2":
+        tmpnewchar = "二" + tmpnewchar;
+        break;
+
+      case "3":
+        tmpnewchar = "三" + tmpnewchar;
+        break;
+
+      case "4":
+        tmpnewchar = "四" + tmpnewchar;
+        break;
+
+      case "5":
+        tmpnewchar = "五" + tmpnewchar;
+        break;
+
+      case "6":
+        tmpnewchar = "六" + tmpnewchar;
+        break;
+
+      case "7":
+        tmpnewchar = "七" + tmpnewchar;
+        break;
+
+      case "8":
+        tmpnewchar = "八" + tmpnewchar;
+        break;
+
+      case "9":
+        tmpnewchar = "九" + tmpnewchar;
+        break;
+    }
+
+    switch (part[0].length - i - 1) {
+      case 0:
+        tmpnewchar = tmpnewchar;
+        break;
+
+      case 1:
+        if (perchar !== "0") tmpnewchar = tmpnewchar + "十";
+        break;
+
+      case 2:
+        if (perchar !== "0") tmpnewchar = tmpnewchar + "百";
+        break;
+
+      case 3:
+        if (perchar !== "0") tmpnewchar = tmpnewchar + "千";
+        break;
+
+      case 4:
+        tmpnewchar = tmpnewchar + "万";
+        break;
+
+      case 5:
+        if (perchar !== "0") tmpnewchar = tmpnewchar + "十";
+        break;
+
+      case 6:
+        if (perchar !== "0") tmpnewchar = tmpnewchar + "百";
+        break;
+
+      case 7:
+        if (perchar !== "0") tmpnewchar = tmpnewchar + "千";
+        break;
+
+      case 8:
+        tmpnewchar = tmpnewchar + "亿";
+        break;
+
+      case 9:
+        tmpnewchar = tmpnewchar + "十";
+        break;
+    }
+
+    newchar = tmpnewchar + newchar;
+  } //替换所有无用汉字，直到没有此类无用的数字为止
+
+
+  while (newchar.search("零零") != -1 || newchar.search("零亿") != -1 || newchar.search("亿万") != -1 || newchar.search("零万") != -1) {
+    newchar = newchar.replace("零亿", "亿");
+    newchar = newchar.replace("亿万", "亿");
+    newchar = newchar.replace("零万", "万");
+    newchar = newchar.replace("零零", "零");
+  } //替换以“一十”开头的，为“十”
+
+
+  if (newchar.indexOf("一十") == 0) {
+    newchar = newchar.substr(1);
+  } //替换以“零”结尾的，为“”
+
+
+  if (newchar.lastIndexOf("零") == newchar.length - 1) {
+    newchar = newchar.substr(0, newchar.length - 1);
+  }
+
+  return newchar;
+}
 var strTransfer = {
   trim: trim$2,
   titleize: titleize,
   camelize: camelize,
   dasherize: dasherize,
   escapeHTML: escapeHTML,
-  unescapeHTML: unescapeHTML
+  unescapeHTML: unescapeHTML,
+  toSimplifiedChinese: toSimplifiedChinese
 };
 
 /*
@@ -5700,14 +5886,6 @@ function sleepSync(ms) {
   });
 }
 
-/*
- * @Author: zhangyu
- * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-16 17:43:38
- * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-09 15:13:55
- * @Description: 
- */
 var has$2 = Object.prototype.hasOwnProperty;
 /**
  * 检测是否为对象
@@ -5784,6 +5962,211 @@ function alias(obj, name, aliasName) {
   return obj;
 }
 /**
+* 将源对象(source)的所有可枚举且目标对象(target)不存在的属性, 复制到目标对象
+* @param {object} target 目标对象
+* @param {object} source 源对象
+* @param {boolean} forced 是否强制复制, 为true时将会覆盖目标对象同名属性, 默认为false
+*/
+
+function extend(target, source, forced) {
+  if (!target || !source) return target;
+
+  for (var key in source) {
+    if (key == undefined || !has$2.call(source, key)) continue;
+    if (forced || target[key] === undefined) target[key] = source[key];
+  }
+
+  return target;
+}
+/**
+* 将数组或类数组转换为键值对 eg: ['a','b'] => {a:0,b:1}
+* @param {Array} list 要转换的数组
+* @param {object|function} fv 默认值或处理函数(value,i) => [key,value]
+* @param {boolean} ignoreCase 是否忽略大小写, 为true时将统一使用小写, 默认为false
+*/
+
+function toMap(list, fv, ignoreCase) {
+  if (!list) return;
+  var map = {},
+      isFn = isFunc(fv),
+      hasValue = fv !== undefined;
+
+  for (var i = 0, len = list.length; i < len; i++) {
+    var key = list[i],
+        value;
+    if (key == undefined) continue;
+
+    if (isFn) {
+      var kv = fv.call(list, key, i);
+      if (!kv) continue;
+      key = kv[0];
+      value = kv[1];
+    } else {
+      value = hasValue ? fv : i;
+    }
+
+    map[ignoreCase ? key.toLowerCase() : key] = value;
+  }
+
+  return map;
+}
+/**
+ * 将对象数组转换为键值对 eg: [{name:'a',value:1},{name:'b',value:2}] => {a:1,b:2}
+ * @param {Array.<object>} list 要转换的对象数组
+ * @param {string} propKey 对象中作为键的属性 eg: name
+ * @param {string|boolean} propValue 对象中作为值的属性, 为true时将给对象增加index属性, 为空时将整个对象作为值
+ */
+
+function toObjectMap(list, propKey, propValue) {
+  if (!list) return;
+  var map = {},
+      isBuildIndex = false;
+
+  if (propValue === true) {
+    isBuildIndex = propValue;
+    propValue = undefined;
+  }
+
+  for (var i = 0, len = list.length; i < len; i++) {
+    var obj = list[i];
+    if (!obj || _typeof(obj) != "object") continue;
+    if (isBuildIndex) obj.index = i;
+    map[obj[propKey]] = propValue ? obj[propValue] : obj;
+  }
+
+  return map;
+}
+/**
+ * 将目标对象中和源对象值不同的数据作为键值对返回
+ * @param {object} target 目标对象
+ * @param {object} source 源对象
+ * @param {Array.<string>} skipProps 要忽略比较的属性数组
+ * @param {string} skipPrefix 要忽略的属性前缀
+ */
+
+
+function getChangedData(target, source, skipProps, skipPrefix) {
+  if (!target) return undefined;
+  var map_skip_prop = skipProps ? toMap(skipProps, true) : {},
+      data_changed = {},
+      has_changed = false;
+
+  for (var key in target) {
+    if (!key || !has$2.call(target, key) || map_skip_prop[key] || skipPrefix && key.indexOf(skipPrefix) == 0 || target[key] == source[key]) continue;
+    data_changed[key] = target[key];
+    has_changed = true;
+  }
+
+  return has_changed ? data_changed : undefined;
+}
+/**
+ * 目标和对象组合转换成数组 target{name:'1',age:'58'} formattedObject{name:'你好',age:'年龄'} => [{label:'你好':,value:'1'},{label:'年龄':,value:'58'}]
+ * @param target 目标对象
+ * @param formattedObject 格式化对象
+ * @param options K/V
+ */
+
+
+function objectConversionToList(target, formattedObject, options) {
+  var _options;
+
+  if (options) _options = options;else _options = {
+    label: 'label',
+    value: 'value'
+  };
+  var returnList = [];
+  var _options2 = _options,
+      label = _options2.label,
+      value = _options2.value; // 判断target类型
+
+  if (getType(target) === 'object') {
+    for (var key in formattedObject) {
+      if (Object.prototype.hasOwnProperty.call(formattedObject, key)) {
+        var _returnList$push;
+
+        var getLabel = formattedObject[key];
+        var getValue = target[key];
+        returnList.push((_returnList$push = {}, _defineProperty(_returnList$push, label, getLabel), _defineProperty(_returnList$push, value, getValue), _returnList$push));
+      }
+    }
+  }
+
+  return returnList;
+}
+/**
+* 根据对象key排序
+* @param {object} map 排序对象
+* @param {boolean} isKeyUpSort 排序方式 默认顺序
+*/
+
+
+function sortMapByKey(map) {
+  var isKeyUpSort = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  var keys = [];
+  var isMap = getType(map) === 'map';
+
+  if (isMap) {
+    map.forEach(function (_, key) {
+      keys.push(key);
+    });
+  } else {
+    for (var key in map) {
+      if (Object.prototype.hasOwnProperty.call(map, key)) {
+        keys.push(key);
+      }
+    }
+  }
+
+  if (isKeyUpSort) {
+    keys.sort(function (key1, key2) {
+      return compareSize(key2, key1);
+    });
+  } else {
+    keys.sort(function (key1, key2) {
+      return compareSize(key1, key2);
+    });
+  }
+
+  var newMap;
+
+  if (isMap) {
+    newMap = new map$1();
+    keys.forEach(function (key) {
+      newMap.set(key, map.get(key));
+    });
+  } else {
+    newMap = {};
+    keys.forEach(function (key) {
+      newMap[key] = map[key];
+    });
+  }
+
+  return newMap;
+}
+/**
+* 对象to 对象数组
+* @param {object>} target 
+*/
+
+function objectToArray(target) {
+  var arr = [];
+
+  if (getType(target) === 'object') {
+    for (var key in target) {
+      if (Object.prototype.hasOwnProperty.call(target, key)) {
+        var item = target[key];
+        arr.push(_defineProperty({}, key, item));
+      }
+    }
+  } else if (getType(target) === 'map') {
+    target.forEach(function (value, key) {
+      arr.push(_defineProperty({}, key, value));
+    });
+  }
+
+  return arr;
+}
+/**
  * @description: 对象方法工具 hasKey:判断一个对象是否存在key; objEqual: 两个对象是否相等这两个对象的值只能是数字或字符串
  * @param {*}
  * @returns {number|boolean}
@@ -5815,7 +6198,14 @@ var objTools = {
         });
       }
   },
-  alias: alias
+  alias: alias,
+  extend: extend,
+  toMap: toMap,
+  toObjectMap: toObjectMap,
+  objectToArray: objectToArray,
+  getChangedData: getChangedData,
+  objectConversionToList: objectConversionToList,
+  sortMapByKey: sortMapByKey
 };
 
 var arrayLikeToArray = createCommonjsModule(function (module) {
@@ -6094,7 +6484,7 @@ var _slicedToArray = unwrapExports(slicedToArray);
  * @description: 数组转对象
  * @param {string} key
  * @param {any} arr
- * @return {*object}
+ * @return {object}
  */
 
 function arrayToObject(key, arr) {
@@ -6108,7 +6498,7 @@ function arrayToObject(key, arr) {
 }
 /**
  * 引用数组位移，性能优化
- * @param {<any[]>} array 
+ * @param {*} array 
  * @param {number} from 
  * @param {number} to 
  */
@@ -6128,10 +6518,10 @@ function arrayMoveMutate(array, from, to) {
 }
 /**
  * 数组位移
- * @param {<any[]>} array 
+ * @param {array} array 
  * @param {number} from 
  * @param {number} to 
- * @returns 
+ * @return {*}
  * @example
     ```
         const { arrayMove } = require('@alrale/common-lib');
@@ -6157,6 +6547,70 @@ function arrayMove(array, from, to) {
 
   arrayMoveMutate(_array, from, to);
   return _array;
+}
+/**
+     * 按条件产生数组 arr(5,2,2) => [2,4,6,8,10]
+     * eg:按1-10项产生斐波那契数列 =>arr(10, function (value, i, list) { return i > 1 ? list[i - 1] + list[i - 2] : 1; })
+     * @param {number} length 要产生的数组长度
+     * @param {number} value 数组项的初始值
+     * @param {number} step 递增值或处理函数(当前值,索引,当前产生的数组)
+     */
+
+function arrFibonacci(length, value, step) {
+  if (isFunc(value)) {
+    step = value;
+    value = 0;
+  }
+
+  if (value == undefined) value = 0;
+  if (step == undefined) step = 1;
+  var list = [],
+      i = 0;
+
+  if (isFunc(step)) {
+    while (i < length) {
+      value = step(value, i, list);
+      list.push(value);
+      i++;
+    }
+  } else {
+    while (i < length) {
+      list.push(value);
+      value += step;
+      i++;
+    }
+  }
+
+  return list;
+}
+/**
+ * 根据指定的键或索引抽取数组项的值
+ * eg:vals([{id:1},{id:2}], "id")  =>  [1,2]
+ * eg:vals([[1,"a"],[2,"b"]], 1)   =>  ["a","b"]
+ * @param {array} list 对象数组
+ * @param {string} prop 要抽取的属性
+ * @param {boolean} skipUndefined 是否跳过值不存在的项,默认为true
+ */
+
+function arrVals(list, prop, skipUndefined) {
+  if (!list) return [];
+  skipUndefined = skipUndefined !== false;
+  var len = list.length,
+      i = 0,
+      item,
+      tmp = [];
+
+  for (; i < len; i++) {
+    item = list[i];
+
+    if (item && item[prop] != undefined) {
+      tmp.push(item[prop]);
+    } else if (!skipUndefined) {
+      tmp.push(undefined);
+    }
+  }
+
+  return tmp;
 }
 
 /*
@@ -6447,12 +6901,151 @@ function removeGlobalItem(key) {
   return bool;
 }
 
+var ArrayQueue =
+/** @class */
+function () {
+  /**
+   * @param {number} len 最大数据存储量
+   */
+  function ArrayQueue(len) {
+    this.arr = new Array();
+    this.maxLength = len;
+  }
+  /**
+   * 入队
+   * @param target
+   */
+
+
+  ArrayQueue.prototype.push = function (target) {
+    if (this.maxLength && this.arr.length >= this.maxLength) return false;
+    this.arr.push(target);
+    return true;
+  };
+  /**出队 */
+
+
+  ArrayQueue.prototype.pop = function () {
+    return this.arr.shift();
+  };
+  /**队首 */
+
+
+  ArrayQueue.prototype.getFront = function () {
+    return this.arr[0];
+  };
+  /**队尾 */
+
+
+  ArrayQueue.prototype.getRear = function () {
+    if (this.size() === 0) return;
+    return this.arr[this.size() - 1];
+  };
+
+  ArrayQueue.prototype.clear = function () {
+    this.arr = [];
+  };
+
+  ArrayQueue.prototype.size = function () {
+    return this.arr.length;
+  };
+
+  ArrayQueue.prototype._getAll = function () {
+    return this.arr;
+  };
+
+  return ArrayQueue;
+}();
+
+var Node =
+/** @class */
+function () {
+  function Node(ele) {
+    this.ele = ele;
+    this.next = null;
+  }
+
+  Node.prototype.getValue = function () {
+    return {
+      ele: this.ele,
+      next: this.next
+    };
+  };
+
+  return Node;
+}();
+
+var LinkedQueue =
+/** @class */
+function () {
+  function LinkedQueue() {
+    this.length = 0;
+  }
+
+  LinkedQueue.prototype.push = function (ele) {
+    var node = new Node(ele),
+        temp;
+    if (this.length == 0) this.front = node;else {
+      temp = this.rear;
+      temp.next = node;
+    }
+    this.rear = node;
+    this.length++;
+    return true;
+  };
+
+  LinkedQueue.prototype.pop = function () {
+    var temp = this.front;
+    this.front = this.front.next;
+    this.length--;
+    temp.next = null;
+    return temp;
+  };
+
+  LinkedQueue.prototype.size = function () {
+    return this.length;
+  };
+
+  LinkedQueue.prototype.getFront = function () {
+    return this.front;
+  };
+
+  LinkedQueue.prototype.getRear = function () {
+    return this.rear;
+  };
+
+  LinkedQueue.prototype.toString = function () {
+    var string = '',
+        temp = this.front;
+
+    while (temp) {
+      string += temp.ele + ' ';
+      temp = temp.next;
+    }
+
+    return string;
+  };
+
+  LinkedQueue.prototype.clear = function () {
+    this.front = null;
+    this.rear = null;
+    this.length = 0;
+    return true;
+  };
+
+  return LinkedQueue;
+}();
+var queue$2 = {
+  ArrayQueue: ArrayQueue,
+  LinkedQueue: LinkedQueue
+};
+
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 13:59:27
+ * @LastEditTime: 2021-08-25 15:30:34
  * @Description: 
  */
 var index$1 = {
@@ -6500,7 +7093,8 @@ var index$1 = {
   getGlobal: getGlobal,
   setGlobal: setGlobal,
   globalLib: globalLib,
-  removeGlobalItem: removeGlobalItem
+  removeGlobalItem: removeGlobalItem,
+  queue: queue$2
 };
 
 module.exports = index$1;

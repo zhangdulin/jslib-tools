@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 14:02:08
+ * @LastEditTime: 2021-08-25 20:34:19
  * @Description:
 -->
 
@@ -146,4 +146,29 @@ b2size
    6. strTransfer.unescapeHTML
    > 实体字符转换为等值的HTML
 
-
+#### 0.1.5
+- 增加 
+1. objTools 
+    1. objTools.extend 
+    > 源对象(source)的所有可枚举且目标对象(target)不存在的属性, 复制到目标对象
+    2. objTools.toMap 
+    > 将数组或类数组转换为键值对 eg: ['a','b'] => {a:0,b:1}
+    3. objTools.toObjectMap 
+    > 将对象数组转换为键值对 eg: [{name:'a',value:1},{name:'b',value:2}] => {a:1,b:2}
+    4. objTools.getChangedData 
+    > 将目标对象中和源对象值不同的数据作为键值对返回
+    5. objTools.objectConversionToList 
+    > 目标和对象组合转换成数组 target{name:'1',age:'58'} && formattedObject{name:'你好',age:'年龄'} => [{label:'你好':,value:'1'},{label:'年龄':,value:'58'}]
+    6. objTools.objectToArray 
+    > 判断对象转换数组
+    7. objTools.sortMapByKey 
+    > 根据对象的key排序 默认顺序
+2. judgeTools
+   1. judgeTools.isObjEmpty 
+   > 判断对象 或者 数组是否是空
+   2. judgeTools.compareSize 
+   > 判断大小 用来sort等 返回 -1 0 1
+3. strTransfer   
+   1. strTransfer.toSimplifiedChinese 
+   > 阿拉伯数字转换为简写汉字
+   

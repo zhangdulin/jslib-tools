@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>jslib-tools - v0.1.4</title>
-	<meta name="description" content="Documentation for jslib-tools - v0.1.4">
+	<title>jslib-tools - v0.1.5</title>
+	<meta name="description" content="Documentation for jslib-tools - v0.1.5">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 	<script async src="assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">jslib-tools - v0.1.4</a>
+					<a href="index.html" class="title">jslib-tools - v0.1.5</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<h1>jslib-tools - v0.1.4</h1>
+			<h1>jslib-tools - v0.1.5</h1>
 		</div>
 	</div>
 </header>
@@ -63,7 +63,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 14:02:08
+ * @LastEditTime: 2021-08-25 15:20:59
  * @Description:
 -->
 				<p><a href="https://opensource.org/licenses/mit-license.php"><img src="https://badges.frapsoft.com/os/mit/mit.svg?v=103" alt="MIT Licence"></a>
@@ -236,6 +236,74 @@
 						</ol>
 					</li>
 				</ol>
+				<a href="#015" id="015" style="color: inherit; text-decoration: none;">
+					<h4>0.1.5</h4>
+				</a>
+				<ul>
+					<li>增加 </li>
+				</ul>
+				<ol>
+					<li>objTools <ol>
+							<li>objTools.extend <blockquote>
+									<p>源对象(source)的所有可枚举且目标对象(target)不存在的属性, 复制到目标对象</p>
+								</blockquote>
+							</li>
+							<li>objTools.toMap <blockquote>
+									<p>将数组或类数组转换为键值对 eg: [&#39;a&#39;,&#39;b&#39;] =&gt; {a:0,b:1}</p>
+								</blockquote>
+							</li>
+							<li>objTools.toObjectMap <blockquote>
+									<p>将对象数组转换为键值对 eg: [{name:&#39;a&#39;,value:1},{name:&#39;b&#39;,value:2}] =&gt; {a:1,b:2}</p>
+								</blockquote>
+							</li>
+							<li>objTools.getChangedData <blockquote>
+									<p>将目标对象中和源对象值不同的数据作为键值对返回</p>
+								</blockquote>
+							</li>
+						</ol>
+					</li>
+				</ol>
+				<a href="#016" id="016" style="color: inherit; text-decoration: none;">
+					<h4>0.1.6</h4>
+				</a>
+				<ul>
+					<li>增加 </li>
+				</ul>
+				<ol>
+					<li>objTools <ol>
+							<li>objTools.objectConversionToList <blockquote>
+									<p>目标和对象组合转换成数组 target{name:&#39;1&#39;,age:&#39;58&#39;} &amp;&amp; formattedObject{name:&#39;你好&#39;,age:&#39;年龄&#39;} =&gt; [{label:&#39;你好&#39;:,value:&#39;1&#39;},{label:&#39;年龄&#39;:,value:&#39;58&#39;}]</p>
+								</blockquote>
+							</li>
+							<li>objTools.objectToArray <blockquote>
+									<p>判断对象转换数组</p>
+								</blockquote>
+							</li>
+							<li>objTools.sortMapByKey <blockquote>
+									<p>根据对象的key排序 默认顺序</p>
+								</blockquote>
+							</li>
+						</ol>
+					</li>
+					<li>judgeTools<ol>
+							<li>judgeTools.isObjEmpty <blockquote>
+									<p>判断对象 或者 数组是否是空</p>
+								</blockquote>
+							</li>
+							<li>judgeTools.compareSize <blockquote>
+									<p>判断大小 用来sort等 返回 -1 0 1</p>
+								</blockquote>
+							</li>
+						</ol>
+					</li>
+					<li>strTransfer   <ol>
+							<li>strTransfer.toSimplifiedChinese <blockquote>
+									<p>阿拉伯数字转换为简写汉字</p>
+								</blockquote>
+							</li>
+						</ol>
+					</li>
+				</ol>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -243,6 +311,9 @@
 				<ul>
 					<li class=" ">
 						<a href="modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/arithmetic_queue.html">arithmetic/queue</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/color_iscolor.html">color/is<wbr>Color</a>
@@ -287,6 +358,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 			</ul>
 		</div>
 	</div>

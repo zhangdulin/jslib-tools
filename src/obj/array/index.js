@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-07-09 15:03:47
  * @Description: 
  */
-import { arrayToObject, arrayMoveMutate, arrayMove } from './array'
+import { arrayToObject, arrayMoveMutate, arrFibonacci, arrVals, arrayMove } from './array'
 
 export default {
     arrayToObject,

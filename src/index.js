@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-28 13:59:27
+ * @LastEditTime: 2021-08-25 15:30:34
  * @Description: 
  */
 
@@ -80,6 +80,9 @@ import * as store from './store/index'
 // window
 import { getGlobal, setGlobal, globalLib, removeGlobalItem } from './obj/window'
 
+//queue
+import queue from './arithmetic/queue'
+
 export default {
     getParam,
     setParam,
@@ -135,5 +138,7 @@ export default {
     getGlobal,
     setGlobal,
     globalLib,
-    removeGlobalItem
+    removeGlobalItem,
+
+    queue
 }
