@@ -1,5 +1,5 @@
 /*!
- * jtools v0.1.5
+ * jtools v0.1.6
  * jlb web team
  */
 'use strict';
@@ -187,10 +187,10 @@ var _has$1 = function (it, key) {
   return hasOwnProperty$1.call(it, key);
 };
 
-var toString$2 = {}.toString;
+var toString$1 = {}.toString;
 
 var _cof$1 = function (it) {
-  return toString$2.call(it).slice(8, -1);
+  return toString$1.call(it).slice(8, -1);
 };
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
@@ -238,7 +238,7 @@ var store = _global$1[SHARED] || (_global$1[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: _core$1.version,
-  mode: _library$1 ? 'pure' : 'global',
+  mode: 'pure',
   copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
 });
 });
@@ -3051,7 +3051,7 @@ var _enumKeys$1 = function (it) {
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
 var gOPN$1 = _objectGopn$1.f;
-var toString$4 = {}.toString;
+var toString$3 = {}.toString;
 
 var windowNames$1 = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
@@ -3065,7 +3065,7 @@ var getWindowNames$1 = function (it) {
 };
 
 var f$e = function getOwnPropertyNames(it) {
-  return windowNames$1 && toString$4.call(it) == '[object Window]' ? getWindowNames$1(it) : gOPN$1(_toIobject$1(it));
+  return windowNames$1 && toString$3.call(it) == '[object Window]' ? getWindowNames$1(it) : gOPN$1(_toIobject$1(it));
 };
 
 var _objectGopnExt$1 = {
@@ -3732,7 +3732,7 @@ function unescapeHTML(str) {
 //严格模式下this不指向全局变量
 
 var GLOBAL = (typeof global === "undefined" ? "undefined" : _typeof(global)) == "object" ? global : window,
-    toString$5 = Object.prototype.toString;
+    toString$4 = Object.prototype.toString;
  //严格模式与window识别检测
 //2018/10/10: uglify压缩会导致此检测函数失效
 //function detect_strict_mode() {
@@ -3774,7 +3774,7 @@ function getType(obj) {
   } //在某些最新的浏览器中(IE11、Firefox、Chrome)性能与hash读取差不多 eg: return class2type[toString.call(obj)];
 
 
-  return toString$5.call(obj).slice(8, -1).toLowerCase();
+  return toString$4.call(obj).slice(8, -1).toLowerCase();
 } // export function typeIs<T>(target: T): string {
 //   const Type: any = {
 //     '[object String]': 'string',
@@ -3807,7 +3807,7 @@ function getType(obj) {
 function isFunc(fn) {
   //在IE11兼容模式（ie6-8）下存在bug,当调用次数过多时可能返回不正确的结果
   //return typeof fn == "function";
-  return toString$5.call(fn) === "[object Function]" || toString$5.call(fn) === "[object AsyncFunction]";
+  return toString$4.call(fn) === "[object Function]" || toString$4.call(fn) === "[object AsyncFunction]";
 }
 /**
  * 检测是否为对象
@@ -3818,7 +3818,7 @@ function isFunc(fn) {
 function isObject(obj) {
   //typeof null => object
   //toString.call(null) => [object Object]
-  return obj && toString$5.call(obj) === "[object Object]";
+  return obj && toString$4.call(obj) === "[object Object]";
 }
 /**
  * 检测是否为数组
@@ -3827,7 +3827,7 @@ function isObject(obj) {
  */
 
 function isArray$2(obj) {
-  return toString$5.call(obj) === "[object Array]";
+  return toString$4.call(obj) === "[object Array]";
 }
 /**
  * 检测是否为数组或类数组
@@ -5340,171 +5340,174 @@ function AMaploader(p) {
 /*
  * @Author: zhangyu
  * @Email: zhangdulin@outlook.com
- * @Date: 2021-06-28 09:47:26
+ * @Date: 2021-09-09 11:26:20
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-07-21 10:58:10
- * @Description: 创建websocket对象
+ * @LastEditTime: 2021-09-09 11:26:21
+ * @Description: 
  */
 /**
-  * @description: 建立websocket连接函数
-  * @param {*} wsUrl 连接地址
-  * @param {*} event 回调函数
-  * @param {*} onmessage 回调函数里事件监听 消息
-  * @param {*} onclose 回调函数里事件监听 关闭
-  * @param {*} onerror 回调函数里事件监听 错误
-  * @return {*} create() => socket
-  */
+ * @description: 建立websocket连接函数
+ * @param {*} wsUrl 连接地址
+ * @param {*} event 回调函数
+ * @param {*} onmessage 回调函数里事件监听 消息
+ * @param {*} onclose 回调函数里事件监听 关闭
+ * @param {*} onerror 回调函数里事件监听 错误
+ * @return {*} socket
+ */
 
-var createWebsocket = {
-  // 保存websocket对象
-  socket: null,
-  // websocket 参数
-  websocketInfo: null,
-  // reConnect函数节流标识符
-  flag: true,
-  // 记录ws失败信息
-  socketErrorInfo: {
+function CreateWebsocket(_ref) {
+  var wsUrl = _ref.wsUrl,
+      _ref$event = _ref.event,
+      onopen = _ref$event.onopen,
+      onmessage = _ref$event.onmessage,
+      onclose = _ref$event.onclose,
+      onerror = _ref$event.onerror;
+  this.wsUrl = wsUrl;
+  this.onopen = onopen;
+  this.onmessage = onmessage;
+  this.onclose = onclose;
+  this.onerror = onerror; // 保存websocket对象
+
+  this.socket = ''; // reConnect函数节流标识符
+
+  this.flag = true; // 记录ws失败信息
+
+  this.socketErrorInfo = {
     times: 0,
     // 次数
     limit: 5 // 限制 超出限制业务处理
 
-  },
-  timeOut: 1000 * 60 * 3,
-  // 3分钟心跳一次
-  timeObj: null,
-  serverTimeObj: null,
-  // 心跳机制
-  heart: function heart() {
-    // console.log('******ws heart beat******');
-    var self = this; // 清除延时器
-
-    this.timeObj && clearTimeout(this.timeObj);
-    this.serverTimeObj && clearTimeout(this.serverTimeObj);
-    this.timeObj = setTimeout(function () {
-      self.socket.send('islive'); // 发送消息，服务端返回信息，即表示连接良好，可以在socket的onmessage事件重置心跳机制函数
-      // 定义一个延时器等待服务器响应，若超时，则关闭连接，重新请求server建立socket连接
-
-      self.serverTimeObj = setTimeout(function () {
-        self.socket.close();
-        self.reConnect();
-      }, self.timeOut);
-    }, this.timeOut);
-  },
-  // 重连函数
-  // 因为重连函数会被socket事件频繁触发，所以通过函数节流限制重连请求发送
-  reConnect: function reConnect() {
-    var _this = this;
-
-    if (!this.flag) {
-      return;
-    } // 重连超过5次 提示用户网络异常
+  };
+  this.heartConfig = {
+    timeOut: 1000 * 60 * 3,
+    // 3分钟心跳一次
+    timeObj: null,
+    serverTimeObj: null
+  };
+  this.init();
+} // 重连函数
+// 因为重连函数会被socket事件频繁触发，所以通过函数节流限制重连请求发送
 
 
-    if (this.socketErrorInfo.times && this.socketErrorInfo.times > this.socketErrorInfo.limit) {
-      this.socketErrorInfo.times = 0;
-      alert('您当前网络环境差');
-    }
+CreateWebsocket.prototype.init = function () {
+  var _this = this;
 
-    this.flag = false;
-    setTimeout(function () {
-      _this.create(_this.websocketInfo);
-
-      _this.flag = true;
-      _this.socketErrorInfo.times++;
-    }, 3000);
-  },
-
-  /**
-   * @description: 建立websocket连接函数
-   * @param {*} wsUrl 连接地址
-   * @param {*} event 回调函数
-   * @param {*} onmessage 回调函数里事件监听 消息
-   * @param {*} onclose 回调函数里事件监听 关闭
-   * @param {*} onerror 回调函数里事件监听 错误
-   * @return {*} socket
-   */
-  create: function create(_ref) {
-    var _this2 = this;
-
-    var wsUrl = _ref.wsUrl,
-        _ref$event = _ref.event,
-        onopen = _ref$event.onopen,
-        onmessage = _ref$event.onmessage,
-        onclose = _ref$event.onclose,
-        onerror = _ref$event.onerror;
-
-    // 兼容性检验
-    if (typeof WebSocket == 'undefined') {
-      // console.log('您的浏览器不支持WebSocket, 请使用主流浏览器访问页面，如Chrome浏览器');
-      alert('您的浏览器不支持接收消息, 请使用主流浏览器访问页面，如Chrome浏览器');
-    } // 储存参数
+  // this.onopen = this.onopen || onopen;
+  // this.onmessage = this.onmessage || onmessage;
+  // this.onclose = this.onclose || onclose;
+  // this.onerror = this.onerror || onerror;
+  // 兼容性检验
+  if (typeof WebSocket == 'undefined') {
+    console.log('您的浏览器不支持WebSocket, 请使用主流浏览器访问页面，如Chrome浏览器');
+  } // 设置 host
 
 
-    this.websocketInfo = this.websocketInfo || arguments[0]; // 根据环境设置 host
+  var socketUrl = "".concat(this.wsUrl);
 
-    var socketUrl = "".concat(this.websocketInfo.wsUrl);
+  try {
+    // 实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+    this.socket = new WebSocket(socketUrl); // 对WebSocket各种事件进行监听
 
-    try {
-      // 实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-      this.socket = new WebSocket(socketUrl); // 对WebSocket各种事件进行监听
+    this.socket.onopen = function (e) {
+      _this.onopen && _this.onopen(e, _this.socket); // 重置心跳机制
 
-      this.socket.onopen = function (e) {
-        onopen && onopen(e, _this2.socket); // 重置心跳机制
+      _this.heart();
+    };
 
-        _this2.heart();
-      };
+    this.socket.onmessage = function (e) {
+      // console.log('推送消息: ' + e.data);
+      // 接收信息类型判断 消息判断需重新定义 20210604
+      // if (e.data == 'yxj-living') {
+      //     console.log('hey man i am living');
+      // } else if (e.data == 'connected') {
+      //     console.log('已连接');
+      // } else {
+      //     console.log('推送消息: ' + e.data);
+      // }
+      var data = {}; // 过滤字符串
 
-      this.socket.onmessage = function (e) {
-        // console.log('推送消息: ' + e.data);
-        // 接收信息类型判断 消息判断需重新定义 20210604
-        // if (e.data == 'living') {
-        //     console.log('hey man i am living');
-        // } else if (e.data == 'connected') {
-        //     console.log('已连接');
-        // } else {
-        //     console.log('推送消息: ' + e.data);
-        // }
-        var data = {}; // 过滤字符串
+      if (isJSON(e.data)) {
+        data = {
+          data: JSON.parse(e.data)
+        };
+      } else {
+        console.log('收到不能转换对象的字符串');
+      }
 
-        if (isJSONStringify(e.data)) {
-          data = {
-            data: JSON.parse(e.data)
-          };
-        } else {
-          console.log('收到不能转换为对象的字符串');
-        }
+      _this.onmessage && _this.onmessage(data, _this.socket);
+      _this.socketErrorInfo.times = 0; // 通过event.data获取server发送的信息
+      // 对数据进行操作
+      // console.log(event.data);
+      // 收到消息表示连接正常，所以重置心跳机制
 
-        onmessage && onmessage(data, _this2.socket);
-        _this2.socketErrorInfo.times = 0; // 通过event.data获取server发送的信息
-        // 对数据进行操作
-        // console.log(event.data);
-        // 收到消息表示连接正常，所以重置心跳机制
+      _this.heart();
+    };
 
-        _this2.heart();
-      };
+    this.socket.onclose = function (e) {
+      // console.log(e, 'socket-onclose');
+      _this.onclose && _this.onclose(e, _this.socket);
 
-      this.socket.onclose = function (e) {
-        // console.log(e, 'socket-onclose');
-        onclose && onclose(e, _this2.socket);
+      _this.reConnect();
+    };
 
-        _this2.reConnect();
-      };
+    this.socket.onerror = function (e) {
+      // 报错+重连
+      // console.log(e, 'socket-onerror');
+      _this.onerror && _this.onerror(e, _this.socket);
 
-      this.socket.onerror = function (e) {
-        // 报错+重连
-        // console.log(e, 'socket-onerror');
-        onerror && onerror(e, _this2.socket);
+      _this.reConnect();
+    };
 
-        _this2.reConnect();
-      };
-
-      return this.socket;
-    } catch (e) {
-      // 进行重连;
-      // console.log('websocket连接错误');
-      this.reConnect();
-    }
+    return this.socket;
+  } catch (e) {
+    // 进行重连;
+    // console.log('websocket连接错误');
+    this.reConnect();
   }
+}; // 重连函数
+// 因为重连函数会被socket事件频繁触发，所以通过函数节流限制重连请求发送
+
+
+CreateWebsocket.prototype.reConnect = function () {
+  var _this2 = this;
+
+  if (!this.flag) {
+    return;
+  } // 重连超过5次 提示用户网络异常
+
+
+  if (this.socketErrorInfo.times && this.socketErrorInfo.times > this.socketErrorInfo.limit) {
+    this.socketErrorInfo.times = 0;
+    console.log('您当前网络环境差');
+  }
+
+  this.flag = false;
+  setTimeout(function () {
+    _this2.init();
+
+    _this2.flag = true;
+    _this2.socketErrorInfo.times++;
+  }, 3000);
+}; // 心跳机制
+
+
+CreateWebsocket.prototype.heart = function () {
+  var _this3 = this;
+
+  // 清除延时器
+  this.heartConfig.timeObj && clearTimeout(this.heartConfig.timeObj);
+  this.heartConfig.serverTimeObj && clearTimeout(this.heartConfig.serverTimeObj);
+  this.heartConfig.timeObj = setTimeout(function () {
+    _this3.socket.send('yxj-islive'); // 发送消息，服务端返回信息，即表示连接良好，可以在socket的onmessage事件重置心跳机制函数
+    // 定义一个延时器等待服务器响应，若超时，则关闭连接，重新请求server建立socket连接
+
+
+    _this3.heartConfig.serverTimeObj = setTimeout(function () {
+      _this3.socket.close();
+
+      _this3.reConnect();
+    }, _this3.heartConfig.timeOut);
+  }, this.heartConfig.timeOut);
 };
 
 /*
@@ -5887,6 +5890,7 @@ function sleepSync(ms) {
 }
 
 var has$2 = Object.prototype.hasOwnProperty;
+var toString$5 = Object.prototype.toString;
 /**
  * 检测是否为对象
  * @param {object} obj 要检测的数据
@@ -5895,7 +5899,7 @@ var has$2 = Object.prototype.hasOwnProperty;
 function isObject$1(obj) {
   //typeof null => object
   //toString.call(null) => [object Object]
-  return obj && toString.call(obj) === "[object Object]";
+  return obj && toString$5.call(obj) === "[object Object]";
 }
 /**
  * 检测是否为数组
@@ -5904,7 +5908,7 @@ function isObject$1(obj) {
 
 
 function isArray$3(obj) {
-  return toString.call(obj) === "[object Array]";
+  return toString$5.call(obj) === "[object Array]";
 }
 /* 
 * 数据克隆(深拷贝)
@@ -6012,7 +6016,7 @@ function toMap(list, fv, ignoreCase) {
 }
 /**
  * 将对象数组转换为键值对 eg: [{name:'a',value:1},{name:'b',value:2}] => {a:1,b:2}
- * @param {Array.<object>} list 要转换的对象数组
+ * @param {array} list 要转换的对象数组
  * @param {string} propKey 对象中作为键的属性 eg: name
  * @param {string|boolean} propValue 对象中作为值的属性, 为true时将给对象增加index属性, 为空时将整个对象作为值
  */
@@ -6145,7 +6149,7 @@ function sortMapByKey(map) {
 }
 /**
 * 对象to 对象数组
-* @param {object>} target 
+* @param {object} target 
 */
 
 function objectToArray(target) {
@@ -7045,7 +7049,7 @@ var queue$2 = {
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-08-25 15:30:34
+ * @LastEditTime: 2021-09-09 13:59:48
  * @Description: 
  */
 var index$1 = {
@@ -7075,7 +7079,7 @@ var index$1 = {
   strTransfer: strTransfer,
   jsBridge: jsBridge,
   AMaploader: AMaploader,
-  createWebsocket: createWebsocket,
+  createWebsocket: CreateWebsocket,
   getUUID: getUUID,
   appendJs: appendJs,
   store: store,
