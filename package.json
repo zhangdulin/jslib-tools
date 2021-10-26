@@ -1,6 +1,6 @@
 {
   "name": "jslib-tools",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "js工具库 封装常用的工具函数 如深拷贝 时间转换日期格式化、浏览器判断等，提高开发效率",
   "main": "dist/jtools.runtime.common.js",
   "module": "dist/jtools.runtime.esm.js",
@@ -50,9 +50,9 @@
     "@babel/core": "^7.14.5",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.14.5",
-    "@babel/preset-typescript": "^7.14.5",
     "@babel/runtime-corejs2": "^7.14.6",
     "@types/jest": "^26.0.23",
+    "@babel/preset-typescript": "^7.14.5",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "axios": "^0.19.2",

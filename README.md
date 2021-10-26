@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-08-25 20:34:19
+ * @LastEditTime: 2021-10-26 16:38:30
  * @Description:
 -->
 
@@ -171,4 +171,10 @@ b2size
 3. strTransfer   
    1. strTransfer.toSimplifiedChinese 
    > 阿拉伯数字转换为简写汉字
+#### 0.1.6
+- 增加 
+1. obj 
+    1. toString 
+- 修改 
+1. CreateWebsocket 
    

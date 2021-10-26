@@ -3,13 +3,14 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-16 17:43:38
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-08-24 17:40:25
+ * @LastEditTime: 2021-10-26 16:33:58
  * @Description: 
  */
 
 import { isFunc, getType, compareSize } from '../judgement/index'
 
 var has = Object.prototype.hasOwnProperty;
+var toString = Object.prototype.toString;
 
 /**
  * 检测是否为对象

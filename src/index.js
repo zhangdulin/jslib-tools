@@ -3,7 +3,7 @@
  * @Email: zhangdulin@outlook.com
  * @Date: 2021-06-08 11:30:40
  * @LastEditors: zhangyu
- * @LastEditTime: 2021-08-25 15:30:34
+ * @LastEditTime: 2021-09-09 13:59:48
  * @Description: 
  */
 
@@ -52,7 +52,7 @@ import jsBridge from './plugins//jsBridge/index'
 // 高德地图
 import AMaploader from './plugins/AMap/index'
 // websocket
-import createWebsocket from './plugins/websocket/index'
+import createWebsocket from './plugins/websocket/indexS'
 
 // UUID appendJs
 import { getUUID, appendJs } from './plugins/index'
